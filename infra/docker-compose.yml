@@ -1,0 +1,20 @@
+services:
+  api:
+    build:
+      context: ../apps/api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../apps/api:/app
+      - ../apps/api/.env:/app/.env
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
+
+  web:
+    build:
+      context: ../apps/web
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://api:8000
+    depends_on:
+      - api
