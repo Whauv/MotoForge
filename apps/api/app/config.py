@@ -1,0 +1,43 @@
+from __future__ import annotations
+
+import json
+from typing import Any
+
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    database_url: str = Field(default="sqlite:///./motoforge.db", alias="DATABASE_URL")
+    cors_origins: list[str] = Field(
+        default_factory=lambda: ["http://localhost:3000"],
+        alias="CORS_ORIGINS",
+    )
+    app_env: str = Field(default="development", alias="APP_ENV")
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
+    )
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, value: Any) -> list[str]:
+        if value is None or value == "":
+            return ["http://localhost:3000"]
+        if isinstance(value, list):
+            return value
+        if isinstance(value, str):
+            stripped = value.strip()
+            if stripped.startswith("["):
+                parsed = json.loads(stripped)
+                if not isinstance(parsed, list):
+                    raise ValueError("CORS_ORIGINS must be a JSON array or comma-separated string.")
+                return [str(item) for item in parsed]
+            return [origin.strip() for origin in stripped.split(",") if origin.strip()]
+        raise ValueError("Unsupported CORS_ORIGINS format.")
+
+
+settings = Settings()
