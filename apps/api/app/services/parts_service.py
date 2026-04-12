@@ -11,7 +11,10 @@ from app.services.motorcycle_service import get_motorcycle_by_id
 from app.utils.exceptions import IncompatiblePart, PartNotFound
 
 
-def get_parts_for_bike(db: Session, motorcycle_id: int) -> dict[str, list[ModPart]]:
+def get_parts_for_bike(
+    db: Session,
+    motorcycle_id: int,
+) -> dict[str, list[ModPart]]:
     get_motorcycle_by_id(db, motorcycle_id)
 
     statement = (
@@ -29,14 +32,20 @@ def get_parts_for_bike(db: Session, motorcycle_id: int) -> dict[str, list[ModPar
     return dict(grouped)
 
 
-def validate_parts_compatibility(db: Session, motorcycle_id: int, part_ids: list[int]) -> None:
+def validate_parts_compatibility(
+    db: Session,
+    motorcycle_id: int,
+    part_ids: list[int],
+) -> None:
     if not part_ids:
         return
 
     get_motorcycle_by_id(db, motorcycle_id)
 
     unique_part_ids = list(dict.fromkeys(part_ids))
-    parts = list(db.scalars(select(ModPart).where(ModPart.id.in_(unique_part_ids))).all())
+    parts = list(
+        db.scalars(select(ModPart).where(ModPart.id.in_(unique_part_ids))).all()
+    )
     found_ids = {part.id for part in parts}
     missing_ids = [part_id for part_id in unique_part_ids if part_id not in found_ids]
     if missing_ids:
@@ -51,6 +60,8 @@ def validate_parts_compatibility(db: Session, motorcycle_id: int, part_ids: list
         ).all()
     )
     compatible_ids = set(compatibility_rows)
-    incompatible_ids = [part_id for part_id in unique_part_ids if part_id not in compatible_ids]
+    incompatible_ids = [
+        part_id for part_id in unique_part_ids if part_id not in compatible_ids
+    ]
     if incompatible_ids:
         raise IncompatiblePart(motorcycle_id, incompatible_ids)

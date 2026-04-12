@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: motoforge-web-config
+data:
+  NEXT_PUBLIC_API_URL: http://motoforge-api:8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: motoforge-web
+  labels:
+    app: motoforge-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: motoforge-web
+  template:
+    metadata:
+      labels:
+        app: motoforge-web
+    spec:
+      containers:
+        - name: motoforge-web
+          image: gcr.io/YOUR_GCP_PROJECT_ID/motoforge-web:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: motoforge-web-config
+                  key: NEXT_PUBLIC_API_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: motoforge-web
+spec:
+  selector:
+    app: motoforge-web
+  ports:
+    - port: 3000
+      targetPort: 3000

@@ -9,7 +9,11 @@ from app.services.motorcycle_service import get_motorcycle_by_id
 from app.services.parts_service import validate_parts_compatibility
 
 
-def calculate_quote(db: Session, motorcycle_id: int, selected_part_ids: list[int]) -> QuoteResponse:
+def calculate_quote(
+    db: Session,
+    motorcycle_id: int,
+    selected_part_ids: list[int],
+) -> QuoteResponse:
     motorcycle = get_motorcycle_by_id(db, motorcycle_id)
     validate_parts_compatibility(db, motorcycle_id, selected_part_ids)
 
@@ -18,7 +22,9 @@ def calculate_quote(db: Session, motorcycle_id: int, selected_part_ids: list[int
         unique_part_ids = list(dict.fromkeys(selected_part_ids))
         parts_by_id = {
             part.id: part
-            for part in db.scalars(select(ModPart).where(ModPart.id.in_(unique_part_ids))).all()
+            for part in db.scalars(
+                select(ModPart).where(ModPart.id.in_(unique_part_ids))
+            ).all()
         }
         ordered_parts = [parts_by_id[part_id] for part_id in selected_part_ids]
 
