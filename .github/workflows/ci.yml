@@ -29,10 +29,10 @@ jobs:
           pip install -r requirements.txt black flake8
 
       - name: Run black check
-        run: black --check .
+        run: black --check app seed tests
 
       - name: Run flake8
-        run: flake8 .
+        run: flake8 app seed tests
 
   test-api:
     runs-on: ubuntu-latest

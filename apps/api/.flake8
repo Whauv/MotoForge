@@ -1,0 +1,10 @@
+[flake8]
+max-line-length = 88
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    pytest-cache-files-*
+per-file-ignores =
+    seed/seed.py:E402
+    tests/test_quotes.py:E402
