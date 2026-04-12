@@ -137,7 +137,10 @@ MOD_PARTS = [
         "price": 62000,
         "weight_delta": -3.4,
         "hp_delta": 5.6,
-        "description": "Titanium exhaust system with sharper throttle response and premium finish.",
+        "description": (
+            "Titanium exhaust system with sharper throttle response "
+            "and premium finish."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/akrapovic-racing-line.glb",
         "segments": ["sport", "naked"],
     },
@@ -147,7 +150,10 @@ MOD_PARTS = [
         "price": 41000,
         "weight_delta": -2.7,
         "hp_delta": 3.8,
-        "description": "Compact race-inspired slip-on for aggressive sound and lighter rear mass.",
+        "description": (
+            "Compact race-inspired slip-on for aggressive sound "
+            "and lighter rear mass."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/sc-project-s1.glb",
         "segments": ["sport", "naked"],
     },
@@ -157,7 +163,10 @@ MOD_PARTS = [
         "price": 54000,
         "weight_delta": -3.0,
         "hp_delta": 4.9,
-        "description": "Street-legal full system built for broad torque gains and faster rev pickup.",
+        "description": (
+            "Street-legal full system built for broad torque gains "
+            "and faster rev pickup."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/yoshimura-at2.glb",
         "segments": ["sport", "naked"],
     },
@@ -167,7 +176,10 @@ MOD_PARTS = [
         "price": 38000,
         "weight_delta": -2.2,
         "hp_delta": 2.1,
-        "description": "Classic twin-pipe cruiser exhaust with deeper tone and cleaner side profile.",
+        "description": (
+            "Classic twin-pipe cruiser exhaust with deeper tone "
+            "and cleaner side profile."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/vance-hines-twin-slash.glb",
         "segments": ["cruiser"],
     },
@@ -177,7 +189,10 @@ MOD_PARTS = [
         "price": 47000,
         "weight_delta": -2.5,
         "hp_delta": 2.8,
-        "description": "Torque-focused exhaust upgrade tailored for modern retro and cruiser builds.",
+        "description": (
+            "Torque-focused exhaust upgrade tailored for modern retro "
+            "and cruiser builds."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/ss-grand-national.glb",
         "segments": ["retro", "cruiser"],
     },
@@ -187,7 +202,10 @@ MOD_PARTS = [
         "price": 36500,
         "weight_delta": -2.4,
         "hp_delta": 3.2,
-        "description": "Lean race canister built for middleweight machines and everyday rideability.",
+        "description": (
+            "Lean race canister built for middleweight machines "
+            "and everyday rideability."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/arrow-prorace.glb",
         "segments": ["sport", "naked"],
     },
@@ -197,7 +215,10 @@ MOD_PARTS = [
         "price": 52000,
         "weight_delta": -0.9,
         "hp_delta": 0.0,
-        "description": "Premium monotube rear shock for sharper damping control on fast roads.",
+        "description": (
+            "Premium monotube rear shock for sharper damping control "
+            "on fast roads."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/ohlins-stx46.glb",
         "segments": ["sport", "naked", "retro"],
     },
@@ -207,7 +228,10 @@ MOD_PARTS = [
         "price": 28000,
         "weight_delta": -0.6,
         "hp_delta": 0.0,
-        "description": "Balanced value suspension upgrade for riders tuning comfort and cornering.",
+        "description": (
+            "Balanced value suspension upgrade for riders tuning comfort "
+            "and cornering."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/yss-adjustable-shock.glb",
         "segments": ["sport", "naked", "retro"],
     },
@@ -217,7 +241,10 @@ MOD_PARTS = [
         "price": 46000,
         "weight_delta": -0.8,
         "hp_delta": 0.0,
-        "description": "Front and rear street setup improving compliance, balance, and confidence.",
+        "description": (
+            "Front and rear street setup improving compliance, "
+            "balance, and confidence."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/hyperpro-streetbox.glb",
         "segments": ["sport", "naked"],
     },
@@ -227,7 +254,10 @@ MOD_PARTS = [
         "price": 34000,
         "weight_delta": -0.5,
         "hp_delta": 0.0,
-        "description": "Cruiser rear shock pair improving ride quality on broken roads and highways.",
+        "description": (
+            "Cruiser rear shock pair improving ride quality on broken "
+            "roads and highways."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/progressive-444.glb",
         "segments": ["cruiser"],
     },
@@ -237,7 +267,10 @@ MOD_PARTS = [
         "price": 49000,
         "weight_delta": -0.7,
         "hp_delta": 0.0,
-        "description": "Refined twin-shock retro setup for classic bikes with modern damping feel.",
+        "description": (
+            "Refined twin-shock retro setup for classic bikes with "
+            "modern damping feel."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/wilbers-twin-shock.glb",
         "segments": ["retro"],
     },
@@ -247,7 +280,10 @@ MOD_PARTS = [
         "price": 39500,
         "weight_delta": -0.6,
         "hp_delta": 0.0,
-        "description": "Track-leaning rear shock for riders who push their street bikes hard.",
+        "description": (
+            "Track-leaning rear shock for riders who push their street "
+            "bikes hard."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/ktech-razor-r-lite.glb",
         "segments": ["sport", "naked"],
     },
@@ -257,7 +293,10 @@ MOD_PARTS = [
         "price": 138000,
         "weight_delta": -4.5,
         "hp_delta": 0.0,
-        "description": "Forged alloy wheelset reducing unsprung mass for faster turn-in and drive.",
+        "description": (
+            "Forged alloy wheelset reducing unsprung mass for faster "
+            "turn-in and drive."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/marchesini-forged-wheels.glb",
         "segments": ["sport", "naked"],
     },
@@ -267,7 +306,10 @@ MOD_PARTS = [
         "price": 121000,
         "weight_delta": -4.1,
         "hp_delta": 0.0,
-        "description": "Lightweight performance wheels with strong braking and transition benefits.",
+        "description": (
+            "Lightweight performance wheels with strong braking "
+            "and transition benefits."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/oz-gass-rsa.glb",
         "segments": ["sport", "naked"],
     },
@@ -277,7 +319,10 @@ MOD_PARTS = [
         "price": 246000,
         "weight_delta": -5.8,
         "hp_delta": 0.0,
-        "description": "Carbon wheel upgrade for flagship performance builds chasing instant response.",
+        "description": (
+            "Carbon wheel upgrade for flagship performance builds "
+            "chasing instant response."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/bst-carbon-wheels.glb",
         "segments": ["sport", "naked"],
     },
@@ -287,7 +332,10 @@ MOD_PARTS = [
         "price": 98000,
         "weight_delta": -3.6,
         "hp_delta": 0.0,
-        "description": "Custom wheel package for retro and cruiser builds with workshop character.",
+        "description": (
+            "Custom wheel package for retro and cruiser builds "
+            "with workshop character."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/roland-sands-tracker.glb",
         "segments": ["retro", "cruiser"],
     },
@@ -297,7 +345,10 @@ MOD_PARTS = [
         "price": 76000,
         "weight_delta": -2.9,
         "hp_delta": 0.0,
-        "description": "Strong lightweight spoked wheel set suited to retro roadster conversions.",
+        "description": (
+            "Strong lightweight spoked wheel set suited to retro "
+            "roadster conversions."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/excel-takasago-spoke.glb",
         "segments": ["retro"],
     },
@@ -307,7 +358,10 @@ MOD_PARTS = [
         "price": 228000,
         "weight_delta": -5.2,
         "hp_delta": 0.0,
-        "description": "Premium carbon wheel package for high-end naked and sport builds.",
+        "description": (
+            "Premium carbon wheel package for high-end naked "
+            "and sport builds."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/rotobox-boost.glb",
         "segments": ["sport", "naked"],
     },
@@ -317,7 +371,10 @@ MOD_PARTS = [
         "price": 16500,
         "weight_delta": -0.4,
         "hp_delta": 0.0,
-        "description": "Compact flyscreen that improves wind management without hiding the bike shape.",
+        "description": (
+            "Compact flyscreen that improves wind management "
+            "without hiding the bike shape."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/puig-naked-screen.glb",
         "segments": ["naked"],
     },
@@ -327,7 +384,10 @@ MOD_PARTS = [
         "price": 21500,
         "weight_delta": -1.1,
         "hp_delta": 0.0,
-        "description": "Lightweight lower fairing accent that sharpens the side profile and stance.",
+        "description": (
+            "Lightweight lower fairing accent that sharpens the side "
+            "profile and stance."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/carbon-belly-pan.glb",
         "segments": ["naked", "sport"],
     },
@@ -337,7 +397,10 @@ MOD_PARTS = [
         "price": 42000,
         "weight_delta": -1.8,
         "hp_delta": 0.0,
-        "description": "Track-inspired fairing conversion with a tucked silhouette and cleaner front.",
+        "description": (
+            "Track-inspired fairing conversion with a tucked silhouette "
+            "and cleaner front."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/race-upper-fairing.glb",
         "segments": ["sport"],
     },
@@ -347,7 +410,10 @@ MOD_PARTS = [
         "price": 27500,
         "weight_delta": -0.9,
         "hp_delta": 0.0,
-        "description": "Cafe-inspired quarter fairing that transforms modern retro bikes visually.",
+        "description": (
+            "Cafe-inspired quarter fairing that transforms modern retro "
+            "bikes visually."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/quarter-fairing-retro.glb",
         "segments": ["retro"],
     },
@@ -357,7 +423,10 @@ MOD_PARTS = [
         "price": 35500,
         "weight_delta": 1.6,
         "hp_delta": 0.0,
-        "description": "Bold cruiser fairing setup improving presence and highway wind protection.",
+        "description": (
+            "Bold cruiser fairing setup improving presence and highway "
+            "wind protection."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/batwing-touring-fairing.glb",
         "segments": ["cruiser"],
     },
@@ -367,7 +436,10 @@ MOD_PARTS = [
         "price": 9800,
         "weight_delta": -0.2,
         "hp_delta": 0.0,
-        "description": "Small headlight cowl for a cleaner front end and subtle custom presence.",
+        "description": (
+            "Small headlight cowl for a cleaner front end and subtle "
+            "custom presence."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/minimalist-headlight-cowl.glb",
         "segments": ["naked", "retro"],
     },
@@ -377,7 +449,10 @@ MOD_PARTS = [
         "price": 18500,
         "weight_delta": -0.4,
         "hp_delta": 0.0,
-        "description": "Low drag-bar setup with premium finish and sharper steering feel.",
+        "description": (
+            "Low drag-bar setup with premium finish and sharper "
+            "steering feel."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/rizoma-drag-bar.glb",
         "segments": ["naked", "sport"],
     },
@@ -387,7 +462,10 @@ MOD_PARTS = [
         "price": 11200,
         "weight_delta": -0.2,
         "hp_delta": 0.0,
-        "description": "Street-friendly low bar upgrade for improved control and reduced reach.",
+        "description": (
+            "Street-friendly low bar upgrade for improved control "
+            "and reduced reach."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/renthal-street-low.glb",
         "segments": ["naked", "retro"],
     },
@@ -397,7 +475,10 @@ MOD_PARTS = [
         "price": 26800,
         "weight_delta": -0.3,
         "hp_delta": 0.0,
-        "description": "Performance clip-ons for a more aggressive riding triangle on sport builds.",
+        "description": (
+            "Performance clip-ons for a more aggressive riding triangle "
+            "on sport builds."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/woodcraft-clipons.glb",
         "segments": ["sport"],
     },
@@ -407,7 +488,10 @@ MOD_PARTS = [
         "price": 15400,
         "weight_delta": -0.1,
         "hp_delta": 0.0,
-        "description": "Wide tracker-style bar ideal for custom retros and urban builds.",
+        "description": (
+            "Wide tracker-style bar ideal for custom retros "
+            "and urban builds."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/tracker-bar-conversion.glb",
         "segments": ["retro"],
     },
@@ -417,7 +501,10 @@ MOD_PARTS = [
         "price": 24300,
         "weight_delta": 0.4,
         "hp_delta": 0.0,
-        "description": "Mini ape setup for cruisers wanting a taller custom cockpit silhouette.",
+        "description": (
+            "Mini ape setup for cruisers wanting a taller custom "
+            "cockpit silhouette."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/apehanger-mini.glb",
         "segments": ["cruiser"],
     },
@@ -427,7 +514,10 @@ MOD_PARTS = [
         "price": 8500,
         "weight_delta": -0.3,
         "hp_delta": 0.0,
-        "description": "Cockpit upgrade with wider leverage, cleaner bar-end mirrors, and improved control feel.",
+        "description": (
+            "Cockpit upgrade with wider leverage, cleaner bar-end "
+            "mirrors, and improved control feel."
+        ),
         "model_url": f"{PART_MODEL_BASE_URL}/rizoma-handlebars-mirrors.glb",
         "segments": ["naked", "sport", "retro"],
     },
@@ -499,7 +589,7 @@ def seed() -> None:
 
         for part_payload in MOD_PARTS:
             part = upsert_part(db, part_payload)
-            for motorcycle_slug, motorcycle_info in motorcycles_by_slug.items():
+            for motorcycle_info in motorcycles_by_slug.values():
                 if motorcycle_info["segment"] in part_payload["segments"]:
                     ensure_compatibility(db, motorcycle_info["id"], part.id)
 
