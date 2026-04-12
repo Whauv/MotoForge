@@ -13,9 +13,7 @@ def configure_logging() -> logging.Logger:
     logger = logging.getLogger(LOGGER_NAME)
     if not logger.handlers:
         handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            "%(asctime)s %(levelname)s %(name)s %(message)s"
-        )
+        formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s")
         handler.setFormatter(formatter)
         logger.addHandler(handler)
     logger.setLevel(logging.INFO)
@@ -32,8 +30,8 @@ def register_request_logging(app: FastAPI) -> None:
         response = await call_next(request)
         duration_ms = round((time.perf_counter() - start_time) * 1000, 2)
         logger.info(
-            'event="request_completed" '
-            'method="%s" path="%s" status_code=%s duration_ms=%s',
+            'event="request_completed" method="%s" path="%s" status_code=%s '
+            'duration_ms=%s',
             request.method,
             request.url.path,
             response.status_code,

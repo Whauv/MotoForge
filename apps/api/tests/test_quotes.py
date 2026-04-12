@@ -115,10 +115,7 @@ def seed_test_data() -> dict[str, int]:
 async def client():
     app.dependency_overrides[get_db] = override_get_db
     transport = ASGITransport(app=app)
-    async with AsyncClient(
-        transport=transport,
-        base_url="http://testserver",
-    ) as async_client:
+    async with AsyncClient(transport=transport, base_url="http://testserver") as async_client:
         yield async_client
     app.dependency_overrides.clear()
 
