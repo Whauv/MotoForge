@@ -9,6 +9,7 @@ export default function ModSidebar({
   selectedParts = [],
   onTogglePart,
   baseBike,
+  ownsBike = false,
   quote = null,
   onGeneratePDF,
 }) {
@@ -51,6 +52,7 @@ export default function ModSidebar({
           <QuotationPanel
             baseBike={baseBike}
             selectedParts={selectedParts}
+            ownsBike={ownsBike}
             quote={quote}
             onGeneratePDF={onGeneratePDF}
           />

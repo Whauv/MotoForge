@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 import Navbar from "../../../components/ui/Navbar";
 import Spinner from "../../../components/ui/Spinner";
@@ -14,8 +14,10 @@ import useQuote from "../../../hooks/useQuote";
 
 export default function ConfiguratorPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const bikeId = Array.isArray(params?.bikeId) ? params.bikeId[0] : params?.bikeId;
   const numericBikeId = Number(bikeId);
+  const ownsBike = searchParams.get("ownsBike") === "true";
 
   const { bike, loading: bikeLoading } = useBike(numericBikeId);
   const { parts, loading: partsLoading } = useParts(numericBikeId);
@@ -37,12 +39,16 @@ export default function ConfiguratorPage() {
 
     const buildPayload = {
       bikeId: bike.id,
-      bikeName: bike.name,
+      bikeName: `${bike.brand} ${bike.name}`,
+      ownsBike,
       selectedParts,
       savedAt: new Date().toISOString(),
     };
 
-    window.localStorage.setItem(`motoforge-build-${bike.id}`, JSON.stringify(buildPayload));
+    window.localStorage.setItem(
+      `motoforge-build-${bike.id}`,
+      JSON.stringify(buildPayload),
+    );
   };
 
   if (bikeLoading || partsLoading) {
@@ -64,18 +70,26 @@ export default function ConfiguratorPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
-      <Navbar bikeName={bike.name} onSaveBuild={handleSaveBuild} />
+      <Navbar
+        bikeName={`${bike.brand} ${bike.name} · ${bike.year}`}
+        onSaveBuild={handleSaveBuild}
+      />
 
       <div className="flex min-h-[calc(100vh-73px)] flex-col xl:flex-row">
         <section className="flex w-full items-center justify-center px-6 py-6 xl:w-[70%]">
           <div className="gradient-border w-full max-w-6xl rounded-[34px] p-[2px]">
             <div className="rounded-[32px] bg-zinc-950/95 p-4">
               <BikeViewer bikeModelUrl={bike.model_url} selectedMods={selectedMods} />
-              {quoteLoading ? (
-                <div className="mt-4 text-right text-xs font-semibold uppercase tracking-[0.28em] text-orange-400">
-                  Updating quote...
-                </div>
-              ) : null}
+              <div className="mt-4 flex items-center justify-between gap-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-500">
+                  {ownsBike ? "Owner mode active" : "Buying mode active"}
+                </p>
+                {quoteLoading ? (
+                  <div className="text-right text-xs font-semibold uppercase tracking-[0.28em] text-orange-400">
+                    Updating quote...
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
         </section>
@@ -86,8 +100,11 @@ export default function ConfiguratorPage() {
             selectedParts={selectedParts}
             onTogglePart={togglePart}
             baseBike={bike}
+            ownsBike={ownsBike}
             quote={quote}
-            onGeneratePDF={() => generateQuotePDF(bike, selectedParts, quote)}
+            onGeneratePDF={() =>
+              generateQuotePDF(bike, selectedParts, quote, { ownsBike })
+            }
           />
         </section>
       </div>

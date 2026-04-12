@@ -10,14 +10,16 @@ const formatCurrency = (value = 0) =>
 export default function QuotationPanel({
   baseBike,
   selectedParts = [],
+  ownsBike = false,
   quote = null,
   onGeneratePDF,
 }) {
   const partsSubtotal =
     quote?.line_items?.reduce((sum, item) => sum + (item.price || 0), 0) ||
     selectedParts.reduce((sum, part) => sum + (part.price || 0), 0);
-  const basePrice = baseBike?.base_price || 0;
-  const grandTotal = quote?.total_price || basePrice + partsSubtotal;
+  const catalogBasePrice = baseBike?.base_price || 0;
+  const basePrice = ownsBike ? 0 : catalogBasePrice;
+  const grandTotal = basePrice + partsSubtotal;
 
   return (
     <div className="rounded-3xl border border-zinc-800 bg-zinc-950/80 p-5">
@@ -48,8 +50,8 @@ export default function QuotationPanel({
 
       <div className="mt-6 space-y-3 border-t border-zinc-800 pt-4 text-sm">
         <div className="flex items-center justify-between text-zinc-400">
-          <span>Base Bike Price</span>
-          <span>{formatCurrency(basePrice)}</span>
+          <span>{ownsBike ? "Owned Bike Credit" : "Base Bike Price"}</span>
+          <span>{ownsBike ? "Included by owner" : formatCurrency(basePrice)}</span>
         </div>
         <div className="flex items-center justify-between text-zinc-400">
           <span>Parts Subtotal</span>
