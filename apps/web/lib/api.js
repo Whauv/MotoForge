@@ -11,7 +11,11 @@ api.interceptors.request.use(
   (config) => {
     if (process.env.NODE_ENV === "development") {
       // Keep request logging lightweight and easy to scan in local dev.
-      console.log("[MotoForge API]", config.method?.toUpperCase(), config.baseURL ? `${config.baseURL}${config.url}` : config.url);
+      console.log(
+        "[MotoForge API]",
+        config.method?.toUpperCase(),
+        config.baseURL ? `${config.baseURL}${config.url}` : config.url,
+      );
     }
     return config;
   },

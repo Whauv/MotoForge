@@ -12,10 +12,16 @@ const formatCurrency = (value = 0) =>
 
 const buildId = () => Math.random().toString(16).slice(2, 8).toUpperCase();
 
-export function generateQuotePDF(bike, selectedParts = [], quote = null) {
+export function generateQuotePDF(
+  bike,
+  selectedParts = [],
+  quote = null,
+  options = {},
+) {
   const doc = new jsPDF();
   const now = new Date();
-  const basePrice = bike?.base_price || 0;
+  const ownsBike = Boolean(options.ownsBike);
+  const basePrice = ownsBike ? 0 : bike?.base_price || 0;
   const lineItems = quote?.line_items?.length
     ? quote.line_items
     : selectedParts.map((part) => ({
@@ -26,7 +32,7 @@ export function generateQuotePDF(bike, selectedParts = [], quote = null) {
         price: part.price || 0,
       }));
   const partsTotal = lineItems.reduce((sum, item) => sum + (item.price || 0), 0);
-  const grandTotal = quote?.total_price || basePrice + partsTotal;
+  const grandTotal = basePrice + partsTotal;
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
@@ -40,13 +46,22 @@ export function generateQuotePDF(bike, selectedParts = [], quote = null) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
   doc.setTextColor(40, 40, 40);
-  doc.text(`Bike Model: ${bike?.brand || ""} ${bike?.name || "Custom Build"}`.trim(), 14, 42);
+  doc.text(
+    `Bike Model: ${bike?.brand || ""} ${bike?.name || "Custom Build"}`.trim(),
+    14,
+    42,
+  );
   doc.text(`Date: ${now.toLocaleDateString("en-IN")}`, 14, 49);
   doc.text(`Build ID: ${buildId()}`, 14, 56);
+  doc.text(
+    `Ownership: ${ownsBike ? "Customer already owns bike" : "Bike included in quote"}`,
+    14,
+    63,
+  );
 
   autoTable(doc, {
-    startY: 66,
-    head: [["Part Name", "Category", "Weight Change", "HP Change", "Price (₹)"]],
+    startY: 73,
+    head: [["Part Name", "Category", "Weight Change", "HP Change", "Price (INR)"]],
     body: lineItems.map((item) => [
       item.name,
       item.category,
@@ -70,7 +85,13 @@ export function generateQuotePDF(bike, selectedParts = [], quote = null) {
   const summaryY = doc.lastAutoTable.finalY + 14;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
-  doc.text(`Base Price: ${formatCurrency(basePrice)}`, 14, summaryY);
+  doc.text(
+    `${ownsBike ? "Owned Bike Credit" : "Base Price"}: ${
+      ownsBike ? "Included by owner" : formatCurrency(basePrice)
+    }`,
+    14,
+    summaryY,
+  );
   doc.text(`Parts Total: ${formatCurrency(partsTotal)}`, 14, summaryY + 8);
 
   doc.setFont("helvetica", "bold");
