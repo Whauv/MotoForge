@@ -76,12 +76,10 @@ jobs:
           cache-dependency-path: apps/web/package.json
 
       - name: Install web dependencies
-        run: |
-          npm install
-          npm install --no-save eslint eslint-config-next
+        run: npm install
 
       - name: Run eslint
-        run: npx next lint --no-cache
+        run: npm run lint -- --no-cache
 
   build-web:
     runs-on: ubuntu-latest

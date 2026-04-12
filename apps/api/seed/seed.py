@@ -9,10 +9,10 @@ API_ROOT = Path(__file__).resolve().parents[1]
 if str(API_ROOT) not in sys.path:
     sys.path.insert(0, str(API_ROOT))
 
-from app.database import Base, SessionLocal, engine
-from app.models.compatibility import Compatibility
-from app.models.mod_part import ModPart, ModPartCategory
-from app.models.motorcycle import Motorcycle
+from app.database import Base, SessionLocal, engine  # noqa: E402
+from app.models.compatibility import Compatibility  # noqa: E402
+from app.models.mod_part import ModPart, ModPartCategory  # noqa: E402
+from app.models.motorcycle import Motorcycle  # noqa: E402
 
 
 BENELLI_MODEL_URL = "https://cdn.motoforge.local/models/benelli-502c.glb"
@@ -50,7 +50,10 @@ def seed() -> None:
                 "price": 18000,
                 "weight_delta": -3.2,
                 "hp_delta": 6.5,
-                "description": "Free-flow slip-on exhaust tuned for stronger mid-range response and a deeper note.",
+                "description": (
+                    "Free-flow slip-on exhaust tuned for stronger "
+                    "mid-range response and a deeper note."
+                ),
                 "model_url": f"{PART_MODEL_BASE_URL}/gpr-deeptone-exhaust.glb",
             },
             {
@@ -59,7 +62,10 @@ def seed() -> None:
                 "price": 32000,
                 "weight_delta": -0.8,
                 "hp_delta": 0.0,
-                "description": "Adjustable premium rear suspension setup for sharper cornering stability and rider feedback.",
+                "description": (
+                    "Adjustable premium rear suspension setup for sharper "
+                    "cornering stability and rider feedback."
+                ),
                 "model_url": f"{PART_MODEL_BASE_URL}/ohlins-rear-shock.glb",
             },
             {
@@ -68,7 +74,10 @@ def seed() -> None:
                 "price": 24000,
                 "weight_delta": -2.1,
                 "hp_delta": 0.0,
-                "description": "Lightweight forged wheel upgrade that trims rotational mass for quicker turn-in.",
+                "description": (
+                    "Lightweight forged wheel upgrade that trims rotational "
+                    "mass for quicker turn-in."
+                ),
                 "model_url": f"{PART_MODEL_BASE_URL}/excel-takasago-wheels.glb",
             },
             {
@@ -77,7 +86,10 @@ def seed() -> None:
                 "price": 15000,
                 "weight_delta": -1.5,
                 "hp_delta": 0.0,
-                "description": "Carbon body kit that reduces weight while giving the Benelli a sharper streetfighter profile.",
+                "description": (
+                    "Carbon body kit that reduces weight while giving the "
+                    "Benelli a sharper streetfighter profile."
+                ),
                 "model_url": f"{PART_MODEL_BASE_URL}/carbon-fairing-kit.glb",
             },
             {
@@ -86,13 +98,18 @@ def seed() -> None:
                 "price": 8500,
                 "weight_delta": -0.3,
                 "hp_delta": 0.0,
-                "description": "Cockpit upgrade with wider leverage, cleaner bar-end mirrors, and improved control feel.",
+                "description": (
+                    "Cockpit upgrade with wider leverage, cleaner bar-end "
+                    "mirrors, and improved control feel."
+                ),
                 "model_url": f"{PART_MODEL_BASE_URL}/rizoma-handlebars-mirrors.glb",
             },
         ]
 
         for part_payload in parts_to_seed:
-            part = db.scalar(select(ModPart).where(ModPart.name == part_payload["name"]))
+            part = db.scalar(
+                select(ModPart).where(ModPart.name == part_payload["name"])
+            )
             if part is None:
                 part = ModPart(**part_payload)
                 db.add(part)

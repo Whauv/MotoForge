@@ -22,7 +22,8 @@ class IncompatiblePart(Exception):
         self.part_ids = part_ids
         joined_ids = ", ".join(str(part_id) for part_id in part_ids)
         super().__init__(
-            f"Part id(s) {joined_ids} are not compatible with motorcycle id {motorcycle_id}."
+            f"Part id(s) {joined_ids} are not compatible with motorcycle id "
+            f"{motorcycle_id}."
         )
 
 
@@ -34,7 +35,10 @@ async def part_not_found_handler(_: Request, exc: PartNotFound) -> JSONResponse:
     return JSONResponse(status_code=404, content={"detail": str(exc)})
 
 
-async def incompatible_part_handler(_: Request, exc: IncompatiblePart) -> JSONResponse:
+async def incompatible_part_handler(
+    _: Request,
+    exc: IncompatiblePart,
+) -> JSONResponse:
     return JSONResponse(status_code=400, content={"detail": str(exc)})
 
 

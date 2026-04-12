@@ -8,7 +8,8 @@ from app.utils.exceptions import BikeNotFound
 
 
 def get_all_motorcycles(db: Session) -> list[Motorcycle]:
-    return list(db.scalars(select(Motorcycle).order_by(Motorcycle.brand, Motorcycle.name)).all())
+    statement = select(Motorcycle).order_by(Motorcycle.brand, Motorcycle.name)
+    return list(db.scalars(statement).all())
 
 
 def get_motorcycle_by_id(db: Session, id: int) -> Motorcycle:

@@ -7,9 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import Base, engine
-from app.models.compatibility import Compatibility
-from app.models.mod_part import ModPart
-from app.models.motorcycle import Motorcycle
+import app.models.compatibility  # noqa: F401
+import app.models.mod_part  # noqa: F401
+import app.models.motorcycle  # noqa: F401
 from app.routers import motorcycles, parts, quotes
 from app.utils.exceptions import register_exception_handlers
 from app.utils.logger import register_request_logging

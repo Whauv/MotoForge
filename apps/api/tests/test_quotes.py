@@ -13,11 +13,11 @@ API_ROOT = Path(__file__).resolve().parents[1]
 if str(API_ROOT) not in sys.path:
     sys.path.insert(0, str(API_ROOT))
 
-from app.database import Base, get_db
-from app.main import app
-from app.models.compatibility import Compatibility
-from app.models.mod_part import ModPart, ModPartCategory
-from app.models.motorcycle import Motorcycle
+from app.database import Base, get_db  # noqa: E402
+from app.main import app  # noqa: E402
+from app.models.compatibility import Compatibility  # noqa: E402
+from app.models.mod_part import ModPart, ModPartCategory  # noqa: E402
+from app.models.motorcycle import Motorcycle  # noqa: E402
 
 
 TEST_DATABASE_URL = "sqlite://"
@@ -26,7 +26,12 @@ engine = create_engine(
     connect_args={"check_same_thread": False},
     poolclass=StaticPool,
 )
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=Session)
+TestingSessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+    class_=Session,
+)
 
 
 def override_get_db():
@@ -86,8 +91,14 @@ def seed_test_data() -> dict[str, int]:
 
         db.add_all(
             [
-                Compatibility(motorcycle_id=motorcycle.id, mod_part_id=compatible_exhaust.id),
-                Compatibility(motorcycle_id=motorcycle.id, mod_part_id=compatible_wheels.id),
+                Compatibility(
+                    motorcycle_id=motorcycle.id,
+                    mod_part_id=compatible_exhaust.id,
+                ),
+                Compatibility(
+                    motorcycle_id=motorcycle.id,
+                    mod_part_id=compatible_wheels.id,
+                ),
             ]
         )
         db.commit()
@@ -104,7 +115,10 @@ def seed_test_data() -> dict[str, int]:
 async def client():
     app.dependency_overrides[get_db] = override_get_db
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://testserver") as async_client:
+    async with AsyncClient(
+        transport=transport,
+        base_url="http://testserver",
+    ) as async_client:
         yield async_client
     app.dependency_overrides.clear()
 
@@ -117,7 +131,10 @@ async def test_valid_quote(client: AsyncClient):
         "/api/quote",
         json={
             "motorcycle_id": ids["motorcycle_id"],
-            "selected_part_ids": [ids["compatible_exhaust_id"], ids["compatible_wheels_id"]],
+            "selected_part_ids": [
+                ids["compatible_exhaust_id"],
+                ids["compatible_wheels_id"],
+            ],
         },
     )
 

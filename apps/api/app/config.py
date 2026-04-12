@@ -8,7 +8,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    database_url: str = Field(default="sqlite:///./motoforge.db", alias="DATABASE_URL")
+    database_url: str = Field(
+        default="sqlite:///./motoforge.db",
+        alias="DATABASE_URL",
+    )
     cors_origins: list[str] = Field(
         default_factory=lambda: ["http://localhost:3000"],
         alias="CORS_ORIGINS",
@@ -34,7 +37,9 @@ class Settings(BaseSettings):
             if stripped.startswith("["):
                 parsed = json.loads(stripped)
                 if not isinstance(parsed, list):
-                    raise ValueError("CORS_ORIGINS must be a JSON array or comma-separated string.")
+                    raise ValueError(
+                        "CORS_ORIGINS must be a JSON array or comma-separated string."
+                    )
                 return [str(item) for item in parsed]
             return [origin.strip() for origin in stripped.split(",") if origin.strip()]
         raise ValueError("Unsupported CORS_ORIGINS format.")
