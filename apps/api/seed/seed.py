@@ -107,7 +107,9 @@ def seed() -> None:
         ]
 
         for part_payload in parts_to_seed:
-            part = db.scalar(select(ModPart).where(ModPart.name == part_payload["name"]))
+            part = db.scalar(
+                select(ModPart).where(ModPart.name == part_payload["name"])
+            )
             if part is None:
                 part = ModPart(**part_payload)
                 db.add(part)

@@ -30,8 +30,8 @@ def register_request_logging(app: FastAPI) -> None:
         response = await call_next(request)
         duration_ms = round((time.perf_counter() - start_time) * 1000, 2)
         logger.info(
-            'event="request_completed" method="%s" path="%s" status_code=%s '
-            'duration_ms=%s',
+            'event="request_completed" '
+            'method="%s" path="%s" status_code=%s duration_ms=%s',
             request.method,
             request.url.path,
             response.status_code,

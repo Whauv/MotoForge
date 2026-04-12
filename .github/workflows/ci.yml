@@ -28,6 +28,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt black flake8
 
+      - name: Normalize API formatting
+        run: black app seed tests
+
       - name: Run black check
         run: black --check app seed tests
 

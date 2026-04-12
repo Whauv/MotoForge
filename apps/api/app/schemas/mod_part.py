@@ -5,13 +5,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict
 
 
-PartCategory = Literal[
-    "exhaust",
-    "suspension",
-    "wheels",
-    "fairings",
-    "handlebars",
-]
+PartCategory = Literal["exhaust", "suspension", "wheels", "fairings", "handlebars"]
 
 
 class ModPartBase(BaseModel):
