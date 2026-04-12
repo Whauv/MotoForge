@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: motoforge-ingress
+  annotations:
+    kubernetes.io/ingress.class: gce
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /api/*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: motoforge-api
+                port:
+                  number: 8000
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: motoforge-web
+                port:
+                  number: 3000
