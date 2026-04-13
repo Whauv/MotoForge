@@ -17,6 +17,19 @@ class Settings(BaseSettings):
         alias="CORS_ORIGINS",
     )
     app_env: str = Field(default="development", alias="APP_ENV")
+    motorcycle_catalog_provider: str = Field(
+        default="local",
+        alias="MOTORCYCLE_CATALOG_PROVIDER",
+    )
+    motormanage_api_key: str = Field(default="", alias="MOTORMANAGE_API_KEY")
+    motormanage_base_url: str = Field(
+        default="https://motorapi.motormanage.app/api/v1",
+        alias="MOTORMANAGE_BASE_URL",
+    )
+    catalog_cache_ttl_seconds: int = Field(
+        default=86400,
+        alias="CATALOG_CACHE_TTL_SECONDS",
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env",

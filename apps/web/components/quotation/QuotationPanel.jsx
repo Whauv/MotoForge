@@ -15,11 +15,11 @@ export default function QuotationPanel({
   onGeneratePDF,
 }) {
   const partsSubtotal =
-    quote?.line_items?.reduce((sum, item) => sum + (item.price || 0), 0) ||
+    quote?.parts_subtotal ??
     selectedParts.reduce((sum, part) => sum + (part.price || 0), 0);
   const catalogBasePrice = baseBike?.base_price || 0;
-  const basePrice = ownsBike ? 0 : catalogBasePrice;
-  const grandTotal = basePrice + partsSubtotal;
+  const basePrice = quote?.base_price_included ?? (ownsBike ? 0 : catalogBasePrice);
+  const grandTotal = quote?.total_price ?? basePrice + partsSubtotal;
 
   return (
     <div className="rounded-3xl border border-zinc-800 bg-zinc-950/80 p-5">

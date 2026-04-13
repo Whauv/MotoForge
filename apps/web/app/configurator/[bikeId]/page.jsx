@@ -3,11 +3,11 @@
 import { useMemo } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 
+import ModSidebar from "../../../components/sidebar/ModSidebar";
+import { generateQuotePDF } from "../../../components/quotation/PDFExport";
 import Navbar from "../../../components/ui/Navbar";
 import Spinner from "../../../components/ui/Spinner";
 import BikeViewer from "../../../components/viewer/BikeViewer";
-import ModSidebar from "../../../components/sidebar/ModSidebar";
-import { generateQuotePDF } from "../../../components/quotation/PDFExport";
 import useBike from "../../../hooks/useBike";
 import useParts from "../../../hooks/useParts";
 import useQuote from "../../../hooks/useQuote";
@@ -21,7 +21,10 @@ export default function ConfiguratorPage() {
 
   const { bike, loading: bikeLoading } = useBike(numericBikeId);
   const { parts, loading: partsLoading } = useParts(numericBikeId);
-  const { selectedParts, togglePart, quote, quoteLoading } = useQuote(numericBikeId);
+  const { selectedParts, togglePart, quote, quoteLoading } = useQuote(
+    numericBikeId,
+    ownsBike,
+  );
 
   const selectedMods = useMemo(
     () =>
@@ -61,7 +64,8 @@ export default function ConfiguratorPage() {
         <div className="max-w-lg rounded-3xl border border-zinc-800 bg-zinc-900/80 p-8">
           <h1 className="text-2xl font-bold text-white">Bike Not Found</h1>
           <p className="mt-3 text-sm text-zinc-400">
-            We couldn&apos;t load this motorcycle configuration. Please return to the home page and try again.
+            We couldn&apos;t load this motorcycle configuration. Please return to
+            the home page and try again.
           </p>
         </div>
       </main>
@@ -71,13 +75,13 @@ export default function ConfiguratorPage() {
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <Navbar
-        bikeName={`${bike.brand} ${bike.name} · ${bike.year}`}
+        bikeName={`${bike.brand} ${bike.name} - ${bike.year}`}
         onSaveBuild={handleSaveBuild}
       />
 
       <div className="flex min-h-[calc(100vh-73px)] flex-col xl:flex-row">
         <section className="flex w-full items-center justify-center px-6 py-6 xl:w-[70%]">
-          <div className="gradient-border w-full max-w-6xl rounded-[34px] p-[2px]">
+          <div className="w-full max-w-6xl rounded-[34px] border border-zinc-800 bg-zinc-900 p-[2px] shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
             <div className="rounded-[32px] bg-zinc-950/95 p-4">
               <BikeViewer bikeModelUrl={bike.model_url} selectedMods={selectedMods} />
               <div className="mt-4 flex items-center justify-between gap-4">

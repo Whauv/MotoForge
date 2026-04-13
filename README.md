@@ -372,6 +372,10 @@ npx turbo run test
 - SQLite is used for MVP simplicity. For production, move to Cloud SQL or another managed relational database.
 - The quote flow is backend-driven, so compatibility and pricing rules stay authoritative.
 - GLTF and GLB model paths are expected to come from the backend catalog.
+- Real asset drop-in targets now live under `apps/web/public/models/` with a
+  concrete manifest at `apps/web/public/models/asset-manifest.json`.
+- Keep the current placeholder URLs in the seed data until the matching `.glb`
+  assets have been added locally and validated in the viewer.
 - Local `.env.local`, database files, and generated caches should not be committed.
 
 ## Contributing

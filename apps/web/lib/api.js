@@ -41,14 +41,32 @@ export function fetchMotorcycle(id) {
   return api.get(`/api/motorcycles/${id}`);
 }
 
+export function fetchCatalogBrands() {
+  return api.get("/api/catalog/brands");
+}
+
+export function fetchCatalogModels(brandName, brandId) {
+  return api.get("/api/catalog/models", {
+    params: {
+      brand_name: brandName,
+      brand_id: brandId || undefined,
+    },
+  });
+}
+
+export function importCatalogMotorcycle(payload) {
+  return api.post("/api/catalog/import", payload);
+}
+
 export function fetchParts(bikeId) {
   return api.get(`/api/motorcycles/${bikeId}/parts`);
 }
 
-export function postQuote(motorcycleId, selectedPartIds) {
+export function postQuote(motorcycleId, selectedPartIds, ownsBike = false) {
   return api.post("/api/quote", {
     motorcycle_id: motorcycleId,
     selected_part_ids: selectedPartIds,
+    owns_bike: ownsBike,
   });
 }
 

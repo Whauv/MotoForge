@@ -1,0 +1,271 @@
+{
+  "version": 1,
+  "notes": [
+    "These are the target local asset URLs for the currently imported MotoForge catalog.",
+    "Drop matching .glb files into apps/web/public/models before switching backend seed URLs."
+  ],
+  "bikes": [
+    {
+      "slug": "yamaha-mt07-2023",
+      "brand": "Yamaha",
+      "name": "MT-07",
+      "year": 2023,
+      "target_url": "/models/bikes/yamaha-mt07-2023.glb",
+      "file_path": "apps/web/public/models/bikes/yamaha-mt07-2023.glb"
+    },
+    {
+      "slug": "kawasaki-ninja650-2024",
+      "brand": "Kawasaki",
+      "name": "Ninja 650",
+      "year": 2024,
+      "target_url": "/models/bikes/kawasaki-ninja650-2024.glb",
+      "file_path": "apps/web/public/models/bikes/kawasaki-ninja650-2024.glb"
+    },
+    {
+      "slug": "honda-cb650r-2022",
+      "brand": "Honda",
+      "name": "CB650R",
+      "year": 2022,
+      "target_url": "/models/bikes/honda-cb650r-2022.glb",
+      "file_path": "apps/web/public/models/bikes/honda-cb650r-2022.glb"
+    },
+    {
+      "slug": "ktm-duke390-2024",
+      "brand": "KTM",
+      "name": "390 Duke",
+      "year": 2024,
+      "target_url": "/models/bikes/ktm-duke390-2024.glb",
+      "file_path": "apps/web/public/models/bikes/ktm-duke390-2024.glb"
+    },
+    {
+      "slug": "royalenfield-interceptor650-2023",
+      "brand": "Royal Enfield",
+      "name": "Interceptor 650",
+      "year": 2023,
+      "target_url": "/models/bikes/royalenfield-interceptor650-2023.glb",
+      "file_path": "apps/web/public/models/bikes/royalenfield-interceptor650-2023.glb"
+    },
+    {
+      "slug": "ducati-monster937-2023",
+      "brand": "Ducati",
+      "name": "Monster",
+      "year": 2023,
+      "target_url": "/models/bikes/ducati-monster937-2023.glb",
+      "file_path": "apps/web/public/models/bikes/ducati-monster937-2023.glb"
+    },
+    {
+      "slug": "triumph-streettriple-rs-2024",
+      "brand": "Triumph",
+      "name": "Street Triple RS",
+      "year": 2024,
+      "target_url": "/models/bikes/triumph-streettriple-rs-2024.glb",
+      "file_path": "apps/web/public/models/bikes/triumph-streettriple-rs-2024.glb"
+    },
+    {
+      "slug": "suzuki-hayabusa-2023",
+      "brand": "Suzuki",
+      "name": "Hayabusa",
+      "year": 2023,
+      "target_url": "/models/bikes/suzuki-hayabusa-2023.glb",
+      "file_path": "apps/web/public/models/bikes/suzuki-hayabusa-2023.glb"
+    },
+    {
+      "slug": "bmw-rninet-2022",
+      "brand": "BMW",
+      "name": "R nineT",
+      "year": 2022,
+      "target_url": "/models/bikes/bmw-rninet-2022.glb",
+      "file_path": "apps/web/public/models/bikes/bmw-rninet-2022.glb"
+    },
+    {
+      "slug": "harley-iron883-2020",
+      "brand": "Harley-Davidson",
+      "name": "Iron 883",
+      "year": 2020,
+      "target_url": "/models/bikes/harley-iron883-2020.glb",
+      "file_path": "apps/web/public/models/bikes/harley-iron883-2020.glb"
+    }
+  ],
+  "parts": [
+    {
+      "name": "Akrapovic Racing Line Exhaust",
+      "category": "exhaust",
+      "target_url": "/models/parts/akrapovic-racing-line.glb",
+      "file_path": "apps/web/public/models/parts/akrapovic-racing-line.glb"
+    },
+    {
+      "name": "SC-Project S1 Slip-On",
+      "category": "exhaust",
+      "target_url": "/models/parts/sc-project-s1.glb",
+      "file_path": "apps/web/public/models/parts/sc-project-s1.glb"
+    },
+    {
+      "name": "Yoshimura AT2 Full System",
+      "category": "exhaust",
+      "target_url": "/models/parts/yoshimura-at2.glb",
+      "file_path": "apps/web/public/models/parts/yoshimura-at2.glb"
+    },
+    {
+      "name": "Vance & Hines Twin Slash",
+      "category": "exhaust",
+      "target_url": "/models/parts/vance-hines-twin-slash.glb",
+      "file_path": "apps/web/public/models/parts/vance-hines-twin-slash.glb"
+    },
+    {
+      "name": "S&S Grand National Slip-On",
+      "category": "exhaust",
+      "target_url": "/models/parts/ss-grand-national.glb",
+      "file_path": "apps/web/public/models/parts/ss-grand-national.glb"
+    },
+    {
+      "name": "Arrow Pro-Race Exhaust",
+      "category": "exhaust",
+      "target_url": "/models/parts/arrow-prorace.glb",
+      "file_path": "apps/web/public/models/parts/arrow-prorace.glb"
+    },
+    {
+      "name": "Ohlins STX 46 Rear Shock",
+      "category": "suspension",
+      "target_url": "/models/parts/ohlins-stx46.glb",
+      "file_path": "apps/web/public/models/parts/ohlins-stx46.glb"
+    },
+    {
+      "name": "YSS Adjustable Mono Shock",
+      "category": "suspension",
+      "target_url": "/models/parts/yss-adjustable-shock.glb",
+      "file_path": "apps/web/public/models/parts/yss-adjustable-shock.glb"
+    },
+    {
+      "name": "Hyperpro Streetbox Kit",
+      "category": "suspension",
+      "target_url": "/models/parts/hyperpro-streetbox.glb",
+      "file_path": "apps/web/public/models/parts/hyperpro-streetbox.glb"
+    },
+    {
+      "name": "Progressive 444 Cruiser Shocks",
+      "category": "suspension",
+      "target_url": "/models/parts/progressive-444.glb",
+      "file_path": "apps/web/public/models/parts/progressive-444.glb"
+    },
+    {
+      "name": "Wilbers Twin Shock Set",
+      "category": "suspension",
+      "target_url": "/models/parts/wilbers-twin-shock.glb",
+      "file_path": "apps/web/public/models/parts/wilbers-twin-shock.glb"
+    },
+    {
+      "name": "K-Tech Razor-R Lite",
+      "category": "suspension",
+      "target_url": "/models/parts/ktech-razor-r-lite.glb",
+      "file_path": "apps/web/public/models/parts/ktech-razor-r-lite.glb"
+    },
+    {
+      "name": "Marchesini Forged Wheels",
+      "category": "wheels",
+      "target_url": "/models/parts/marchesini-forged-wheels.glb",
+      "file_path": "apps/web/public/models/parts/marchesini-forged-wheels.glb"
+    },
+    {
+      "name": "OZ Gass RS-A Wheels",
+      "category": "wheels",
+      "target_url": "/models/parts/oz-gass-rsa.glb",
+      "file_path": "apps/web/public/models/parts/oz-gass-rsa.glb"
+    },
+    {
+      "name": "BST Carbon Wheel Set",
+      "category": "wheels",
+      "target_url": "/models/parts/bst-carbon-wheels.glb",
+      "file_path": "apps/web/public/models/parts/bst-carbon-wheels.glb"
+    },
+    {
+      "name": "Roland Sands Tracker Wheels",
+      "category": "wheels",
+      "target_url": "/models/parts/roland-sands-tracker.glb",
+      "file_path": "apps/web/public/models/parts/roland-sands-tracker.glb"
+    },
+    {
+      "name": "Excel Takasago Spoke Wheels",
+      "category": "wheels",
+      "target_url": "/models/parts/excel-takasago-spoke.glb",
+      "file_path": "apps/web/public/models/parts/excel-takasago-spoke.glb"
+    },
+    {
+      "name": "Rotobox Boost Carbon Wheels",
+      "category": "wheels",
+      "target_url": "/models/parts/rotobox-boost.glb",
+      "file_path": "apps/web/public/models/parts/rotobox-boost.glb"
+    },
+    {
+      "name": "Puig Naked New Generation Screen",
+      "category": "fairings",
+      "target_url": "/models/parts/puig-naked-screen.glb",
+      "file_path": "apps/web/public/models/parts/puig-naked-screen.glb"
+    },
+    {
+      "name": "Carbon Belly Pan Kit",
+      "category": "fairings",
+      "target_url": "/models/parts/carbon-belly-pan.glb",
+      "file_path": "apps/web/public/models/parts/carbon-belly-pan.glb"
+    },
+    {
+      "name": "Race Upper Fairing Conversion",
+      "category": "fairings",
+      "target_url": "/models/parts/race-upper-fairing.glb",
+      "file_path": "apps/web/public/models/parts/race-upper-fairing.glb"
+    },
+    {
+      "name": "Quarter Fairing Retro Kit",
+      "category": "fairings",
+      "target_url": "/models/parts/quarter-fairing-retro.glb",
+      "file_path": "apps/web/public/models/parts/quarter-fairing-retro.glb"
+    },
+    {
+      "name": "Batwing Touring Fairing",
+      "category": "fairings",
+      "target_url": "/models/parts/batwing-touring-fairing.glb",
+      "file_path": "apps/web/public/models/parts/batwing-touring-fairing.glb"
+    },
+    {
+      "name": "Minimalist Headlight Cowl",
+      "category": "fairings",
+      "target_url": "/models/parts/minimalist-headlight-cowl.glb",
+      "file_path": "apps/web/public/models/parts/minimalist-headlight-cowl.glb"
+    },
+    {
+      "name": "Rizoma Drag Bar Kit",
+      "category": "handlebars",
+      "target_url": "/models/parts/rizoma-drag-bar.glb",
+      "file_path": "apps/web/public/models/parts/rizoma-drag-bar.glb"
+    },
+    {
+      "name": "Renthal Street Low Bar",
+      "category": "handlebars",
+      "target_url": "/models/parts/renthal-street-low.glb",
+      "file_path": "apps/web/public/models/parts/renthal-street-low.glb"
+    },
+    {
+      "name": "Woodcraft Clip-On Set",
+      "category": "handlebars",
+      "target_url": "/models/parts/woodcraft-clipons.glb",
+      "file_path": "apps/web/public/models/parts/woodcraft-clipons.glb"
+    },
+    {
+      "name": "Tracker Bar Conversion",
+      "category": "handlebars",
+      "target_url": "/models/parts/tracker-bar-conversion.glb",
+      "file_path": "apps/web/public/models/parts/tracker-bar-conversion.glb"
+    },
+    {
+      "name": "Ape Hanger Mini Set",
+      "category": "handlebars",
+      "target_url": "/models/parts/apehanger-mini.glb",
+      "file_path": "apps/web/public/models/parts/apehanger-mini.glb"
+    },
+    {
+      "name": "Rizoma Bar End Mirrors + Handlebars",
+      "category": "handlebars",
+      "target_url": "/models/parts/rizoma-handlebars-mirrors.glb",
+      "file_path": "apps/web/public/models/parts/rizoma-handlebars-mirrors.glb"
+    }
+  ]
+}

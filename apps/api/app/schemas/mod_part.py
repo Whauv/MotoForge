@@ -16,6 +16,10 @@ class ModPartBase(BaseModel):
     hp_delta: float
     description: str
     model_url: str
+    supported_segments: str = ""
+    brand: str | None = None
+    sku: str | None = None
+    asset_status: str = "placeholder"
 
 
 class ModPartCreate(ModPartBase):

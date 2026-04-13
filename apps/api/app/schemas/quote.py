@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class QuoteRequest(BaseModel):
     motorcycle_id: int
     selected_part_ids: list[int]
+    owns_bike: bool = False
 
 
 class LineItem(BaseModel):
@@ -18,6 +19,8 @@ class LineItem(BaseModel):
 
 class QuoteResponse(BaseModel):
     total_price: float
+    base_price_included: float
+    parts_subtotal: float
     new_hp: float
     new_weight_kg: float
     hp_gain: float
