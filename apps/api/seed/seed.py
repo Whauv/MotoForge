@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
-from sqlalchemy import select
+from sqlalchemy import inspect, select, text
 
 API_ROOT = Path(__file__).resolve().parents[1]
 if str(API_ROOT) not in sys.path:
@@ -15,7 +16,81 @@ from app.models.mod_part import ModPart, ModPartCategory  # noqa: E402
 from app.models.motorcycle import Motorcycle  # noqa: E402
 
 
-PART_MODEL_BASE_URL = "https://cdn.motoforge.local/models/parts"
+USE_LOCAL_MODEL_ASSETS = os.getenv("USE_LOCAL_MODEL_ASSETS", "false").lower() == "true"
+REMOTE_BIKE_MODEL_BASE_URL = "https://cdn.motoforge.local/models"
+REMOTE_PART_MODEL_BASE_URL = "https://cdn.motoforge.local/models/parts"
+LOCAL_BIKE_MODEL_BASE_URL = "/models/bikes"
+LOCAL_PART_MODEL_BASE_URL = "/models/parts"
+
+
+def bike_model_url(filename: str) -> str:
+    if USE_LOCAL_MODEL_ASSETS:
+        return f"{LOCAL_BIKE_MODEL_BASE_URL}/{filename}"
+    return f"{REMOTE_BIKE_MODEL_BASE_URL}/{filename}"
+
+
+def part_model_url(filename: str) -> str:
+    if USE_LOCAL_MODEL_ASSETS:
+        return f"{LOCAL_PART_MODEL_BASE_URL}/{filename}"
+    return f"{REMOTE_PART_MODEL_BASE_URL}/{filename}"
+
+
+def ensure_sqlite_mvp_columns() -> None:
+    if engine.dialect.name != "sqlite":
+        return
+
+    inspector = inspect(engine)
+    existing_tables = set(inspector.get_table_names())
+    if "motorcycles" not in existing_tables or "mod_parts" not in existing_tables:
+        return
+
+    motorcycle_columns = {
+        column["name"] for column in inspector.get_columns("motorcycles")
+    }
+    mod_part_columns = {
+        column["name"] for column in inspector.get_columns("mod_parts")
+    }
+
+    statements = []
+    if "segment" not in motorcycle_columns:
+        statements.append(
+            "ALTER TABLE motorcycles ADD COLUMN segment VARCHAR(80) "
+            "NOT NULL DEFAULT 'naked'"
+        )
+    if "source_provider" not in motorcycle_columns:
+        statements.append(
+            "ALTER TABLE motorcycles ADD COLUMN source_provider VARCHAR(120) "
+            "NOT NULL DEFAULT 'seed'"
+        )
+    if "source_id" not in motorcycle_columns:
+        statements.append("ALTER TABLE motorcycles ADD COLUMN source_id VARCHAR(160)")
+    if "asset_status" not in motorcycle_columns:
+        statements.append(
+            "ALTER TABLE motorcycles ADD COLUMN asset_status VARCHAR(80) "
+            "NOT NULL DEFAULT 'placeholder'"
+        )
+    if "supported_segments" not in mod_part_columns:
+        statements.append(
+            "ALTER TABLE mod_parts ADD COLUMN supported_segments VARCHAR(240) "
+            "NOT NULL DEFAULT ''"
+        )
+    if "brand" not in mod_part_columns:
+        statements.append("ALTER TABLE mod_parts ADD COLUMN brand VARCHAR(120)")
+    if "sku" not in mod_part_columns:
+        statements.append("ALTER TABLE mod_parts ADD COLUMN sku VARCHAR(120)")
+    if "asset_status" not in mod_part_columns:
+        statements.append(
+            "ALTER TABLE mod_parts ADD COLUMN asset_status VARCHAR(80) "
+            "NOT NULL DEFAULT 'placeholder'"
+        )
+
+    if not statements:
+        return
+
+    with engine.begin() as connection:
+        for statement in statements:
+            connection.execute(text(statement))
+
 
 MOTORCYCLES = [
     {
@@ -26,7 +101,7 @@ MOTORCYCLES = [
         "base_price": 759000,
         "base_weight_kg": 184.0,
         "base_hp": 73.4,
-        "model_url": "https://cdn.motoforge.local/models/yamaha-mt07-2023.glb",
+        "model_url": bike_model_url("yamaha-mt07-2023.glb"),
         "segment": "naked",
     },
     {
@@ -37,7 +112,7 @@ MOTORCYCLES = [
         "base_price": 799000,
         "base_weight_kg": 196.0,
         "base_hp": 67.3,
-        "model_url": "https://cdn.motoforge.local/models/kawasaki-ninja650-2024.glb",
+        "model_url": bike_model_url("kawasaki-ninja650-2024.glb"),
         "segment": "sport",
     },
     {
@@ -48,7 +123,7 @@ MOTORCYCLES = [
         "base_price": 915000,
         "base_weight_kg": 202.0,
         "base_hp": 94.0,
-        "model_url": "https://cdn.motoforge.local/models/honda-cb650r-2022.glb",
+        "model_url": bike_model_url("honda-cb650r-2022.glb"),
         "segment": "naked",
     },
     {
@@ -59,7 +134,7 @@ MOTORCYCLES = [
         "base_price": 311000,
         "base_weight_kg": 168.0,
         "base_hp": 45.0,
-        "model_url": "https://cdn.motoforge.local/models/ktm-duke390-2024.glb",
+        "model_url": bike_model_url("ktm-duke390-2024.glb"),
         "segment": "naked",
     },
     {
@@ -70,7 +145,7 @@ MOTORCYCLES = [
         "base_price": 349000,
         "base_weight_kg": 218.0,
         "base_hp": 47.0,
-        "model_url": "https://cdn.motoforge.local/models/interceptor650-2023.glb",
+        "model_url": bike_model_url("royalenfield-interceptor650-2023.glb"),
         "segment": "retro",
     },
     {
@@ -81,7 +156,7 @@ MOTORCYCLES = [
         "base_price": 1245000,
         "base_weight_kg": 188.0,
         "base_hp": 111.0,
-        "model_url": "https://cdn.motoforge.local/models/ducati-monster-2023.glb",
+        "model_url": bike_model_url("ducati-monster937-2023.glb"),
         "segment": "naked",
     },
     {
@@ -92,7 +167,7 @@ MOTORCYCLES = [
         "base_price": 1175000,
         "base_weight_kg": 188.0,
         "base_hp": 128.0,
-        "model_url": "https://cdn.motoforge.local/models/streettriple-rs-2024.glb",
+        "model_url": bike_model_url("triumph-streettriple-rs-2024.glb"),
         "segment": "naked",
     },
     {
@@ -103,7 +178,7 @@ MOTORCYCLES = [
         "base_price": 1649000,
         "base_weight_kg": 264.0,
         "base_hp": 187.0,
-        "model_url": "https://cdn.motoforge.local/models/hayabusa-2023.glb",
+        "model_url": bike_model_url("suzuki-hayabusa-2023.glb"),
         "segment": "sport",
     },
     {
@@ -114,7 +189,7 @@ MOTORCYCLES = [
         "base_price": 1899000,
         "base_weight_kg": 221.0,
         "base_hp": 109.0,
-        "model_url": "https://cdn.motoforge.local/models/bmw-rninet-2022.glb",
+        "model_url": bike_model_url("bmw-rninet-2022.glb"),
         "segment": "retro",
     },
     {
@@ -125,7 +200,7 @@ MOTORCYCLES = [
         "base_price": 940000,
         "base_weight_kg": 256.0,
         "base_hp": 49.0,
-        "model_url": "https://cdn.motoforge.local/models/harley-iron883-2020.glb",
+        "model_url": bike_model_url("harley-iron883-2020.glb"),
         "segment": "cruiser",
     },
 ]
@@ -141,7 +216,7 @@ MOD_PARTS = [
             "Titanium exhaust system with sharper throttle response "
             "and premium finish."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/akrapovic-racing-line.glb",
+        "model_url": part_model_url("akrapovic-racing-line.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -154,7 +229,7 @@ MOD_PARTS = [
             "Compact race-inspired slip-on for aggressive sound "
             "and lighter rear mass."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/sc-project-s1.glb",
+        "model_url": part_model_url("sc-project-s1.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -167,7 +242,7 @@ MOD_PARTS = [
             "Street-legal full system built for broad torque gains "
             "and faster rev pickup."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/yoshimura-at2.glb",
+        "model_url": part_model_url("yoshimura-at2.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -180,7 +255,7 @@ MOD_PARTS = [
             "Classic twin-pipe cruiser exhaust with deeper tone "
             "and cleaner side profile."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/vance-hines-twin-slash.glb",
+        "model_url": part_model_url("vance-hines-twin-slash.glb"),
         "segments": ["cruiser"],
     },
     {
@@ -193,7 +268,7 @@ MOD_PARTS = [
             "Torque-focused exhaust upgrade tailored for modern retro "
             "and cruiser builds."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/ss-grand-national.glb",
+        "model_url": part_model_url("ss-grand-national.glb"),
         "segments": ["retro", "cruiser"],
     },
     {
@@ -206,7 +281,7 @@ MOD_PARTS = [
             "Lean race canister built for middleweight machines "
             "and everyday rideability."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/arrow-prorace.glb",
+        "model_url": part_model_url("arrow-prorace.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -219,7 +294,7 @@ MOD_PARTS = [
             "Premium monotube rear shock for sharper damping control "
             "on fast roads."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/ohlins-stx46.glb",
+        "model_url": part_model_url("ohlins-stx46.glb"),
         "segments": ["sport", "naked", "retro"],
     },
     {
@@ -232,7 +307,7 @@ MOD_PARTS = [
             "Balanced value suspension upgrade for riders tuning comfort "
             "and cornering."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/yss-adjustable-shock.glb",
+        "model_url": part_model_url("yss-adjustable-shock.glb"),
         "segments": ["sport", "naked", "retro"],
     },
     {
@@ -245,7 +320,7 @@ MOD_PARTS = [
             "Front and rear street setup improving compliance, "
             "balance, and confidence."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/hyperpro-streetbox.glb",
+        "model_url": part_model_url("hyperpro-streetbox.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -258,7 +333,7 @@ MOD_PARTS = [
             "Cruiser rear shock pair improving ride quality on broken "
             "roads and highways."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/progressive-444.glb",
+        "model_url": part_model_url("progressive-444.glb"),
         "segments": ["cruiser"],
     },
     {
@@ -271,7 +346,7 @@ MOD_PARTS = [
             "Refined twin-shock retro setup for classic bikes with "
             "modern damping feel."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/wilbers-twin-shock.glb",
+        "model_url": part_model_url("wilbers-twin-shock.glb"),
         "segments": ["retro"],
     },
     {
@@ -284,7 +359,7 @@ MOD_PARTS = [
             "Track-leaning rear shock for riders who push their street "
             "bikes hard."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/ktech-razor-r-lite.glb",
+        "model_url": part_model_url("ktech-razor-r-lite.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -297,7 +372,7 @@ MOD_PARTS = [
             "Forged alloy wheelset reducing unsprung mass for faster "
             "turn-in and drive."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/marchesini-forged-wheels.glb",
+        "model_url": part_model_url("marchesini-forged-wheels.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -310,7 +385,7 @@ MOD_PARTS = [
             "Lightweight performance wheels with strong braking "
             "and transition benefits."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/oz-gass-rsa.glb",
+        "model_url": part_model_url("oz-gass-rsa.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -323,7 +398,7 @@ MOD_PARTS = [
             "Carbon wheel upgrade for flagship performance builds "
             "chasing instant response."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/bst-carbon-wheels.glb",
+        "model_url": part_model_url("bst-carbon-wheels.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -336,7 +411,7 @@ MOD_PARTS = [
             "Custom wheel package for retro and cruiser builds "
             "with workshop character."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/roland-sands-tracker.glb",
+        "model_url": part_model_url("roland-sands-tracker.glb"),
         "segments": ["retro", "cruiser"],
     },
     {
@@ -349,7 +424,7 @@ MOD_PARTS = [
             "Strong lightweight spoked wheel set suited to retro "
             "roadster conversions."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/excel-takasago-spoke.glb",
+        "model_url": part_model_url("excel-takasago-spoke.glb"),
         "segments": ["retro"],
     },
     {
@@ -362,7 +437,7 @@ MOD_PARTS = [
             "Premium carbon wheel package for high-end naked "
             "and sport builds."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/rotobox-boost.glb",
+        "model_url": part_model_url("rotobox-boost.glb"),
         "segments": ["sport", "naked"],
     },
     {
@@ -375,7 +450,7 @@ MOD_PARTS = [
             "Compact flyscreen that improves wind management "
             "without hiding the bike shape."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/puig-naked-screen.glb",
+        "model_url": part_model_url("puig-naked-screen.glb"),
         "segments": ["naked"],
     },
     {
@@ -388,7 +463,7 @@ MOD_PARTS = [
             "Lightweight lower fairing accent that sharpens the side "
             "profile and stance."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/carbon-belly-pan.glb",
+        "model_url": part_model_url("carbon-belly-pan.glb"),
         "segments": ["naked", "sport"],
     },
     {
@@ -401,7 +476,7 @@ MOD_PARTS = [
             "Track-inspired fairing conversion with a tucked silhouette "
             "and cleaner front."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/race-upper-fairing.glb",
+        "model_url": part_model_url("race-upper-fairing.glb"),
         "segments": ["sport"],
     },
     {
@@ -414,7 +489,7 @@ MOD_PARTS = [
             "Cafe-inspired quarter fairing that transforms modern retro "
             "bikes visually."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/quarter-fairing-retro.glb",
+        "model_url": part_model_url("quarter-fairing-retro.glb"),
         "segments": ["retro"],
     },
     {
@@ -427,7 +502,7 @@ MOD_PARTS = [
             "Bold cruiser fairing setup improving presence and highway "
             "wind protection."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/batwing-touring-fairing.glb",
+        "model_url": part_model_url("batwing-touring-fairing.glb"),
         "segments": ["cruiser"],
     },
     {
@@ -440,7 +515,7 @@ MOD_PARTS = [
             "Small headlight cowl for a cleaner front end and subtle "
             "custom presence."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/minimalist-headlight-cowl.glb",
+        "model_url": part_model_url("minimalist-headlight-cowl.glb"),
         "segments": ["naked", "retro"],
     },
     {
@@ -453,7 +528,7 @@ MOD_PARTS = [
             "Low drag-bar setup with premium finish and sharper "
             "steering feel."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/rizoma-drag-bar.glb",
+        "model_url": part_model_url("rizoma-drag-bar.glb"),
         "segments": ["naked", "sport"],
     },
     {
@@ -466,7 +541,7 @@ MOD_PARTS = [
             "Street-friendly low bar upgrade for improved control "
             "and reduced reach."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/renthal-street-low.glb",
+        "model_url": part_model_url("renthal-street-low.glb"),
         "segments": ["naked", "retro"],
     },
     {
@@ -479,7 +554,7 @@ MOD_PARTS = [
             "Performance clip-ons for a more aggressive riding triangle "
             "on sport builds."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/woodcraft-clipons.glb",
+        "model_url": part_model_url("woodcraft-clipons.glb"),
         "segments": ["sport"],
     },
     {
@@ -492,7 +567,7 @@ MOD_PARTS = [
             "Wide tracker-style bar ideal for custom retros "
             "and urban builds."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/tracker-bar-conversion.glb",
+        "model_url": part_model_url("tracker-bar-conversion.glb"),
         "segments": ["retro"],
     },
     {
@@ -505,7 +580,7 @@ MOD_PARTS = [
             "Mini ape setup for cruisers wanting a taller custom "
             "cockpit silhouette."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/apehanger-mini.glb",
+        "model_url": part_model_url("apehanger-mini.glb"),
         "segments": ["cruiser"],
     },
     {
@@ -518,7 +593,7 @@ MOD_PARTS = [
             "Cockpit upgrade with wider leverage, cleaner bar-end "
             "mirrors, and improved control feel."
         ),
-        "model_url": f"{PART_MODEL_BASE_URL}/rizoma-handlebars-mirrors.glb",
+        "model_url": part_model_url("rizoma-handlebars-mirrors.glb"),
         "segments": ["naked", "sport", "retro"],
     },
 ]
@@ -541,9 +616,19 @@ def upsert_motorcycle(db, motorcycle_payload):
             base_weight_kg=motorcycle_payload["base_weight_kg"],
             base_hp=motorcycle_payload["base_hp"],
             model_url=motorcycle_payload["model_url"],
+            segment=motorcycle_payload["segment"],
+            source_provider="seed",
+            source_id=motorcycle_payload["slug"],
+            asset_status="local" if USE_LOCAL_MODEL_ASSETS else "placeholder",
         )
         db.add(motorcycle)
         db.flush()
+    else:
+        motorcycle.model_url = motorcycle_payload["model_url"]
+        motorcycle.segment = motorcycle_payload["segment"]
+        motorcycle.source_provider = "seed"
+        motorcycle.source_id = motorcycle_payload["slug"]
+        motorcycle.asset_status = "local" if USE_LOCAL_MODEL_ASSETS else "placeholder"
     return motorcycle
 
 
@@ -558,9 +643,18 @@ def upsert_part(db, part_payload):
             hp_delta=part_payload["hp_delta"],
             description=part_payload["description"],
             model_url=part_payload["model_url"],
+            supported_segments=",".join(part_payload["segments"]),
+            brand=part_payload["name"].split(" ", 1)[0],
+            sku=None,
+            asset_status="local" if USE_LOCAL_MODEL_ASSETS else "placeholder",
         )
         db.add(part)
         db.flush()
+    else:
+        part.model_url = part_payload["model_url"]
+        part.supported_segments = ",".join(part_payload["segments"])
+        part.brand = part_payload["name"].split(" ", 1)[0]
+        part.asset_status = "local" if USE_LOCAL_MODEL_ASSETS else "placeholder"
     return part
 
 
@@ -577,6 +671,7 @@ def ensure_compatibility(db, motorcycle_id, mod_part_id):
 
 def seed() -> None:
     Base.metadata.create_all(bind=engine)
+    ensure_sqlite_mvp_columns()
 
     with SessionLocal() as db:
         motorcycles_by_slug = {}

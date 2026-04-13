@@ -18,7 +18,7 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
-      <section className="border-b border-zinc-800 bg-[radial-gradient(circle_at_top,rgba(249,115,22,0.2),transparent_35%),linear-gradient(180deg,#18181b_0%,#09090b_100%)] px-6 py-20">
+      <section className="border-b border-zinc-800 bg-zinc-950 px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.35em] text-orange-400">
             3D Motorcycle Configurator

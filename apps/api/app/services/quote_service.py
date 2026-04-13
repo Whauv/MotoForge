@@ -13,6 +13,7 @@ def calculate_quote(
     db: Session,
     motorcycle_id: int,
     selected_part_ids: list[int],
+    owns_bike: bool = False,
 ) -> QuoteResponse:
     motorcycle = get_motorcycle_by_id(db, motorcycle_id)
     validate_parts_compatibility(db, motorcycle_id, selected_part_ids)
@@ -29,11 +30,14 @@ def calculate_quote(
         ordered_parts = [parts_by_id[part_id] for part_id in selected_part_ids]
 
     parts_total = sum(part.price for part in ordered_parts)
+    base_price_included = 0 if owns_bike else motorcycle.base_price
     total_weight_delta = sum(part.weight_delta for part in ordered_parts)
     total_hp_delta = sum(part.hp_delta for part in ordered_parts)
 
     return QuoteResponse(
-        total_price=round(motorcycle.base_price + parts_total, 2),
+        total_price=round(base_price_included + parts_total, 2),
+        base_price_included=round(base_price_included, 2),
+        parts_subtotal=round(parts_total, 2),
         new_hp=round(motorcycle.base_hp + total_hp_delta, 2),
         new_weight_kg=round(motorcycle.base_weight_kg + total_weight_delta, 2),
         hp_gain=round(total_hp_delta, 2),

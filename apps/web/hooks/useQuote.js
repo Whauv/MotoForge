@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { postQuote } from "../lib/api";
 
-export default function useQuote(motorcycleId) {
+export default function useQuote(motorcycleId, ownsBike = false) {
   const [selectedParts, setSelectedParts] = useState([]);
   const [quote, setQuote] = useState(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
@@ -39,6 +39,7 @@ export default function useQuote(motorcycleId) {
         const response = await postQuote(
           motorcycleId,
           updatedParts.map((selectedPart) => selectedPart.id),
+          ownsBike,
         );
         setQuote(response);
       } catch (error) {
@@ -48,7 +49,7 @@ export default function useQuote(motorcycleId) {
         setQuoteLoading(false);
       }
     },
-    [motorcycleId],
+    [motorcycleId, ownsBike],
   );
 
   return { selectedParts, togglePart, quote, quoteLoading };

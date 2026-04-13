@@ -12,4 +12,9 @@ router = APIRouter(tags=["quotes"])
 
 @router.post("/quote", response_model=QuoteResponse)
 def create_quote(payload: QuoteRequest, db: Session = Depends(get_db)) -> QuoteResponse:
-    return calculate_quote(db, payload.motorcycle_id, payload.selected_part_ids)
+    return calculate_quote(
+        db,
+        payload.motorcycle_id,
+        payload.selected_part_ids,
+        owns_bike=payload.owns_bike,
+    )

@@ -17,6 +17,18 @@ class Motorcycle(Base):
     base_weight_kg: Mapped[float] = mapped_column(Float, nullable=False)
     base_hp: Mapped[float] = mapped_column(Float, nullable=False)
     model_url: Mapped[str] = mapped_column(String(512), nullable=False)
+    segment: Mapped[str] = mapped_column(String(80), nullable=False, default="naked")
+    source_provider: Mapped[str] = mapped_column(
+        String(120),
+        nullable=False,
+        default="seed",
+    )
+    source_id: Mapped[str | None] = mapped_column(String(160), nullable=True)
+    asset_status: Mapped[str] = mapped_column(
+        String(80),
+        nullable=False,
+        default="placeholder",
+    )
 
     compatibilities = relationship(
         "Compatibility",

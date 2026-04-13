@@ -11,6 +11,10 @@ class MotorcycleBase(BaseModel):
     base_weight_kg: float
     base_hp: float
     model_url: str
+    segment: str = "naked"
+    source_provider: str = "seed"
+    source_id: str | None = None
+    asset_status: str = "placeholder"
 
 
 class MotorcycleCreate(MotorcycleBase):
