@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MotoForge Landing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,900&family=Roboto+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --black: #0a0a09;
+        --paper: #f2efe8;
+        --text-dark: #0a0a09;
+        --text-light: #f2efe8;
+        --accent: #e85d04;
+        --metal: #a8a29e;
+        --rule-dark: rgba(242, 239, 232, 0.12);
+        --rule-light: rgba(10, 10, 9, 0.15);
+        --spec: #78716c;
+        --max: 1280px;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--black);
+        color: var(--text-light);
+        font-family: "Barlow", sans-serif;
+        line-height: 1.5;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .page {
+        overflow-x: hidden;
+      }
+
+      .band {
+        position: relative;
+      }
+
+      .band-dark {
+        background: var(--black);
+        color: var(--text-light);
+      }
+
+      .band-light {
+        background: var(--paper);
+        color: var(--text-dark);
+      }
+
+      .container {
+        width: min(calc(100% - 64px), var(--max));
+        margin: 0 auto;
+      }
+
+      .grid-12 {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        column-gap: 24px;
+      }
+
+      .section-number {
+        position: absolute;
+        inset: auto auto 12px 0;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(8rem, 18vw, 18rem);
+        font-weight: 900;
+        line-height: 0.8;
+        letter-spacing: -0.06em;
+        pointer-events: none;
+        user-select: none;
+        opacity: 0.025;
+      }
+
+      .band-light .section-number {
+        color: rgba(10, 10, 9, 0.05);
+      }
+
+      .band-dark .section-number {
+        color: rgba(242, 239, 232, 0.025);
+      }
+
+      .enter-anim {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      .nav-shell {
+        border-bottom: 1px solid var(--rule-dark);
+      }
+
+      .nav-grid {
+        min-height: 72px;
+        align-items: center;
+        display: grid;
+        grid-template-columns: 20% 1fr 20%;
+        gap: 20px;
+        padding: 12px 0;
+      }
+
+      .brand-lockup {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .brand-mark {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+      }
+
+      .brand-sub {
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        color: var(--metal);
+        line-height: 1.35;
+      }
+
+      .nav-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+      }
+
+      .btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 2px;
+        transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease,
+          transform 0.25s ease;
+        isolation: isolate;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.12);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+        z-index: -1;
+      }
+
+      .btn:hover::before {
+        transform: scaleX(1);
+      }
+
+      .btn-outline {
+        border: 1px solid rgba(242, 239, 232, 0.25);
+        padding: 6px 14px;
+        font-family: "Roboto Mono", monospace;
+        font-size: 12px;
+      }
+
+      .btn-outline:hover {
+        border-color: rgba(242, 239, 232, 0.9);
+      }
+
+      .btn-primary {
+        border: 1px solid var(--accent);
+        background: var(--accent);
+        color: var(--text-light);
+        padding: 6px 18px;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .hero {
+        min-height: calc(100dvh - 72px);
+        padding: 36px 0 44px;
+        background:
+          radial-gradient(circle at 78% 42%, rgba(232, 93, 4, 0.07), transparent 48%),
+          repeating-linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.015) 0,
+            rgba(255, 255, 255, 0.015) 1px,
+            transparent 1px,
+            transparent 3px
+          ),
+          var(--black);
+      }
+
+      .hero-grid {
+        align-items: center;
+        min-height: calc(100dvh - 140px);
+        column-gap: 32px;
+        grid-template-columns: minmax(0, 1.08fr) minmax(380px, 0.92fr);
+      }
+
+      .hero-copy {
+        grid-column: 1;
+        max-width: 100%;
+        padding-right: 0;
+        align-self: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-title-wrap {
+        min-height: clamp(24rem, 33vw, 30rem);
+      }
+
+      .eyebrow {
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+      }
+
+      .hero-title {
+        margin: 18px 0 0;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(3.35rem, 6vw, 6.25rem);
+        font-weight: 900;
+        font-style: italic;
+        line-height: 0.92;
+        letter-spacing: -0.035em;
+        max-width: 100%;
+        text-wrap: initial;
+      }
+
+      .hero-title-line {
+        display: block;
+        white-space: nowrap;
+      }
+
+      .hero-title-line + .hero-title-line {
+        margin-top: -0.02em;
+      }
+
+      .hero-title .pulse-dot {
+        color: var(--accent);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .hero-body {
+        max-width: 37ch;
+        margin-top: 24px;
+        font-size: 18px;
+        line-height: 1.74;
+        color: rgba(242, 239, 232, 0.74);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 36px;
+      }
+
+      .hero-actions .btn-primary,
+      .hero-actions .btn-secondary {
+        min-height: 54px;
+        padding: 14px 30px;
+        font-size: 17px;
+      }
+
+      .btn-secondary {
+        border: 1px solid rgba(242, 239, 232, 0.35);
+        background: transparent;
+        color: var(--text-light);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(242, 239, 232, 0.08);
+        border-color: rgba(242, 239, 232, 0.9);
+      }
+
+      .hero-visual {
+        grid-column: 2;
+        align-self: center;
+        perspective: 1400px;
+        padding-left: 0;
+        transform: none;
+        min-width: 0;
+      }
+
+      .viewer-panel {
+        position: relative;
+        min-height: 500px;
+        width: min(100%, 520px);
+        margin-left: auto;
+        padding: 28px;
+        background: rgba(242, 239, 232, 0.04);
+        border: 1px solid rgba(242, 239, 232, 0.08);
+        transform: rotate3d(0, 1, 0, 3deg);
+        transition: transform 0.6s var(--ease), border-color 0.3s ease;
+        box-shadow: 0 34px 84px rgba(0, 0, 0, 0.34);
+      }
+
+      .viewer-panel:hover {
+        transform: rotate3d(0, 1, 0, 0deg);
+        border-color: rgba(242, 239, 232, 0.18);
+      }
+
+      .viewer-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 6px 10px;
+        border: 1px solid var(--accent);
+        border-radius: 2px;
+        color: var(--accent);
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+      }
+
+      .viewer-frame {
+        position: absolute;
+        inset: 74px 28px 46px 28px;
+        border: 1px solid rgba(242, 239, 232, 0.06);
+      }
+
+      .viewer-svg {
+        transform: scale(1.06);
+        transform-origin: center;
+      }
+
+      .viewer-svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      .viewer-svg .bike-line {
+        fill: none;
+        stroke: rgba(242, 239, 232, 0.15);
+        stroke-width: 3.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .viewer-svg .zone {
+        fill: none;
+        stroke: var(--accent);
+        stroke-dasharray: 7 7;
+        stroke-width: 1.5;
+      }
+
+      .viewer-svg .label {
+        fill: var(--accent);
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+      }
+
+      .rotation-indicator {
+        position: absolute;
+        right: 22px;
+        bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        color: var(--metal);
+      }
+
+      .rotation-indicator svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.6;
+      }
+
+      .features {
+        padding: 72px 0 80px;
+        overflow: hidden;
+      }
+
+      .section-head {
+        position: relative;
+        padding-right: 120px;
+      }
+
+      .section-kicker {
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        color: var(--spec);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .section-title {
+        margin: 20px 0 0;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(2.5rem, 5vw, 5rem);
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+      }
+
+      .carousel-shell {
+        margin-top: 44px;
+      }
+
+      .carousel {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(min(80vw, 420px), 420px);
+        gap: 24px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        padding-bottom: 6px;
+      }
+
+      .carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      .feature-card {
+        scroll-snap-align: start;
+        display: flex;
+        min-height: 340px;
+        background: var(--black);
+        color: var(--text-light);
+        transition: transform 0.2s ease;
+      }
+
+      .feature-card:hover {
+        transform: skewX(-1deg) translateX(6px);
+      }
+
+      .feature-rail {
+        width: 3px;
+        background: var(--accent);
+        flex: 0 0 auto;
+      }
+
+      .feature-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 28px 28px 24px;
+      }
+
+      .feature-index {
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+      }
+
+      .feature-title {
+        margin: 18px 0 0;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .feature-copy {
+        margin: 18px 0 0;
+        max-width: 32ch;
+        font-size: 15px;
+        line-height: 1.75;
+        color: rgba(242, 239, 232, 0.65);
+      }
+
+      .feature-spec {
+        margin-top: 36px;
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        color: var(--metal);
+      }
+
+      .dots {
+        display: flex;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: rgba(10, 10, 9, 0.18);
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+
+      .dot.active {
+        background: var(--accent);
+        transform: scale(1.1);
+      }
+
+      .capabilities {
+        padding: 72px 0 80px;
+      }
+
+      .capability-strip {
+        display: grid;
+        grid-template-columns: 1.2fr 1.7fr 1fr;
+        gap: 24px;
+        align-items: center;
+        min-height: 164px;
+        border-top: 1px solid rgba(242, 239, 232, 0.08);
+        padding: 18px 0;
+      }
+
+      .capability-strip:last-child {
+        border-bottom: 1px solid rgba(242, 239, 232, 0.08);
+      }
+
+      .cap-index {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(5rem, 10vw, 9rem);
+        font-weight: 900;
+        line-height: 0.8;
+        color: rgba(232, 93, 4, 0.8);
+      }
+
+      .cap-title {
+        margin: 0;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+      }
+
+      .cap-copy {
+        margin: 14px 0 0;
+        max-width: 42ch;
+        font-size: 16px;
+        line-height: 1.7;
+        color: rgba(242, 239, 232, 0.6);
+      }
+
+      .motif {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .motif svg {
+        width: 170px;
+        height: 82px;
+      }
+
+      .motif-bike path {
+        fill: none;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        animation: strokeCycle 2s ease-in-out infinite;
+      }
+
+      .cube-wrap {
+        width: 132px;
+        height: 132px;
+        perspective: 800px;
+      }
+
+      .cube {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        animation: spin 6s linear infinite;
+      }
+
+      .face {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(242, 239, 232, 0.18);
+        background: rgba(242, 239, 232, 0.04);
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        color: var(--metal);
+        letter-spacing: 0.16em;
+      }
+
+      .face.front {
+        transform: translateZ(66px);
+      }
+
+      .face.right {
+        transform: rotateY(90deg) translateZ(66px);
+      }
+
+      .face.top {
+        transform: rotateX(90deg) translateZ(66px);
+      }
+
+      .pdf-sheet {
+        width: 180px;
+        padding: 14px 16px;
+        border: 1px solid rgba(242, 239, 232, 0.14);
+        background: rgba(242, 239, 232, 0.04);
+      }
+
+      .pdf-label,
+      .pdf-download {
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+      }
+
+      .pdf-label {
+        color: var(--text-light);
+      }
+
+      .pdf-lines {
+        margin-top: 12px;
+        display: grid;
+        gap: 7px;
+      }
+
+      .pdf-lines span {
+        height: 1px;
+        background: rgba(242, 239, 232, 0.18);
+      }
+
+      .pdf-download {
+        margin-top: 14px;
+        display: inline-flex;
+        padding: 7px 10px;
+        border: 1px solid rgba(242, 239, 232, 0.16);
+        color: var(--metal);
+      }
+
+      .install {
+        padding: 72px 0 80px;
+      }
+
+      .install-grid {
+        align-items: start;
+        row-gap: 32px;
+      }
+
+      .install-copy {
+        grid-column: 1 / span 7;
+      }
+
+      .install-code {
+        grid-column: 8 / span 5;
+      }
+
+      .install-title {
+        margin: 16px 0 0;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(2.8rem, 5vw, 4.75rem);
+        font-weight: 800;
+        line-height: 0.94;
+        letter-spacing: -0.04em;
+        max-width: 8ch;
+      }
+
+      .checklist {
+        margin-top: 28px;
+        border-top: 2px solid var(--text-dark);
+        background: rgba(255, 255, 255, 0.24);
+      }
+
+      .checklist-meta {
+        padding: 14px 0;
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: var(--spec);
+      }
+
+      .check-row {
+        display: grid;
+        grid-template-columns: 24px 52px 1fr;
+        gap: 16px;
+        align-items: center;
+        padding: 18px 0;
+        border-bottom: 1px solid rgba(10, 10, 9, 0.1);
+        transition: background 0.2s ease;
+      }
+
+      .check-row:hover {
+        background: rgba(232, 93, 4, 0.05);
+      }
+
+      .checkbox {
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--text-dark);
+        transition: background 0.2s ease, border-color 0.2s ease;
+      }
+
+      .check-row:hover .checkbox {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .check-no {
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        color: var(--accent);
+        letter-spacing: 0.16em;
+      }
+
+      .check-text {
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.5;
+      }
+
+      .signoff {
+        padding-top: 14px;
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        color: var(--spec);
+        letter-spacing: 0.12em;
+      }
+
+      .code-shell {
+        border: 2px solid var(--text-dark);
+        background: var(--black);
+        color: var(--text-light);
+      }
+
+      .code-topbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(242, 239, 232, 0.08);
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        color: var(--text-light);
+      }
+
+      .copy-btn {
+        background: transparent;
+        border: 0;
+        color: rgba(242, 239, 232, 0.4);
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        transition: color 0.2s ease;
+      }
+
+      .copy-btn:hover {
+        color: var(--text-light);
+      }
+
+      .code-body {
+        display: grid;
+        grid-template-columns: 3px 1fr;
+      }
+
+      .code-rail {
+        background: var(--accent);
+      }
+
+      pre {
+        margin: 0;
+        padding: 18px 18px 22px;
+        overflow-x: auto;
+        font-family: "Roboto Mono", monospace;
+        font-size: 13px;
+        line-height: 1.8;
+      }
+
+      .comment {
+        color: var(--metal);
+      }
+
+      .snapshot {
+        padding: 72px 0 80px;
+      }
+
+      .snapshot-title {
+        margin: 16px 0 36px;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(2rem, 4vw, 4rem);
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+      }
+
+      .spec-grid {
+        border-top: 1px solid rgba(242, 239, 232, 0.08);
+      }
+
+      .spec-row {
+        display: grid;
+        grid-template-columns: 0.75fr 1.35fr 1.5fr;
+        gap: 24px;
+        align-items: center;
+        padding: 18px 0;
+        border-bottom: 1px solid rgba(242, 239, 232, 0.08);
+        transition: background 0.2s ease;
+      }
+
+      .spec-row:hover {
+        background: rgba(232, 93, 4, 0.05);
+      }
+
+      .spec-header {
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--metal);
+      }
+
+      .spec-layer {
+        font-family: "Roboto Mono", monospace;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+      }
+
+      .spec-tech {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .spec-role {
+        font-size: 15px;
+        color: rgba(242, 239, 232, 0.55);
+      }
+
+      .footer {
+        border-top: 1px solid rgba(242, 239, 232, 0.12);
+        padding-top: 32px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .footer-mark {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 24px;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+      }
+
+      .footer-sub,
+      .footer-spec {
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        line-height: 1.8;
+        color: var(--metal);
+      }
+
+      .footer-nav {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        padding-top: 8px;
+        font-family: "Roboto Mono", monospace;
+        font-size: 12px;
+      }
+
+      .footer-nav a {
+        color: rgba(242, 239, 232, 0.5);
+        transition: color 0.2s ease;
+      }
+
+      .footer-nav a:hover {
+        color: var(--accent);
+      }
+
+      .footer-spec {
+        text-align: right;
+      }
+
+      .footer-bottom {
+        margin-top: 36px;
+        padding: 14px 0 18px;
+        border-top: 1px solid rgba(242, 239, 232, 0.07);
+        text-align: center;
+        font-family: "Roboto Mono", monospace;
+        font-size: 10px;
+        color: var(--spec);
+        letter-spacing: 0.12em;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+      @keyframes strokeCycle {
+        0%,
+        100% {
+          stroke: var(--accent);
+        }
+        50% {
+          stroke: var(--text-light);
+        }
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotateY(360deg);
+        }
+      }
+
+      @media (max-width: 1100px) {
+        .hero-grid {
+          grid-template-columns: repeat(12, minmax(0, 1fr));
+        }
+
+        .hero-copy,
+        .hero-visual,
+        .install-copy,
+        .install-code {
+          grid-column: 1 / -1;
+        }
+
+        .hero-grid,
+        .install-grid {
+          row-gap: 40px;
+        }
+
+        .hero {
+          min-height: auto;
+          padding: 28px 0 40px;
+        }
+
+        .hero-grid {
+          min-height: auto;
+        }
+
+        .hero-copy {
+          max-width: 860px;
+          padding-right: 0;
+        }
+
+        .hero-title {
+          max-width: 100%;
+        }
+
+        .hero-title-wrap {
+          min-height: auto;
+        }
+
+        .hero-visual {
+          padding-left: 0;
+          transform: none;
+        }
+
+        .viewer-panel {
+          max-width: none;
+          margin-left: 0;
+          min-height: 440px;
+        }
+
+        .nav-grid {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .nav-actions {
+          justify-content: flex-start;
+        }
+
+        .capability-strip,
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .motif {
+          justify-content: flex-start;
+        }
+
+        .spec-row {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .footer-nav,
+        .footer-spec {
+          justify-content: flex-start;
+          text-align: left;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .container {
+          width: min(calc(100% - 28px), var(--max));
+        }
+
+        .hero {
+          padding-top: 22px;
+        }
+
+        .hero-title {
+          font-size: clamp(3.25rem, 14vw, 4.8rem);
+          max-width: 100%;
+          line-height: 0.95;
+        }
+
+        .hero-title-line {
+          white-space: normal;
+        }
+
+        .hero-title-wrap {
+          min-height: auto;
+        }
+
+        .hero-body {
+          font-size: 16px;
+          max-width: 100%;
+          line-height: 1.72;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .hero-actions .btn-primary,
+        .hero-actions .btn-secondary {
+          width: 100%;
+        }
+
+        .viewer-panel {
+          min-height: 360px;
+          padding: 20px;
+        }
+
+        .viewer-frame {
+          inset: 64px 20px 34px 20px;
+        }
+
+        .carousel {
+          grid-auto-columns: minmax(86vw, 86vw);
+        }
+
+        .capability-strip {
+          gap: 18px;
+          min-height: auto;
+          padding: 22px 0;
+        }
+
+        .cap-index {
+          font-size: 5.5rem;
+        }
+
+        .install-title,
+        .snapshot-title,
+        .section-title {
+          max-width: 10ch;
+        }
+
+        .brand-sub,
+        .footer-sub,
+        .footer-spec {
+          max-width: 32ch;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="nav-shell band band-dark">
+        <div class="container nav-grid">
+          <div class="brand-lockup">
+            <div class="brand-mark">MOTOFORGE</div>
+            <div class="brand-sub">
+              3D motorcycle configuration platform for riders, builders, and shops
+            </div>
+          </div>
+          <div></div>
+          <div class="nav-actions">
+            <a
+              class="btn btn-outline"
+              href="https://github.com/Whauv/MotoForge"
+              target="_blank"
+              rel="noreferrer"
+              >View GitHub</a
+            >
+            <a class="btn btn-primary" href="/product">Launch Product</a>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero band band-dark">
+        <div class="section-number">001</div>
+        <div class="container grid-12 hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow">PRODUCT OVERVIEW</div>
+            <div class="hero-title-wrap">
+              <h1 class="hero-title">
+                <span class="hero-title-line">Build the</span>
+                <span class="hero-title-line">motorcycle</span>
+                <span class="hero-title-line">before you</span>
+                <span class="hero-title-line">build it in the</span>
+                <span class="hero-title-line">workshop<span class="pulse-dot">.</span></span>
+              </h1>
+            </div>
+            <p class="hero-body">
+              MotoForge helps riders and custom shops choose a bike, preview
+              compatible modifications in 3D, and export a real quote before
+              buying parts or starting fabrication.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="/product">Open the Configurator</a>
+              <a
+                class="btn btn-secondary"
+                href="https://github.com/Whauv/MotoForge"
+                target="_blank"
+                rel="noreferrer"
+                >Explore the Repository</a
+              >
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="viewer-panel">
+              <div class="viewer-badge">LIVE 3D VIEWER</div>
+              <div class="viewer-frame">
+                <svg class="viewer-svg" viewBox="0 0 620 380" aria-hidden="true">
+                  <circle class="bike-line" cx="152" cy="284" r="58"></circle>
+                  <circle class="bike-line" cx="466" cy="284" r="58"></circle>
+                  <path
+                    class="bike-line"
+                    d="M168 276 L228 200 L326 185 L382 224 L430 221 L468 278"
+                  ></path>
+                  <path class="bike-line" d="M228 200 L202 150 L262 132 L330 184"></path>
+                  <path class="bike-line" d="M269 141 L334 136 L383 168"></path>
+                  <path class="bike-line" d="M337 182 L318 244 L245 245"></path>
+                  <path class="bike-line" d="M383 168 L421 127 L473 142"></path>
+                  <path class="bike-line" d="M409 125 L451 105"></path>
+                  <circle class="zone" cx="419" cy="229" r="38"></circle>
+                  <circle class="zone" cx="151" cy="284" r="72"></circle>
+                  <circle class="zone" cx="286" cy="145" r="42"></circle>
+                  <circle class="zone" cx="294" cy="247" r="38"></circle>
+                  <text class="label" x="442" y="212">EXHAUST</text>
+                  <text class="label" x="84" y="201">WHEELS</text>
+                  <text class="label" x="252" y="92">FAIRING</text>
+                  <text class="label" x="244" y="304">SUSPENSION</text>
+                </svg>
+              </div>
+              <div class="rotation-indicator">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 8a7 7 0 1 0 1.4 6.7"></path>
+                  <path d="M18 8h-4"></path>
+                  <path d="M18 8v4"></path>
+                </svg>
+                <span>360°</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features band band-light">
+        <div class="section-number">002</div>
+        <div class="container">
+          <div class="section-head">
+            <div class="section-kicker">CORE FEATURES</div>
+            <h2 class="section-title">What MotoForge gives you.</h2>
+          </div>
+
+          <div class="carousel-shell">
+            <div class="carousel" id="feature-carousel">
+              <article class="feature-card enter-anim">
+                <div class="feature-rail"></div>
+                <div class="feature-body">
+                  <div>
+                    <div class="feature-index">01 ·</div>
+                    <h3 class="feature-title">3D Motorcycle Configurator</h3>
+                    <p class="feature-copy">
+                      Explore a bike in a live 360-degree viewer, swap compatible
+                      parts, and evaluate each build before touching hardware.
+                    </p>
+                  </div>
+                  <div class="feature-spec">VIEWER: 360° · GLB ASSETS · REAL-TIME</div>
+                </div>
+              </article>
+
+              <article class="feature-card enter-anim">
+                <div class="feature-rail"></div>
+                <div class="feature-body">
+                  <div>
+                    <div class="feature-index">02 ·</div>
+                    <h3 class="feature-title">Compatibility-Aware Parts</h3>
+                    <p class="feature-copy">
+                      MotoForge only surfaces modification options that match the
+                      imported bike and segment rules in the backend catalog.
+                    </p>
+                  </div>
+                  <div class="feature-spec">CATALOG: FITMENT RULES · SEGMENT MATCH</div>
+                </div>
+              </article>
+
+              <article class="feature-card enter-anim">
+                <div class="feature-rail"></div>
+                <div class="feature-body">
+                  <div>
+                    <div class="feature-index">03 ·</div>
+                    <h3 class="feature-title">Live Quote and Performance</h3>
+                    <p class="feature-copy">
+                      Every build updates pricing, horsepower, and weight
+                      projections in real time so riders and workshops can make fast
+                      decisions.
+                    </p>
+                  </div>
+                  <div class="feature-spec">OUTPUT: PRICE · HP · WEIGHT · PDF</div>
+                </div>
+              </article>
+            </div>
+            <div class="dots" id="feature-dots" aria-hidden="true">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="capabilities band band-dark">
+        <div class="section-number">003</div>
+        <div class="container">
+          <div class="section-kicker">WHAT YOU CAN DO</div>
+
+          <div class="capability-strip enter-anim">
+            <div class="cap-index">01</div>
+            <div>
+              <h3 class="cap-title">Choose a bike</h3>
+              <p class="cap-copy">
+                Browse the imported catalog or request a live-catalog model.
+              </p>
+            </div>
+            <div class="motif">
+              <svg
+                class="motif-bike"
+                viewBox="0 0 180 84"
+                aria-hidden="true"
+              >
+                <path
+                  d="M20 60a16 16 0 1 0 32 0a16 16 0 1 0 -32 0 M126 60a16 16 0 1 0 32 0a16 16 0 1 0 -32 0"
+                ></path>
+                <path
+                  d="M36 57L59 37L84 35L98 49L121 48L142 59M59 37L53 22L73 17L85 34M74 18L92 19L103 26"
+                ></path>
+              </svg>
+            </div>
+          </div>
+
+          <div class="capability-strip enter-anim">
+            <div class="cap-index">02</div>
+            <div>
+              <h3 class="cap-title">Preview modifications</h3>
+              <p class="cap-copy">
+                Compare exhausts, suspension, wheels, fairings, and handlebar
+                setups in the 3D viewer.
+              </p>
+            </div>
+            <div class="motif">
+              <div class="cube-wrap" aria-hidden="true">
+                <div class="cube">
+                  <div class="face front">EXHAUST</div>
+                  <div class="face right">WHEELS</div>
+                  <div class="face top">FAIRING</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="capability-strip enter-anim">
+            <div class="cap-index">03</div>
+            <div>
+              <h3 class="cap-title">Export the build</h3>
+              <p class="cap-copy">
+                Review pricing and performance, then generate a clean PDF quote.
+              </p>
+            </div>
+            <div class="motif">
+              <div class="pdf-sheet" aria-hidden="true">
+                <div class="pdf-label">BUILD QUOTE · REF #MF-4429</div>
+                <div class="pdf-lines">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="pdf-download">DOWNLOAD</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="install band band-light">
+        <div class="section-number">004</div>
+        <div class="container grid-12 install-grid">
+          <div class="install-copy">
+            <div class="section-kicker">INSTALL</div>
+            <h2 class="install-title">Run MotoForge locally</h2>
+
+            <div class="checklist">
+              <div class="checklist-meta">
+                MOTOFORGE SETUP PROCEDURE · REV 1.0 · LOCAL INSTALL
+              </div>
+
+              <div class="check-row enter-anim">
+                <div class="checkbox"></div>
+                <div class="check-no">01</div>
+                <div class="check-text">
+                  Clone the MotoForge repository from GitHub.
+                </div>
+              </div>
+
+              <div class="check-row enter-anim">
+                <div class="checkbox"></div>
+                <div class="check-no">02</div>
+                <div class="check-text">
+                  Install the API dependencies and start the FastAPI server.
+                </div>
+              </div>
+
+              <div class="check-row enter-anim">
+                <div class="checkbox"></div>
+                <div class="check-no">03</div>
+                <div class="check-text">
+                  Install the web dependencies and run the Next.js app.
+                </div>
+              </div>
+
+              <div class="check-row enter-anim">
+                <div class="checkbox"></div>
+                <div class="check-no">04</div>
+                <div class="check-text">
+                  Seed the local database, then launch the configurator.
+                </div>
+              </div>
+
+              <div class="signoff">SIGN OFF: __________ DATE: __________</div>
+            </div>
+          </div>
+
+          <div class="install-code">
+            <div class="code-shell">
+              <div class="code-topbar">
+                <span>TERMINAL · APPS/API + APPS/WEB</span>
+                <button class="copy-btn" type="button" id="copy-code">COPY</button>
+              </div>
+              <div class="code-body">
+                <div class="code-rail"></div>
+                <pre id="code-block"><span class="comment"># API</span>
+python seed/seed.py && uvicorn app.main:app --reload
+
+<span class="comment"># Web</span>
+npm install && npm run dev</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="snapshot band band-dark">
+        <div class="section-number">005</div>
+        <div class="container">
+          <div class="section-kicker">TECHNICAL SNAPSHOT</div>
+          <h2 class="snapshot-title">Built for configuration and expansion</h2>
+
+          <div class="spec-grid">
+            <div class="spec-row spec-header">
+              <div>LAYER</div>
+              <div>TECHNOLOGY</div>
+              <div>ROLE</div>
+            </div>
+
+            <div class="spec-row enter-anim">
+              <div class="spec-layer">FRONTEND</div>
+              <div class="spec-tech">Next.js 14 + React Three Fiber</div>
+              <div class="spec-role">Visual experience and 3D viewer</div>
+            </div>
+
+            <div class="spec-row enter-anim">
+              <div class="spec-layer">BACKEND</div>
+              <div class="spec-tech">FastAPI + SQLAlchemy</div>
+              <div class="spec-role">Quotes, fitment, and imports</div>
+            </div>
+
+            <div class="spec-row enter-anim">
+              <div class="spec-layer">ASSETS</div>
+              <div class="spec-tech">GLB Manifest + Validator</div>
+              <div class="spec-role">Production bike and part models</div>
+            </div>
+
+            <div class="spec-row enter-anim">
+              <div class="spec-layer">INFRA</div>
+              <div class="spec-tech">Docker + CI/CD scaffolding</div>
+              <div class="spec-role">Cloud rollout and deployment</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer band band-dark">
+        <div class="container">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <div class="footer-mark">MOTOFORGE</div>
+              <div class="footer-sub">
+                3D motorcycle configuration platform for riders, builders, and shops
+              </div>
+            </div>
+
+            <div class="footer-nav">
+              <a href="/product">Open the Configurator</a>
+              <a
+                href="https://github.com/Whauv/MotoForge"
+                target="_blank"
+                rel="noreferrer"
+                >GitHub</a
+              >
+            </div>
+
+            <div class="footer-spec">
+              <div>STACK: Next.js · FastAPI · React Three Fiber</div>
+              <div>ASSETS: GLB · SQLAlchemy · Docker</div>
+              <div>BUILD: Local · Cloud-ready</div>
+            </div>
+          </div>
+
+          <div class="footer-bottom">Built for riders, builders, and shops.</div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (!prefersReducedMotion) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry, index) => {
+              if (entry.isIntersecting) {
+                entry.target.style.transition =
+                  `opacity 0.5s ease ${index * 60}ms, transform 0.5s ease ${index * 60}ms`;
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15 },
+        );
+
+        document.querySelectorAll(".enter-anim").forEach((element) => {
+          observer.observe(element);
+        });
+      } else {
+        document.querySelectorAll(".enter-anim").forEach((element) => {
+          element.style.opacity = "1";
+          element.style.transform = "none";
+        });
+      }
+
+      const carousel = document.getElementById("feature-carousel");
+      const dots = Array.from(document.querySelectorAll("#feature-dots .dot"));
+
+      if (carousel) {
+        const updateDots = () => {
+          const firstCard = carousel.firstElementChild;
+          if (!firstCard) {
+            return;
+          }
+          const cardWidth = firstCard.getBoundingClientRect().width + 24;
+          const index = Math.round(carousel.scrollLeft / cardWidth);
+          dots.forEach((dot, dotIndex) => {
+            dot.classList.toggle("active", dotIndex === index);
+          });
+        };
+
+        carousel.addEventListener("scroll", updateDots, { passive: true });
+        window.addEventListener("resize", updateDots);
+        updateDots();
+      }
+
+      const copyButton = document.getElementById("copy-code");
+      const codeBlock = document.getElementById("code-block");
+      if (copyButton && codeBlock) {
+        copyButton.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(codeBlock.innerText);
+            copyButton.textContent = "COPIED";
+            setTimeout(() => {
+              copyButton.textContent = "COPY";
+            }, 1200);
+          } catch {
+            copyButton.textContent = "FAILED";
+            setTimeout(() => {
+              copyButton.textContent = "COPY";
+            }, 1200);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
