@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,16 +12,73 @@
     />
     <style>
       :root {
-        --black: #0a0a09;
-        --paper: #f2efe8;
-        --text-dark: #0a0a09;
-        --text-light: #f2efe8;
-        --accent: #e85d04;
-        --metal: #a8a29e;
-        --rule-dark: rgba(242, 239, 232, 0.12);
-        --rule-light: rgba(10, 10, 9, 0.15);
-        --spec: #78716c;
-        --max: 1280px;
+        --color-black: #0a0a09;
+        --color-paper: #f2efe8;
+        --color-text-dark: #0a0a09;
+        --color-text-light: #f2efe8;
+        --color-accent: #e85d04;
+        --color-metal: #a8a29e;
+        --color-spec: #78716c;
+        --color-rule-dark: rgba(242, 239, 232, 0.12);
+        --color-rule-light: rgba(10, 10, 9, 0.15);
+        --color-rule-dark-strong: rgba(242, 239, 232, 0.18);
+        --color-rule-light-soft: rgba(10, 10, 9, 0.1);
+        --color-panel-dark: rgba(242, 239, 232, 0.04);
+        --color-panel-light: rgba(255, 255, 255, 0.24);
+        --color-text-light-muted: rgba(242, 239, 232, 0.74);
+        --color-text-light-soft: rgba(242, 239, 232, 0.65);
+        --color-hover-dark: rgba(232, 93, 4, 0.05);
+        --color-hover-light: rgba(242, 239, 232, 0.08);
+
+        --font-display: "Barlow Condensed", sans-serif;
+        --font-body: "Barlow", sans-serif;
+        --font-spec: "Roboto Mono", monospace;
+
+        --type-meta: 11px;
+        --type-meta-tight: 10px;
+        --type-body: 16px;
+        --type-body-lg: 18px;
+        --type-feature: 28px;
+        --type-section: clamp(2.5rem, 5vw, 5rem);
+        --type-hero: clamp(3.35rem, 6vw, 6.25rem);
+        --type-number: clamp(8rem, 18vw, 18rem);
+
+        --space-2: 8px;
+        --space-3: 12px;
+        --space-4: 16px;
+        --space-5: 20px;
+        --space-6: 24px;
+        --space-7: 28px;
+        --space-8: 32px;
+        --space-9: 36px;
+        --space-10: 40px;
+        --space-11: 44px;
+        --space-12: 48px;
+        --space-14: 56px;
+        --space-18: 72px;
+        --space-20: 80px;
+
+        --section-space-y: 68px;
+        --section-space-y-lg: 76px;
+        --section-gap: var(--space-11);
+        --container-max: 1280px;
+        --container-gutter: 64px;
+        --grid-gap: 24px;
+
+        --rule-dark: var(--color-rule-dark);
+        --rule-light: var(--color-rule-light);
+        --rule-width: 1px;
+        --rule-width-strong: 2px;
+        --radius-sharp: 2px;
+
+        --button-height-sm: 34px;
+        --button-height-md: 54px;
+        --button-pad-x-sm: 14px;
+        --button-pad-x-md: 30px;
+        --button-fill-sweep: rgba(255, 255, 255, 0.12);
+
+        --hover-shift: skewX(-1deg) translateX(6px);
+        --hover-lift: translateY(-1px);
         --ease: cubic-bezier(0.22, 1, 0.36, 1);
       }
 
@@ -35,9 +92,9 @@
 
       body {
         margin: 0;
-        background: var(--black);
-        color: var(--text-light);
-        font-family: "Barlow", sans-serif;
+        background: var(--color-black);
+        color: var(--color-text-light);
+        font-family: var(--font-body);
         line-height: 1.5;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
@@ -62,37 +119,68 @@
       }
 
       .band-dark {
-        background: var(--black);
-        color: var(--text-light);
+        background: var(--color-black);
+        color: var(--color-text-light);
       }
 
       .band-light {
-        background: var(--paper);
-        color: var(--text-dark);
+        background: var(--color-paper);
+        color: var(--color-text-dark);
       }
 
       .container {
-        width: min(calc(100% - 64px), var(--max));
+        width: min(calc(100% - var(--container-gutter)), var(--container-max));
         margin: 0 auto;
       }
 
       .grid-12 {
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
-        column-gap: 24px;
+        column-gap: var(--grid-gap);
+      }
+
+      .meta-label,
+      .eyebrow,
+      .section-kicker,
+      .feature-index,
+      .spec-header,
+      .spec-layer {
+        font-family: var(--font-spec);
+        font-size: var(--type-meta);
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+      }
+
+      .spec-label,
+      .feature-spec,
+      .viewer-badge,
+      .rotation-indicator,
+      .brand-sub,
+      .checklist-meta,
+      .signoff,
+      .code-topbar,
+      .copy-btn,
+      .pdf-label,
+      .pdf-download,
+      .footer-sub,
+      .footer-nav,
+      .footer-spec,
+      .footer-bottom {
+        font-family: var(--font-spec);
       }
 
       .section-number {
         position: absolute;
         inset: auto auto 12px 0;
-        font-family: "Barlow Condensed", sans-serif;
-        font-size: clamp(8rem, 18vw, 18rem);
+        font-family: var(--font-display);
+        font-size: var(--type-number);
         font-weight: 900;
         line-height: 0.8;
         letter-spacing: -0.06em;
         pointer-events: none;
         user-select: none;
-        opacity: 0.025;
+        opacity: 0.02;
+        transition: opacity 0.6s ease;
       }
 
       .band-light .section-number {
@@ -108,8 +196,81 @@
         transform: translateY(24px);
       }
 
+      .section-band {
+        position: relative;
+        border-top: var(--rule-width) solid transparent;
+      }
+
+      .band-dark.section-band {
+        border-top-color: rgba(242, 239, 232, 0.08);
+      }
+
+      .band-light.section-band {
+        border-top-color: rgba(10, 10, 9, 0.12);
+      }
+
+      .section-anchor {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 112px;
+        height: 1px;
+        background: var(--color-accent);
+      }
+
+      .section-band.is-visible .section-number {
+        opacity: 0.06;
+      }
+
+      .serial-tag,
+      .part-ref {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-spec);
+        font-size: var(--type-meta-tight);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .serial-tag::before,
+      .part-ref::before {
+        content: "";
+        width: 18px;
+        height: 1px;
+        background: currentColor;
+        opacity: 0.8;
+      }
+
+      .serial-tag {
+        color: var(--color-spec);
+      }
+
+      .part-ref {
+        color: var(--color-accent);
+      }
+
+      .measure-rule {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--font-spec);
+        font-size: var(--type-meta-tight);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--color-spec);
+      }
+
+      .measure-rule::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: currentColor;
+        opacity: 0.35;
+      }
+
       .nav-shell {
-        border-bottom: 1px solid var(--rule-dark);
+        border-bottom: var(--rule-width) solid var(--rule-dark);
       }
 
       .nav-grid {
@@ -128,16 +289,15 @@
       }
 
       .brand-mark {
-        font-family: "Barlow Condensed", sans-serif;
+        font-family: var(--font-display);
         font-size: 20px;
         font-weight: 900;
         letter-spacing: 0.08em;
       }
 
       .brand-sub {
-        font-family: "Roboto Mono", monospace;
         font-size: 10px;
-        color: var(--metal);
+        color: var(--color-metal);
         line-height: 1.35;
       }
 
@@ -153,7 +313,7 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        border-radius: 2px;
+        border-radius: var(--radius-sharp);
         transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease,
           transform 0.25s ease;
         isolation: isolate;
@@ -163,7 +323,7 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: rgba(255, 255, 255, 0.12);
+        background: var(--button-fill-sweep);
         transform: scaleX(0);
         transform-origin: left;
         transition: transform 0.3s ease;
@@ -174,10 +334,14 @@
         transform: scaleX(1);
       }
 
+      .btn:hover {
+        transform: var(--hover-lift);
+      }
+
       .btn-outline {
-        border: 1px solid rgba(242, 239, 232, 0.25);
-        padding: 6px 14px;
-        font-family: "Roboto Mono", monospace;
+        min-height: var(--button-height-sm);
+        border: var(--rule-width) solid rgba(242, 239, 232, 0.25);
+        padding: 6px var(--button-pad-x-sm);
         font-size: 12px;
       }
 
@@ -186,11 +350,12 @@
       }
 
       .btn-primary {
-        border: 1px solid var(--accent);
-        background: var(--accent);
-        color: var(--text-light);
+        min-height: var(--button-height-sm);
+        border: var(--rule-width) solid var(--color-accent);
+        background: var(--color-accent);
+        color: var(--color-text-light);
         padding: 6px 18px;
-        font-family: "Barlow Condensed", sans-serif;
+        font-family: var(--font-display);
         font-size: 14px;
         font-weight: 700;
         letter-spacing: 0.04em;
@@ -208,7 +373,8 @@
             transparent 1px,
             transparent 3px
           ),
-          var(--black);
+          var(--color-black);
+        isolation: isolate;
       }
 
       .hero-grid {
@@ -227,28 +393,79 @@
         z-index: 1;
       }
 
+      .hero-comp {
+        position: absolute;
+        pointer-events: none;
+        user-select: none;
+        z-index: 0;
+      }
+
+      .hero-comp-wheel {
+        top: 98px;
+        left: min(54vw, 760px);
+        width: 360px;
+        height: 360px;
+        border: 1px solid rgba(242, 239, 232, 0.06);
+        border-radius: 50%;
+        opacity: 0.32;
+      }
+
+      .hero-comp-wheel::before,
+      .hero-comp-wheel::after {
+        content: "";
+        position: absolute;
+        inset: 28px;
+        border: 1px solid rgba(242, 239, 232, 0.045);
+        border-radius: 50%;
+      }
+
+      .hero-comp-wheel::after {
+        inset: 112px;
+        border-color: rgba(232, 93, 4, 0.14);
+      }
+
+      .hero-comp-line {
+        top: 158px;
+        right: min(8vw, 118px);
+        width: 320px;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(232, 93, 4, 0.35), transparent 82%);
+        transform: rotate(-21deg);
+        transform-origin: right center;
+        opacity: 0.7;
+      }
+
+      .hero-serial {
+        right: max(64px, calc((100vw - var(--container-max)) / 2 + 8px));
+        top: 114px;
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        color: rgba(242, 239, 232, 0.18);
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+
       .hero-title-wrap {
-        min-height: clamp(24rem, 33vw, 30rem);
+        min-height: clamp(21rem, 30vw, 27rem);
       }
 
       .eyebrow {
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
-        color: var(--accent);
-        text-transform: uppercase;
+        color: var(--color-accent);
         letter-spacing: 0.2em;
       }
 
       .hero-title {
-        margin: 18px 0 0;
-        font-family: "Barlow Condensed", sans-serif;
-        font-size: clamp(3.35rem, 6vw, 6.25rem);
-        font-weight: 900;
-        font-style: italic;
+        margin: 16px 0 0;
+        font-family: var(--font-display);
+        font-size: clamp(3.75rem, 6.2vw, 6.6rem);
+        font-weight: 800;
+        font-style: normal;
         line-height: 0.92;
-        letter-spacing: -0.035em;
+        letter-spacing: -0.018em;
         max-width: 100%;
         text-wrap: initial;
+        text-rendering: geometricPrecision;
+        font-kerning: normal;
       }
 
       .hero-title-line {
@@ -261,44 +478,44 @@
       }
 
       .hero-title .pulse-dot {
-        color: var(--accent);
+        color: var(--color-accent);
         animation: pulse 2s ease-in-out infinite;
       }
 
       .hero-body {
-        max-width: 37ch;
-        margin-top: 24px;
-        font-size: 18px;
-        line-height: 1.74;
-        color: rgba(242, 239, 232, 0.74);
+        max-width: 34ch;
+        margin-top: 18px;
+        font-size: 17px;
+        line-height: 1.84;
+        color: var(--color-text-light-muted);
       }
 
       .hero-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 14px;
-        margin-top: 36px;
+        margin-top: 28px;
       }
 
       .hero-actions .btn-primary,
       .hero-actions .btn-secondary {
-        min-height: 54px;
-        padding: 14px 30px;
-        font-size: 17px;
+        min-height: var(--button-height-md);
+        padding: 14px var(--button-pad-x-md);
+        font-size: 16px;
       }
 
       .btn-secondary {
         border: 1px solid rgba(242, 239, 232, 0.35);
         background: transparent;
-        color: var(--text-light);
-        font-family: "Barlow Condensed", sans-serif;
+        color: var(--color-text-light);
+        font-family: var(--font-display);
         font-size: 17px;
         font-weight: 600;
         letter-spacing: 0.04em;
       }
 
       .btn-secondary:hover {
-        background: rgba(242, 239, 232, 0.08);
+        background: var(--color-hover-light);
         border-color: rgba(242, 239, 232, 0.9);
       }
 
@@ -309,19 +526,23 @@
         padding-left: 0;
         transform: none;
         min-width: 0;
+        position: relative;
+        z-index: 1;
       }
 
       .viewer-panel {
         position: relative;
-        min-height: 500px;
-        width: min(100%, 520px);
+        min-height: 524px;
+        width: min(100%, 548px);
         margin-left: auto;
-        padding: 28px;
-        background: rgba(242, 239, 232, 0.04);
+        padding: 30px;
+        background: var(--color-panel-dark);
         border: 1px solid rgba(242, 239, 232, 0.08);
-        transform: rotate3d(0, 1, 0, 3deg);
+        transform: rotate3d(0, 1, 0, 2.2deg);
         transition: transform 0.6s var(--ease), border-color 0.3s ease;
         box-shadow: 0 34px 84px rgba(0, 0, 0, 0.34);
+        opacity: 0;
+        transform-origin: center;
       }
 
       .viewer-panel:hover {
@@ -329,56 +550,93 @@
         border-color: rgba(242, 239, 232, 0.18);
       }
 
+      .viewer-panel.is-settled {
+        animation: panelSettle 0.9s var(--ease) forwards;
+      }
+
       .viewer-badge {
         position: absolute;
         top: 20px;
         left: 20px;
         padding: 6px 10px;
-        border: 1px solid var(--accent);
-        border-radius: 2px;
-        color: var(--accent);
-        font-family: "Roboto Mono", monospace;
-        font-size: 10px;
+        border: var(--rule-width) solid var(--color-accent);
+        border-radius: var(--radius-sharp);
+        color: var(--color-accent);
+        font-size: var(--type-meta-tight);
         letter-spacing: 0.16em;
       }
 
       .viewer-frame {
         position: absolute;
-        inset: 74px 28px 46px 28px;
+        inset: 72px 28px 46px 28px;
         border: 1px solid rgba(242, 239, 232, 0.06);
+        overflow: hidden;
       }
 
-      .viewer-svg {
-        transform: scale(1.06);
-        transform-origin: center;
-      }
-
-      .viewer-svg {
+      .viewer-embed {
+        position: absolute;
+        inset: 0;
         width: 100%;
         height: 100%;
+        border: 0;
+        display: block;
+        background: rgba(10, 10, 9, 0.45);
       }
+
+      .viewer-attrib {
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        padding: 6px 8px;
+        background: rgba(10, 10, 9, 0.72);
+        border: 1px solid rgba(242, 239, 232, 0.08);
+        color: rgba(242, 239, 232, 0.72);
+        font-family: var(--font-spec);
+        font-size: 10px;
+        line-height: 1.4;
+      }
+
+      .viewer-attrib a {
+        color: var(--color-accent);
+        font-weight: 500;
+      }
+
 
       .viewer-svg .bike-line {
         fill: none;
-        stroke: rgba(242, 239, 232, 0.15);
-        stroke-width: 3.4;
+        stroke: rgba(242, 239, 232, 0.18);
+        stroke-width: 3.1;
         stroke-linecap: round;
         stroke-linejoin: round;
       }
 
+      .viewer-svg .bike-detail {
+        fill: none;
+        stroke: rgba(242, 239, 232, 0.1);
+        stroke-width: 1.5;
+        stroke-linecap: round;
+      }
+
+      .viewer-svg .bike-rim {
+        fill: none;
+        stroke: rgba(242, 239, 232, 0.09);
+        stroke-width: 1.2;
+      }
+
       .viewer-svg .zone {
         fill: none;
-        stroke: var(--accent);
+        stroke: var(--color-accent);
         stroke-dasharray: 7 7;
         stroke-width: 1.5;
       }
 
       .viewer-svg .label {
-        fill: var(--accent);
-        font-family: "Roboto Mono", monospace;
-        font-size: 10px;
-        letter-spacing: 0.12em;
+        fill: var(--color-accent);
+        font-size: 9px;
+        letter-spacing: 0.16em;
       }
+
 
       .rotation-indicator {
         position: absolute;
@@ -387,9 +645,8 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
-        color: var(--metal);
+        font-size: var(--type-meta);
+        color: var(--color-metal);
       }
 
       .rotation-indicator svg {
@@ -401,27 +658,25 @@
       }
 
       .features {
-        padding: 72px 0 80px;
+        padding: var(--section-space-y) 0 var(--section-space-y-lg);
         overflow: hidden;
       }
 
       .section-head {
         position: relative;
         padding-right: 120px;
+        display: grid;
+        gap: 14px;
       }
 
       .section-kicker {
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
-        color: var(--spec);
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
+        color: var(--color-spec);
       }
 
       .section-title {
-        margin: 20px 0 0;
-        font-family: "Barlow Condensed", sans-serif;
-        font-size: clamp(2.5rem, 5vw, 5rem);
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: var(--type-section);
         font-weight: 800;
         line-height: 0.95;
         letter-spacing: -0.04em;
@@ -429,6 +684,28 @@
 
       .carousel-shell {
         margin-top: 44px;
+        position: relative;
+      }
+
+      .carousel-shell::before,
+      .carousel-shell::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 36px;
+        width: 54px;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .carousel-shell::before {
+        left: 0;
+        background: linear-gradient(90deg, var(--color-paper), rgba(242, 239, 232, 0));
+      }
+
+      .carousel-shell::after {
+        right: 0;
+        background: linear-gradient(-90deg, var(--color-paper), rgba(242, 239, 232, 0));
       }
 
       .carousel {
@@ -450,18 +727,20 @@
         scroll-snap-align: start;
         display: flex;
         min-height: 340px;
-        background: var(--black);
-        color: var(--text-light);
-        transition: transform 0.2s ease;
+        background: var(--color-black);
+        color: var(--color-text-light);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: grab;
       }
 
       .feature-card:hover {
-        transform: skewX(-1deg) translateX(6px);
+        transform: var(--hover-shift);
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.12);
       }
 
       .feature-rail {
         width: 3px;
-        background: var(--accent);
+        background: var(--color-accent);
         flex: 0 0 auto;
       }
 
@@ -469,61 +748,63 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding: 28px 28px 24px;
+        padding: 26px 28px 24px;
+      }
+
+      .feature-top {
+        display: grid;
+        gap: 14px;
       }
 
       .feature-index {
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        color: var(--accent);
+        color: var(--color-accent);
       }
 
       .feature-title {
-        margin: 18px 0 0;
-        font-family: "Barlow Condensed", sans-serif;
-        font-size: 28px;
+        margin: 16px 0 0;
+        font-family: var(--font-display);
+        font-size: 30px;
         font-weight: 700;
-        line-height: 1;
+        line-height: 0.98;
       }
 
       .feature-copy {
-        margin: 18px 0 0;
+        margin: 16px 0 0;
         max-width: 32ch;
         font-size: 15px;
-        line-height: 1.75;
-        color: rgba(242, 239, 232, 0.65);
+        line-height: 1.8;
+        color: rgba(242, 239, 232, 0.72);
       }
 
       .feature-spec {
-        margin-top: 36px;
-        font-family: "Roboto Mono", monospace;
+        margin-top: 28px;
         font-size: 10px;
         letter-spacing: 0.16em;
-        color: var(--metal);
+        color: var(--color-metal);
       }
 
       .dots {
         display: flex;
         gap: 10px;
         margin-top: 24px;
+        align-items: center;
       }
 
       .dot {
-        width: 11px;
-        height: 11px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
         background: rgba(10, 10, 9, 0.18);
         transition: background 0.2s ease, transform 0.2s ease;
       }
 
       .dot.active {
-        background: var(--accent);
-        transform: scale(1.1);
+        background: var(--color-accent);
+        transform: scale(1.25);
       }
 
       .capabilities {
-        padding: 72px 0 80px;
+        padding: var(--section-space-y) 0 var(--section-space-y-lg);
       }
 
       .capability-strip {
@@ -531,17 +812,22 @@
         grid-template-columns: 1.2fr 1.7fr 1fr;
         gap: 24px;
         align-items: center;
-        min-height: 164px;
+        min-height: 168px;
         border-top: 1px solid rgba(242, 239, 232, 0.08);
-        padding: 18px 0;
+        padding: 22px 0;
       }
 
       .capability-strip:last-child {
         border-bottom: 1px solid rgba(242, 239, 232, 0.08);
       }
 
+      .cap-copy-wrap {
+        display: grid;
+        gap: 10px;
+      }
+
       .cap-index {
-        font-family: "Barlow Condensed", sans-serif;
+        font-family: var(--font-display);
         font-size: clamp(5rem, 10vw, 9rem);
         font-weight: 900;
         line-height: 0.8;
@@ -550,16 +836,17 @@
 
       .cap-title {
         margin: 0;
-        font-family: "Barlow Condensed", sans-serif;
-        font-size: 32px;
+        font-family: var(--font-display);
+        font-size: 34px;
         font-weight: 700;
+        line-height: 0.95;
       }
 
       .cap-copy {
-        margin: 14px 0 0;
+        margin: 12px 0 0;
         max-width: 42ch;
-        font-size: 16px;
-        line-height: 1.7;
+        font-size: var(--type-body);
+        line-height: 1.74;
         color: rgba(242, 239, 232, 0.6);
       }
 
@@ -569,8 +856,8 @@
       }
 
       .motif svg {
-        width: 170px;
-        height: 82px;
+        width: 184px;
+        height: 92px;
       }
 
       .motif-bike path {
@@ -601,10 +888,9 @@
         display: grid;
         place-items: center;
         border: 1px solid rgba(242, 239, 232, 0.18);
-        background: rgba(242, 239, 232, 0.04);
-        font-family: "Roboto Mono", monospace;
+        background: var(--color-panel-dark);
         font-size: 10px;
-        color: var(--metal);
+        color: var(--color-metal);
         letter-spacing: 0.16em;
       }
 
@@ -621,21 +907,20 @@
       }
 
       .pdf-sheet {
-        width: 180px;
-        padding: 14px 16px;
+        width: 192px;
+        padding: 16px 18px;
         border: 1px solid rgba(242, 239, 232, 0.14);
-        background: rgba(242, 239, 232, 0.04);
+        background: var(--color-panel-dark);
       }
 
       .pdf-label,
       .pdf-download {
-        font-family: "Roboto Mono", monospace;
-        font-size: 10px;
+        font-size: var(--type-meta-tight);
         letter-spacing: 0.12em;
       }
 
       .pdf-label {
-        color: var(--text-light);
+        color: var(--color-text-light);
       }
 
       .pdf-lines {
@@ -654,16 +939,16 @@
         display: inline-flex;
         padding: 7px 10px;
         border: 1px solid rgba(242, 239, 232, 0.16);
-        color: var(--metal);
+        color: var(--color-metal);
       }
 
       .install {
-        padding: 72px 0 80px;
+        padding: var(--section-space-y) 0 var(--section-space-y-lg);
       }
 
       .install-grid {
         align-items: start;
-        row-gap: 32px;
+        row-gap: 28px;
       }
 
       .install-copy {
@@ -676,7 +961,7 @@
 
       .install-title {
         margin: 16px 0 0;
-        font-family: "Barlow Condensed", sans-serif;
+        font-family: var(--font-display);
         font-size: clamp(2.8rem, 5vw, 4.75rem);
         font-weight: 800;
         line-height: 0.94;
@@ -685,17 +970,15 @@
       }
 
       .checklist {
-        margin-top: 28px;
-        border-top: 2px solid var(--text-dark);
-        background: rgba(255, 255, 255, 0.24);
+        margin-top: 26px;
+        border-top: var(--rule-width-strong) solid var(--color-text-dark);
+        background: var(--color-panel-light);
       }
 
       .checklist-meta {
         padding: 14px 0;
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
         letter-spacing: 0.14em;
-        color: var(--spec);
+        color: var(--color-spec);
       }
 
       .check-row {
@@ -703,31 +986,29 @@
         grid-template-columns: 24px 52px 1fr;
         gap: 16px;
         align-items: center;
-        padding: 18px 0;
-        border-bottom: 1px solid rgba(10, 10, 9, 0.1);
+        padding: 20px 0;
+        border-bottom: var(--rule-width) solid var(--color-rule-light-soft);
         transition: background 0.2s ease;
       }
 
       .check-row:hover {
-        background: rgba(232, 93, 4, 0.05);
+        background: var(--color-hover-dark);
       }
 
       .checkbox {
         width: 18px;
         height: 18px;
-        border: 1px solid var(--text-dark);
+        border: var(--rule-width) solid var(--color-text-dark);
         transition: background 0.2s ease, border-color 0.2s ease;
       }
 
       .check-row:hover .checkbox {
-        background: var(--accent);
-        border-color: var(--accent);
+        background: var(--color-accent);
+        border-color: var(--color-accent);
       }
 
       .check-no {
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
-        color: var(--accent);
+        color: var(--color-accent);
         letter-spacing: 0.16em;
       }
 
@@ -739,16 +1020,15 @@
 
       .signoff {
         padding-top: 14px;
-        font-family: "Roboto Mono", monospace;
-        font-size: 10px;
-        color: var(--spec);
+        font-size: var(--type-meta-tight);
+        color: var(--color-spec);
         letter-spacing: 0.12em;
       }
 
       .code-shell {
-        border: 2px solid var(--text-dark);
-        background: var(--black);
-        color: var(--text-light);
+        border: var(--rule-width-strong) solid var(--color-text-dark);
+        background: var(--color-black);
+        color: var(--color-text-light);
       }
 
       .code-topbar {
@@ -756,25 +1036,22 @@
         justify-content: space-between;
         gap: 18px;
         align-items: center;
-        padding: 12px 16px;
+        padding: 13px 16px;
         border-bottom: 1px solid rgba(242, 239, 232, 0.08);
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
-        color: var(--text-light);
+        color: var(--color-text-light);
       }
 
       .copy-btn {
         background: transparent;
         border: 0;
         color: rgba(242, 239, 232, 0.4);
-        font-family: "Roboto Mono", monospace;
-        font-size: 10px;
+        font-size: var(--type-meta-tight);
         letter-spacing: 0.12em;
         transition: color 0.2s ease;
       }
 
       .copy-btn:hover {
-        color: var(--text-light);
+        color: var(--color-text-light);
       }
 
       .code-body {
@@ -783,29 +1060,29 @@
       }
 
       .code-rail {
-        background: var(--accent);
+        background: var(--color-accent);
       }
 
       pre {
         margin: 0;
         padding: 18px 18px 22px;
         overflow-x: auto;
-        font-family: "Roboto Mono", monospace;
+        font-family: var(--font-spec);
         font-size: 13px;
         line-height: 1.8;
       }
 
       .comment {
-        color: var(--metal);
+        color: var(--color-metal);
       }
 
       .snapshot {
-        padding: 72px 0 80px;
+        padding: var(--section-space-y) 0 var(--section-space-y-lg);
       }
 
       .snapshot-title {
-        margin: 16px 0 36px;
-        font-family: "Barlow Condensed", sans-serif;
+        margin: 16px 0 32px;
+        font-family: var(--font-display);
         font-size: clamp(2rem, 4vw, 4rem);
         font-weight: 800;
         line-height: 0.95;
@@ -821,40 +1098,166 @@
         grid-template-columns: 0.75fr 1.35fr 1.5fr;
         gap: 24px;
         align-items: center;
-        padding: 18px 0;
+        padding: 20px 0;
         border-bottom: 1px solid rgba(242, 239, 232, 0.08);
         transition: background 0.2s ease;
       }
 
       .spec-row:hover {
-        background: rgba(232, 93, 4, 0.05);
+        background: var(--color-hover-dark);
       }
 
       .spec-header {
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        color: var(--metal);
+        color: var(--color-metal);
       }
 
       .spec-layer {
-        font-family: "Roboto Mono", monospace;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        color: var(--accent);
+        color: var(--color-accent);
       }
 
       .spec-tech {
-        font-family: "Barlow Condensed", sans-serif;
-        font-size: 22px;
+        font-family: var(--font-display);
+        font-size: 24px;
         font-weight: 700;
+        line-height: 1;
       }
 
       .spec-role {
         font-size: 15px;
         color: rgba(242, 239, 232, 0.55);
+      }
+
+      .proof {
+        padding: var(--section-space-y) 0 var(--section-space-y-lg);
+      }
+
+      .proof-head {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 38px;
+      }
+
+      .proof-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+      }
+
+      .proof-panel {
+        position: relative;
+        border: 1px solid rgba(10, 10, 9, 0.14);
+        background: rgba(10, 10, 9, 0.03);
+        padding: 22px;
+        overflow: hidden;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+
+      .proof-panel:hover {
+        transform: translateY(-2px);
+        border-color: rgba(10, 10, 9, 0.22);
+      }
+
+      .proof-panel-large {
+        min-height: 430px;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        gap: 18px;
+      }
+
+      .proof-stack {
+        display: grid;
+        gap: 24px;
+      }
+
+      .proof-card {
+        min-height: 203px;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        gap: 16px;
+      }
+
+      .proof-topline {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .proof-title {
+        font-family: var(--font-display);
+        font-size: 28px;
+        line-height: 0.98;
+        letter-spacing: -0.03em;
+      }
+
+      .proof-canvas,
+      .proof-specsheet,
+      .proof-parts,
+      .proof-performance {
+        position: relative;
+        border: 1px solid rgba(10, 10, 9, 0.12);
+        background: rgba(255, 255, 255, 0.58);
+      }
+
+      .proof-canvas {
+        min-height: 300px;
+        display: grid;
+        place-items: center;
+      }
+
+      .proof-canvas svg {
+        width: min(92%, 540px);
+        height: auto;
+      }
+
+      .proof-specsheet,
+      .proof-parts,
+      .proof-performance {
+        min-height: 118px;
+        padding: 16px;
+      }
+
+      .proof-specsheet .row,
+      .proof-performance .row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 16px;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(10, 10, 9, 0.08);
+        font-size: 13px;
+      }
+
+      .proof-specsheet .row:last-child,
+      .proof-performance .row:last-child {
+        border-bottom: 0;
+      }
+
+      .proof-parts-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .proof-part-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 16px;
+        padding: 9px 10px;
+        background: rgba(10, 10, 9, 0.04);
+        border: 1px solid rgba(10, 10, 9, 0.08);
+        font-size: 13px;
+      }
+
+      .proof-label {
+        color: var(--color-spec);
+        font-family: var(--font-spec);
+        font-size: var(--type-meta-tight);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .proof-value {
+        color: var(--color-text-dark);
+        font-weight: 500;
       }
 
       .footer {
@@ -872,11 +1275,11 @@
       .footer-brand {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
       }
 
       .footer-mark {
-        font-family: "Barlow Condensed", sans-serif;
+        font-family: var(--font-display);
         font-size: 24px;
         font-weight: 900;
         letter-spacing: 0.05em;
@@ -884,10 +1287,9 @@
 
       .footer-sub,
       .footer-spec {
-        font-family: "Roboto Mono", monospace;
         font-size: 10px;
         line-height: 1.8;
-        color: var(--metal);
+        color: var(--color-metal);
       }
 
       .footer-nav {
@@ -895,7 +1297,6 @@
         justify-content: center;
         gap: 18px;
         padding-top: 8px;
-        font-family: "Roboto Mono", monospace;
         font-size: 12px;
       }
 
@@ -905,7 +1306,7 @@
       }
 
       .footer-nav a:hover {
-        color: var(--accent);
+        color: var(--color-accent);
       }
 
       .footer-spec {
@@ -917,9 +1318,8 @@
         padding: 14px 0 18px;
         border-top: 1px solid rgba(242, 239, 232, 0.07);
         text-align: center;
-        font-family: "Roboto Mono", monospace;
         font-size: 10px;
-        color: var(--spec);
+        color: var(--color-spec);
         letter-spacing: 0.12em;
       }
 
@@ -936,16 +1336,49 @@
       @keyframes strokeCycle {
         0%,
         100% {
-          stroke: var(--accent);
+          stroke: var(--color-accent);
         }
         50% {
-          stroke: var(--text-light);
+          stroke: var(--color-text-light);
         }
       }
 
       @keyframes spin {
         to {
           transform: rotateY(360deg);
+        }
+      }
+
+      @keyframes lineDraw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+
+      @keyframes panelSettle {
+        0% {
+          opacity: 0;
+          transform: translateY(22px) rotate3d(0, 1, 0, 5deg);
+        }
+        100% {
+          opacity: 1;
+          transform: rotate3d(0, 1, 0, 2.2deg);
+        }
+      }
+
+      @media (max-width: 1280px) {
+        .hero-grid {
+          grid-template-columns: minmax(0, 1fr) minmax(340px, 0.88fr);
+        }
+
+        .hero-title {
+          font-size: clamp(3.45rem, 5.7vw, 5.9rem);
+        }
+
+        .viewer-panel {
+          width: min(100%, 500px);
+          min-height: 488px;
         }
       }
 
@@ -980,6 +1413,12 @@
           padding-right: 0;
         }
 
+        .hero-comp-wheel,
+        .hero-comp-line,
+        .hero-serial {
+          display: none;
+        }
+
         .hero-title {
           max-width: 100%;
         }
@@ -999,6 +1438,11 @@
           min-height: 440px;
         }
 
+        .proof-panel-large,
+        .proof-card {
+          min-height: auto;
+        }
+
         .nav-grid {
           grid-template-columns: 1fr;
           gap: 12px;
@@ -1009,6 +1453,7 @@
         }
 
         .capability-strip,
+        .proof-grid,
         .footer-grid {
           grid-template-columns: 1fr;
         }
@@ -1031,7 +1476,7 @@
 
       @media (max-width: 720px) {
         .container {
-          width: min(calc(100% - 28px), var(--max));
+          width: min(calc(100% - 28px), var(--container-max));
         }
 
         .hero {
@@ -1039,9 +1484,9 @@
         }
 
         .hero-title {
-          font-size: clamp(3.25rem, 14vw, 4.8rem);
+          font-size: clamp(3rem, 13vw, 4.4rem);
           max-width: 100%;
-          line-height: 0.95;
+          line-height: 0.94;
         }
 
         .hero-title-line {
@@ -1077,8 +1522,14 @@
           inset: 64px 20px 34px 20px;
         }
 
+
         .carousel {
           grid-auto-columns: minmax(86vw, 86vw);
+        }
+
+        .carousel-shell::before,
+        .carousel-shell::after {
+          width: 28px;
         }
 
         .capability-strip {
@@ -1102,6 +1553,62 @@
         .footer-spec {
           max-width: 32ch;
         }
+
+        .proof-panel {
+          padding: 18px;
+        }
+
+        .proof-topline {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .proof-title {
+          font-size: 24px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          width: min(calc(100% - 20px), var(--container-max));
+        }
+
+        .nav-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .hero-title {
+          font-size: clamp(2.6rem, 14vw, 3.6rem);
+        }
+
+        .hero-body,
+        .check-text,
+        .spec-role {
+          font-size: 15px;
+        }
+
+        .feature-body,
+        .proof-panel,
+        .code-topbar,
+        pre {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+
+        .viewer-panel {
+          min-height: 320px;
+        }
+
+        .viewer-frame {
+          inset: 58px 14px 28px 14px;
+        }
+
+        .footer-nav {
+          gap: 10px;
+          flex-direction: column;
+          align-items: flex-start;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -1114,6 +1621,15 @@
         *::after {
           animation: none !important;
           transition: none !important;
+        }
+
+        .viewer-panel {
+          opacity: 1;
+          transform: rotate3d(0, 1, 0, 0deg);
+        }
+
+        .section-number {
+          opacity: 0.06;
         }
       }
     </style>
@@ -1142,11 +1658,15 @@
         </div>
       </header>
 
-      <section class="hero band band-dark">
+      <section class="hero band band-dark section-band">
         <div class="section-number">001</div>
+        <div class="hero-comp hero-comp-wheel" aria-hidden="true"></div>
+        <div class="hero-comp hero-comp-line" aria-hidden="true"></div>
+        <div class="hero-comp hero-serial">MF-2026 / CONFIGURATOR / REV 02</div>
         <div class="container grid-12 hero-grid">
           <div class="hero-copy">
             <div class="eyebrow">PRODUCT OVERVIEW</div>
+            <div class="serial-tag">BUILD SERIAL MF-01</div>
             <div class="hero-title-wrap">
               <h1 class="hero-title">
                 <span class="hero-title-line">Build the</span>
@@ -1177,27 +1697,39 @@
             <div class="viewer-panel">
               <div class="viewer-badge">LIVE 3D VIEWER</div>
               <div class="viewer-frame">
-                <svg class="viewer-svg" viewBox="0 0 620 380" aria-hidden="true">
-                  <circle class="bike-line" cx="152" cy="284" r="58"></circle>
-                  <circle class="bike-line" cx="466" cy="284" r="58"></circle>
-                  <path
-                    class="bike-line"
-                    d="M168 276 L228 200 L326 185 L382 224 L430 221 L468 278"
-                  ></path>
-                  <path class="bike-line" d="M228 200 L202 150 L262 132 L330 184"></path>
-                  <path class="bike-line" d="M269 141 L334 136 L383 168"></path>
-                  <path class="bike-line" d="M337 182 L318 244 L245 245"></path>
-                  <path class="bike-line" d="M383 168 L421 127 L473 142"></path>
-                  <path class="bike-line" d="M409 125 L451 105"></path>
-                  <circle class="zone" cx="419" cy="229" r="38"></circle>
-                  <circle class="zone" cx="151" cy="284" r="72"></circle>
-                  <circle class="zone" cx="286" cy="145" r="42"></circle>
-                  <circle class="zone" cx="294" cy="247" r="38"></circle>
-                  <text class="label" x="442" y="212">EXHAUST</text>
-                  <text class="label" x="84" y="201">WHEELS</text>
-                  <text class="label" x="252" y="92">FAIRING</text>
-                  <text class="label" x="244" y="304">SUSPENSION</text>
-                </svg>
+                <iframe
+                  class="viewer-embed"
+                  title="Bmw S1000RR"
+                  frameborder="0"
+                  allowfullscreen
+                  mozallowfullscreen="true"
+                  webkitallowfullscreen="true"
+                  allow="autoplay; fullscreen; xr-spatial-tracking"
+                  xr-spatial-tracking
+                  execution-while-out-of-viewport
+                  execution-while-not-rendered
+                  web-share
+                  src="https://sketchfab.com/models/pDI1bbIfj4yaTARXOF9QUzMcjW1/embed"
+                ></iframe>
+                <p class="viewer-attrib">
+                  <a
+                    href="https://sketchfab.com/3d-models/bmw-s1000rr-pDI1bbIfj4yaTARXOF9QUzMcjW1?utm_medium=embed&utm_campaign=share-popup&utm_content=pDI1bbIfj4yaTARXOF9QUzMcjW1"
+                    target="_blank"
+                    rel="nofollow noreferrer"
+                  >Bmw S1000RR</a>
+                  by
+                  <a
+                    href="https://sketchfab.com/scorch3r?utm_medium=embed&utm_campaign=share-popup&utm_content=pDI1bbIfj4yaTARXOF9QUzMcjW1"
+                    target="_blank"
+                    rel="nofollow noreferrer"
+                  >scorch3r</a>
+                  on
+                  <a
+                    href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=pDI1bbIfj4yaTARXOF9QUzMcjW1"
+                    target="_blank"
+                    rel="nofollow noreferrer"
+                  >Sketchfab</a>
+                </p>
               </div>
               <div class="rotation-indicator">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1212,11 +1744,13 @@
         </div>
       </section>
 
-      <section class="features band band-light">
+      <section class="features band band-light section-band">
         <div class="section-number">002</div>
         <div class="container">
+          <div class="section-anchor"></div>
           <div class="section-head">
             <div class="section-kicker">CORE FEATURES</div>
+            <div class="measure-rule">Measured Feature Set</div>
             <h2 class="section-title">What MotoForge gives you.</h2>
           </div>
 
@@ -1225,13 +1759,16 @@
               <article class="feature-card enter-anim">
                 <div class="feature-rail"></div>
                 <div class="feature-body">
-                  <div>
+                  <div class="feature-top">
+                    <div class="part-ref">Part Ref V-360</div>
+                    <div>
                     <div class="feature-index">01 ·</div>
                     <h3 class="feature-title">3D Motorcycle Configurator</h3>
                     <p class="feature-copy">
                       Explore a bike in a live 360-degree viewer, swap compatible
                       parts, and evaluate each build before touching hardware.
                     </p>
+                    </div>
                   </div>
                   <div class="feature-spec">VIEWER: 360° · GLB ASSETS · REAL-TIME</div>
                 </div>
@@ -1240,13 +1777,16 @@
               <article class="feature-card enter-anim">
                 <div class="feature-rail"></div>
                 <div class="feature-body">
-                  <div>
+                  <div class="feature-top">
+                    <div class="part-ref">Part Ref F-221</div>
+                    <div>
                     <div class="feature-index">02 ·</div>
                     <h3 class="feature-title">Compatibility-Aware Parts</h3>
                     <p class="feature-copy">
                       MotoForge only surfaces modification options that match the
                       imported bike and segment rules in the backend catalog.
                     </p>
+                    </div>
                   </div>
                   <div class="feature-spec">CATALOG: FITMENT RULES · SEGMENT MATCH</div>
                 </div>
@@ -1255,7 +1795,9 @@
               <article class="feature-card enter-anim">
                 <div class="feature-rail"></div>
                 <div class="feature-body">
-                  <div>
+                  <div class="feature-top">
+                    <div class="part-ref">Part Ref Q-118</div>
+                    <div>
                     <div class="feature-index">03 ·</div>
                     <h3 class="feature-title">Live Quote and Performance</h3>
                     <p class="feature-copy">
@@ -1263,6 +1805,7 @@
                       projections in real time so riders and workshops can make fast
                       decisions.
                     </p>
+                    </div>
                   </div>
                   <div class="feature-spec">OUTPUT: PRICE · HP · WEIGHT · PDF</div>
                 </div>
@@ -1277,18 +1820,22 @@
         </div>
       </section>
 
-      <section class="capabilities band band-dark">
+      <section class="capabilities band band-dark section-band">
         <div class="section-number">003</div>
         <div class="container">
+          <div class="section-anchor"></div>
           <div class="section-kicker">WHAT YOU CAN DO</div>
 
           <div class="capability-strip enter-anim">
             <div class="cap-index">01</div>
             <div>
               <h3 class="cap-title">Choose a bike</h3>
-              <p class="cap-copy">
-                Browse the imported catalog or request a live-catalog model.
-              </p>
+              <div class="cap-copy-wrap">
+                <div class="part-ref">Catalog Ref C-101</div>
+                <p class="cap-copy">
+                  Browse the imported catalog or request a live-catalog model.
+                </p>
+              </div>
             </div>
             <div class="motif">
               <svg
@@ -1310,10 +1857,13 @@
             <div class="cap-index">02</div>
             <div>
               <h3 class="cap-title">Preview modifications</h3>
-              <p class="cap-copy">
-                Compare exhausts, suspension, wheels, fairings, and handlebar
-                setups in the 3D viewer.
-              </p>
+              <div class="cap-copy-wrap">
+                <div class="part-ref">Part Ref M-204</div>
+                <p class="cap-copy">
+                  Compare exhausts, suspension, wheels, fairings, and handlebar
+                  setups in the 3D viewer.
+                </p>
+              </div>
             </div>
             <div class="motif">
               <div class="cube-wrap" aria-hidden="true">
@@ -1330,9 +1880,12 @@
             <div class="cap-index">03</div>
             <div>
               <h3 class="cap-title">Export the build</h3>
-              <p class="cap-copy">
-                Review pricing and performance, then generate a clean PDF quote.
-              </p>
+              <div class="cap-copy-wrap">
+                <div class="part-ref">Quote Ref Q-4429</div>
+                <p class="cap-copy">
+                  Review pricing and performance, then generate a clean PDF quote.
+                </p>
+              </div>
             </div>
             <div class="motif">
               <div class="pdf-sheet" aria-hidden="true">
@@ -1351,11 +1904,13 @@
         </div>
       </section>
 
-      <section class="install band band-light">
+      <section class="install band band-light section-band">
         <div class="section-number">004</div>
         <div class="container grid-12 install-grid">
+          <div class="section-anchor"></div>
           <div class="install-copy">
             <div class="section-kicker">INSTALL</div>
+            <div class="measure-rule">Workshop Procedure</div>
             <h2 class="install-title">Run MotoForge locally</h2>
 
             <div class="checklist">
@@ -1418,10 +1973,12 @@ npm install && npm run dev</pre>
         </div>
       </section>
 
-      <section class="snapshot band band-dark">
+      <section class="snapshot band band-dark section-band">
         <div class="section-number">005</div>
         <div class="container">
+          <div class="section-anchor"></div>
           <div class="section-kicker">TECHNICAL SNAPSHOT</div>
+          <div class="measure-rule">Configuration Stack</div>
           <h2 class="snapshot-title">Built for configuration and expansion</h2>
 
           <div class="spec-grid">
@@ -1458,7 +2015,88 @@ npm install && npm run dev</pre>
         </div>
       </section>
 
-      <footer class="footer band band-dark">
+      <section class="proof band band-light section-band">
+        <div class="section-number">006</div>
+        <div class="container">
+          <div class="section-anchor"></div>
+          <div class="proof-head">
+            <div class="section-kicker">PRODUCT PROOF</div>
+            <div class="measure-rule">Live Output Surfaces</div>
+            <h2 class="section-title">See what the build produces.</h2>
+          </div>
+
+          <div class="proof-grid">
+            <article class="proof-panel proof-panel-large enter-anim">
+              <div class="proof-topline">
+                <div class="proof-title">Configurator Surface</div>
+                <div class="serial-tag">Preview Serial MF-CFG</div>
+              </div>
+              <div class="proof-canvas" aria-hidden="true">
+                <svg viewBox="0 0 620 320">
+                  <rect x="24" y="18" width="572" height="284" fill="none" stroke="rgba(10,10,9,0.14)" />
+                  <rect x="44" y="40" width="176" height="238" fill="rgba(10,10,9,0.05)" stroke="rgba(10,10,9,0.1)" />
+                  <rect x="236" y="40" width="340" height="238" fill="rgba(10,10,9,0.03)" stroke="rgba(10,10,9,0.1)" />
+                  <circle cx="374" cy="198" r="42" fill="none" stroke="rgba(10,10,9,0.18)" stroke-width="2"/>
+                  <circle cx="502" cy="198" r="42" fill="none" stroke="rgba(10,10,9,0.18)" stroke-width="2"/>
+                  <path d="M390 190L432 136L496 130L526 162L548 162" fill="none" stroke="rgba(10,10,9,0.22)" stroke-width="3"/>
+                  <path d="M430 136L416 104L454 92L497 130" fill="none" stroke="rgba(10,10,9,0.18)" stroke-width="3"/>
+                  <circle cx="522" cy="164" r="24" fill="none" stroke="#e85d04" stroke-dasharray="6 6"/>
+                  <text x="532" y="150" font-family="Roboto Mono" font-size="9" fill="#e85d04">EXHAUST</text>
+                  <circle cx="374" cy="198" r="58" fill="none" stroke="#e85d04" stroke-dasharray="6 6"/>
+                  <text x="304" y="132" font-family="Roboto Mono" font-size="9" fill="#e85d04">WHEELS</text>
+                  <rect x="62" y="56" width="138" height="16" fill="rgba(10,10,9,0.08)" />
+                  <rect x="62" y="86" width="120" height="12" fill="rgba(10,10,9,0.06)" />
+                  <rect x="62" y="110" width="140" height="44" fill="rgba(10,10,9,0.04)" stroke="rgba(10,10,9,0.08)" />
+                  <rect x="62" y="166" width="140" height="44" fill="rgba(10,10,9,0.04)" stroke="rgba(10,10,9,0.08)" />
+                  <rect x="62" y="222" width="140" height="40" fill="#e85d04" />
+                </svg>
+              </div>
+            </article>
+
+            <div class="proof-stack">
+              <article class="proof-panel proof-card enter-anim">
+                <div class="proof-topline">
+                  <div class="proof-title">Quote Crop</div>
+                  <div class="part-ref">Quote Ref MF-4429</div>
+                </div>
+                <div class="proof-specsheet">
+                  <div class="row"><span class="proof-label">Base Bike Price</span><span class="proof-value">₹5,80,000</span></div>
+                  <div class="row"><span class="proof-label">Parts Subtotal</span><span class="proof-value">₹57,000</span></div>
+                  <div class="row"><span class="proof-label">Grand Total</span><span class="proof-value">₹6,37,000</span></div>
+                </div>
+              </article>
+
+              <article class="proof-panel proof-card enter-anim">
+                <div class="proof-topline">
+                  <div class="proof-title">Parts UI Crop</div>
+                  <div class="part-ref">Fitment Ref P-221</div>
+                </div>
+                <div class="proof-parts">
+                  <div class="proof-parts-list">
+                    <div class="proof-part-row"><span>GPR Deeptone Exhaust</span><span>Apply</span></div>
+                    <div class="proof-part-row"><span>Ohlins Rear Shock</span><span>Apply</span></div>
+                    <div class="proof-part-row"><span>Excel Takasago Wheels</span><span>Apply</span></div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="proof-panel proof-card enter-anim">
+                <div class="proof-topline">
+                  <div class="proof-title">Performance Crop</div>
+                  <div class="part-ref">Delta Ref HP-006</div>
+                </div>
+                <div class="proof-performance">
+                  <div class="row"><span class="proof-label">New HP</span><span class="proof-value">54.1 HP</span></div>
+                  <div class="row"><span class="proof-label">New Weight</span><span class="proof-value">209.4 kg</span></div>
+                  <div class="row"><span class="proof-label">HP Gain</span><span class="proof-value">+6.5 HP</span></div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer band band-dark section-band">
         <div class="container">
           <div class="footer-grid">
             <div class="footer-brand">
@@ -1466,6 +2104,7 @@ npm install && npm run dev</pre>
               <div class="footer-sub">
                 3D motorcycle configuration platform for riders, builders, and shops
               </div>
+              <div class="serial-tag">Revision 02 / Build 2026.05</div>
             </div>
 
             <div class="footer-nav">
@@ -1496,6 +2135,22 @@ npm install && npm run dev</pre>
       ).matches;
 
       if (!prefersReducedMotion) {
+        const sectionObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                sectionObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.2 },
+        );
+
+        document.querySelectorAll(".section-band").forEach((section) => {
+          sectionObserver.observe(section);
+        });
+
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry, index) => {
@@ -1514,11 +2169,27 @@ npm install && npm run dev</pre>
         document.querySelectorAll(".enter-anim").forEach((element) => {
           observer.observe(element);
         });
+
+        const viewerPanel = document.querySelector(".viewer-panel");
+        if (viewerPanel) {
+          requestAnimationFrame(() => {
+            viewerPanel.classList.add("is-settled");
+          });
+        }
       } else {
+        document.querySelectorAll(".section-band").forEach((section) => {
+          section.classList.add("is-visible");
+        });
+
         document.querySelectorAll(".enter-anim").forEach((element) => {
           element.style.opacity = "1";
           element.style.transform = "none";
         });
+
+        const viewerPanel = document.querySelector(".viewer-panel");
+        if (viewerPanel) {
+          viewerPanel.classList.add("is-settled");
+        }
       }
 
       const carousel = document.getElementById("feature-carousel");
@@ -1563,3 +2234,4 @@ npm install && npm run dev</pre>
     </script>
   </body>
 </html>
+
