@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const DEFAULT_TIMEOUT_MS = 15000;
+const RETRYABLE_STATUS_CODES = new Set([408, 425, 429, 500, 502, 503, 504]);
+
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
+  timeout: DEFAULT_TIMEOUT_MS,
   headers: {
     "Content-Type": "application/json",
   },
@@ -9,6 +13,12 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
+    config.metadata = { startedAt: Date.now() };
+    const requestId =
+      typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    config.headers["X-Client-Request-ID"] = requestId;
     if (process.env.NODE_ENV === "development") {
       // Keep request logging lightweight and easy to scan in local dev.
       console.log(
@@ -25,10 +35,31 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response.data,
   (error) => {
+    const config = error?.config || {};
+    const statusCode = error?.response?.status || 0;
+    const retries = config.__retryCount || 0;
+    const shouldRetry =
+      retries < 2 &&
+      (error.code === "ECONNABORTED" ||
+        !statusCode ||
+        RETRYABLE_STATUS_CODES.has(statusCode));
+
+    if (shouldRetry) {
+      config.__retryCount = retries + 1;
+      return new Promise((resolve) => {
+        const delayMs = 300 * config.__retryCount;
+        setTimeout(() => resolve(api(config)), delayMs);
+      });
+    }
+
+    const responsePayload = error?.response?.data || {};
     const normalizedError = {
-      status: error?.response?.status || 500,
+      status: statusCode || 500,
+      code: responsePayload?.code || "request_failed",
+      requestId: responsePayload?.request_id || null,
       message:
-        error?.response?.data?.detail ||
+        responsePayload?.message ||
+        responsePayload?.detail ||
         error?.message ||
         "Something went wrong while contacting the MotoForge API.",
     };

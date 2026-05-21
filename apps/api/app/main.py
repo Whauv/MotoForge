@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+import time
+from collections import defaultdict, deque
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy import inspect, text
 
 from app.config import settings
@@ -97,6 +101,68 @@ app.include_router(motorcycles.router, prefix="/api")
 app.include_router(catalog.router, prefix="/api")
 app.include_router(parts.router, prefix="/api")
 app.include_router(quotes.router, prefix="/api")
+
+
+_RATE_BUCKETS: dict[str, deque[float]] = defaultdict(deque)
+
+
+@app.middleware("http")
+async def basic_rate_limiter(request: Request, call_next):
+    limit = settings.api_rate_limit_per_minute
+    window_seconds = 60
+    now = time.time()
+    client_host = request.client.host if request.client else "unknown"
+    bucket = _RATE_BUCKETS[client_host]
+
+    while bucket and bucket[0] <= now - window_seconds:
+        bucket.popleft()
+
+    if len(bucket) >= limit:
+        request_id = getattr(request.state, "request_id", "")
+        return JSONResponse(
+            status_code=429,
+            content={
+                "code": "rate_limited",
+                "message": "Too many requests. Please retry shortly.",
+                "request_id": request_id,
+            },
+        )
+
+    bucket.append(now)
+    return await call_next(request)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError,
+) -> JSONResponse:
+    request_id = getattr(request.state, "request_id", "")
+    return JSONResponse(
+        status_code=422,
+        content={
+            "code": "validation_error",
+            "message": "Request validation failed.",
+            "request_id": request_id,
+            "errors": exc.errors(),
+        },
+    )
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(
+    request: Request,
+    _: Exception,
+) -> JSONResponse:
+    request_id = getattr(request.state, "request_id", "")
+    return JSONResponse(
+        status_code=500,
+        content={
+            "code": "internal_error",
+            "message": "Unexpected server error.",
+            "request_id": request_id,
+        },
+    )
 
 
 @app.get("/health")

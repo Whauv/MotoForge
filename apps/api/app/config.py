@@ -30,6 +30,14 @@ class Settings(BaseSettings):
         default=86400,
         alias="CATALOG_CACHE_TTL_SECONDS",
     )
+    api_request_timeout_seconds: int = Field(
+        default=30,
+        alias="API_REQUEST_TIMEOUT_SECONDS",
+    )
+    api_rate_limit_per_minute: int = Field(
+        default=180,
+        alias="API_RATE_LIMIT_PER_MINUTE",
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env",
