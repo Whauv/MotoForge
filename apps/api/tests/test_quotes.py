@@ -156,7 +156,10 @@ async def test_invalid_bike(client: AsyncClient):
     )
 
     assert response.status_code == 404
-    assert "Motorcycle with id 9999" in response.json()["detail"]
+    payload = response.json()
+    assert payload["code"] == "bike_not_found"
+    assert "Motorcycle with id 9999" in payload["message"]
+    assert payload["request_id"]
 
 
 @pytest.mark.anyio
@@ -172,4 +175,26 @@ async def test_incompatible_part(client: AsyncClient):
     )
 
     assert response.status_code == 400
-    assert "not compatible" in response.json()["detail"]
+    payload = response.json()
+    assert payload["code"] == "incompatible_part"
+    assert "not compatible" in payload["message"]
+
+
+@pytest.mark.anyio
+async def test_quote_when_owner_has_only_parts_total(client: AsyncClient):
+    ids = seed_test_data()
+
+    response = await client.post(
+        "/api/quote",
+        json={
+            "motorcycle_id": ids["motorcycle_id"],
+            "selected_part_ids": [ids["compatible_exhaust_id"]],
+            "owns_bike": True,
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["base_price_included"] == 0
+    assert payload["parts_subtotal"] == 18000.0
+    assert payload["total_price"] == 18000.0

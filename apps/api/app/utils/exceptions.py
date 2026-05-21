@@ -4,6 +4,16 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 
+def error_payload(
+    request: Request,
+    *,
+    code: str,
+    message: str,
+) -> dict[str, str]:
+    request_id = getattr(request.state, "request_id", "")
+    return {"code": code, "message": message, "request_id": request_id}
+
+
 class BikeNotFound(Exception):
     def __init__(self, motorcycle_id: int):
         self.motorcycle_id = motorcycle_id
@@ -27,19 +37,40 @@ class IncompatiblePart(Exception):
         )
 
 
-async def bike_not_found_handler(_: Request, exc: BikeNotFound) -> JSONResponse:
-    return JSONResponse(status_code=404, content={"detail": str(exc)})
+async def bike_not_found_handler(request: Request, exc: BikeNotFound) -> JSONResponse:
+    return JSONResponse(
+        status_code=404,
+        content=error_payload(
+            request,
+            code="bike_not_found",
+            message=str(exc),
+        ),
+    )
 
 
-async def part_not_found_handler(_: Request, exc: PartNotFound) -> JSONResponse:
-    return JSONResponse(status_code=404, content={"detail": str(exc)})
+async def part_not_found_handler(request: Request, exc: PartNotFound) -> JSONResponse:
+    return JSONResponse(
+        status_code=404,
+        content=error_payload(
+            request,
+            code="part_not_found",
+            message=str(exc),
+        ),
+    )
 
 
 async def incompatible_part_handler(
-    _: Request,
+    request: Request,
     exc: IncompatiblePart,
 ) -> JSONResponse:
-    return JSONResponse(status_code=400, content={"detail": str(exc)})
+    return JSONResponse(
+        status_code=400,
+        content=error_payload(
+            request,
+            code="incompatible_part",
+            message=str(exc),
+        ),
+    )
 
 
 def register_exception_handlers(app: FastAPI) -> None:
