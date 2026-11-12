@@ -36,7 +36,7 @@ export function generateQuotePDF(
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
-  doc.setTextColor(249, 115, 22);
+  doc.setTextColor(47, 91, 234);
   doc.text("MotoForge", 14, 20);
 
   doc.setFontSize(11);
@@ -96,7 +96,7 @@ export function generateQuotePDF(
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.setTextColor(249, 115, 22);
+  doc.setTextColor(47, 91, 234);
   doc.text(`Grand Total: ${formatCurrency(grandTotal)}`, 14, summaryY + 20);
 
   doc.setFont("helvetica", "normal");

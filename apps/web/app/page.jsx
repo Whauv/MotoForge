@@ -1,196 +1,127 @@
 import Link from "next/link";
 
-const installationSteps = [
-  "Clone the MotoForge repository from GitHub.",
-  "Install the API dependencies and start the FastAPI server.",
-  "Install the web dependencies and run the Next.js app.",
-  "Seed the local database, then launch the configurator.",
-];
+import DemoBuild from "../components/landing/DemoBuild";
+import SiteHeader from "../components/ui/SiteHeader";
 
-const featureCards = [
-  {
-    title: "3D Motorcycle Configurator",
-    body:
-      "Explore a bike in a live 360-degree viewer, swap compatible parts, and evaluate each build before touching hardware.",
-  },
-  {
-    title: "Compatibility-Aware Parts",
-    body:
-      "MotoForge only surfaces modification options that match the imported bike and segment rules in the backend catalog.",
-  },
-  {
-    title: "Live Quote and Performance",
-    body:
-      "Every build updates pricing, horsepower, and weight projections in real time so riders and workshops can make fast decisions.",
-  },
-];
+const REPO_URL = "https://github.com/Whauv/MotoForge";
 
-const technicalHighlights = [
-  "Next.js 14 frontend with React Three Fiber for the visual experience",
-  "FastAPI backend with SQLAlchemy services for quotes, fitment, and imports",
-  "Asset manifest and validator for production GLB bike and part models",
-  "Docker, CI/CD, and deployment scaffolding for cloud rollout",
+const steps = [
+  {
+    title: "Choose your bike",
+    body: "Start from the bike you own or the one you're about to buy. Tick “I already own the bike” and its price stays out of the quote.",
+  },
+  {
+    title: "Fit parts and watch the numbers",
+    body: "Only parts that fit that bike are listed. Each one shows up on the 3D model, with the change in power, weight and price as you add it.",
+  },
+  {
+    title: "Take the quote to the workshop",
+    body: "Download an itemised PDF, or copy the build link so a mechanic or a friend sees exactly the same build.",
+  },
 ];
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      <section className="border-b border-zinc-800 px-6 py-8">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-orange-400">
-              MotoForge
-            </p>
-            <p className="mt-2 text-sm text-zinc-500">
-              3D motorcycle configuration platform for riders, builders, and shops
-            </p>
-          </div>
+    <>
+      <SiteHeader>
+        <a href={REPO_URL} target="_blank" rel="noreferrer" className="hidden text-sm font-medium text-graphite-soft hover:text-graphite sm:inline">
+          Source on GitHub
+        </a>
+        <Link href="/product" className="rounded-panel bg-anodized px-4 py-2 text-sm font-semibold text-white hover:bg-anodized-deep">
+          Choose a bike
+        </Link>
+      </SiteHeader>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href="https://github.com/Whauv/MotoForge"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:border-orange-400 hover:text-white"
-            >
-              View GitHub
-            </Link>
+      <main>
+        <section className="mx-auto max-w-[1600px] px-5 pb-10 pt-14 md:px-8 md:pt-20">
+          <h1 className="stretch-expanded max-w-5xl text-4xl font-black leading-[0.98] tracking-tight sm:text-5xl lg:text-6xl">
+            Build the motorcycle before you build it in the workshop.
+          </h1>
+          <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <p className="max-w-xl text-lg text-graphite-soft">
+              See compatible parts on your bike in 3D, with what each one does to power, weight and
+              price, before you order anything.
+            </p>
             <Link
               href="/product"
-              className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-400"
+              className="self-start rounded-panel bg-anodized px-5 py-3 font-semibold text-white hover:bg-anodized-deep md:self-auto"
             >
-              Launch Product
+              Choose a bike
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-6 py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 xl:grid-cols-[1.2fr_0.8fr]">
-          <div className="space-y-8">
-            <div className="max-w-4xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-orange-400">
-                Product Overview
-              </p>
-              <h1 className="mt-5 text-5xl font-black tracking-tight text-white md:text-7xl">
-                Build the motorcycle before you build it in the workshop.
-              </h1>
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-zinc-300 md:text-xl">
-                MotoForge helps riders and custom shops choose a bike, preview
-                compatible modifications in 3D, and export a real quote before
-                buying parts or starting fabrication.
-              </p>
-            </div>
+        <section aria-label="Sample build" className="mx-auto max-w-[1600px] md:px-8">
+          <DemoBuild />
+        </section>
 
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/product"
-                className="rounded-2xl bg-orange-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-orange-400"
-              >
-                Open the Configurator
-              </Link>
-              <Link
-                href="https://github.com/Whauv/MotoForge"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-2xl border border-zinc-700 px-6 py-3 text-sm font-semibold text-zinc-200 transition hover:border-orange-400 hover:text-white"
-              >
-                Explore the Repository
-              </Link>
-            </div>
+        <section aria-labelledby="steps-heading" className="mx-auto max-w-[1600px] px-5 py-20 md:px-8 md:py-28">
+          <h2 id="steps-heading" className="stretch-semi-expanded text-3xl font-extrabold">
+            From stock bike to quote
+          </h2>
+          <ol className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
+            {steps.map((step, index) => (
+              <li key={step.title} className="border-t border-graphite pt-5">
+                <span className="stretch-expanded text-4xl font-black text-steel">{index + 1}</span>
+                <h3 className="mt-3 text-xl font-bold">{step.title}</h3>
+                <p className="mt-2 max-w-sm text-graphite-soft">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-            <div className="grid gap-5 md:grid-cols-3">
-              {featureCards.map((card) => (
-                <article
-                  key={card.title}
-                  className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6"
-                >
-                  <h2 className="text-xl font-bold text-white">{card.title}</h2>
-                  <p className="mt-3 text-sm leading-7 text-zinc-400">{card.body}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <aside className="rounded-[32px] border border-zinc-800 bg-zinc-900/70 p-6">
-            <div className="rounded-[28px] border border-zinc-800 bg-zinc-950 p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-500">
-                What You Can Do
-              </p>
-              <div className="mt-5 space-y-5">
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4">
-                  <p className="text-sm font-semibold text-white">Choose a bike</p>
-                  <p className="mt-2 text-sm text-zinc-400">
-                    Browse the imported catalog or request a live-catalog model.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4">
-                  <p className="text-sm font-semibold text-white">Preview modifications</p>
-                  <p className="mt-2 text-sm text-zinc-400">
-                    Compare exhausts, suspension, wheels, fairings, and handlebar
-                    setups in the 3D viewer.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4">
-                  <p className="text-sm font-semibold text-white">Export the build</p>
-                  <p className="mt-2 text-sm text-zinc-400">
-                    Review pricing and performance, then generate a clean PDF quote.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section className="border-t border-zinc-800 px-6 py-18">
-        <div className="mx-auto grid max-w-7xl gap-8 xl:grid-cols-2">
-          <div className="rounded-[32px] border border-zinc-800 bg-zinc-900/60 p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-orange-400">
-              Installation
-            </p>
-            <h2 className="mt-4 text-3xl font-bold text-white">
-              Run MotoForge locally
+        <section aria-labelledby="fit-heading" className="bg-graphite text-bench">
+          <div className="mx-auto grid max-w-[1600px] gap-10 px-5 py-20 md:grid-cols-2 md:px-8 md:py-24">
+            <h2 id="fit-heading" className="stretch-semi-expanded max-w-md text-3xl font-extrabold">
+              If a part doesn&apos;t fit your bike, you won&apos;t see it.
             </h2>
-            <ol className="mt-6 space-y-4 text-sm text-zinc-300">
-              {installationSteps.map((step, index) => (
-                <li
-                  key={step}
-                  className="flex gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/80 px-4 py-4"
-                >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-500 text-xs font-bold text-white">
-                    {index + 1}
-                  </span>
-                  <span className="leading-7">{step}</span>
-                </li>
-              ))}
-            </ol>
-            <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-950/80 p-4 font-mono text-xs leading-7 text-zinc-300">
-              <p>apps/api: `python seed/seed.py && uvicorn app.main:app --reload`</p>
-              <p>apps/web: `npm install && npm run dev`</p>
+            <div className="max-w-lg space-y-4 text-lg text-bench/80">
+              <p>
+                Every part is linked to the bikes it fits, by riding segment, so a cruiser never
+                gets offered a sportbike&apos;s clip-ons.
+              </p>
+              <p>
+                Quotes are worked out by the MotoForge API from the same fitment data, so the price
+                you see is the price on the PDF.
+              </p>
             </div>
           </div>
+        </section>
 
-          <div className="rounded-[32px] border border-zinc-800 bg-zinc-900/60 p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-orange-400">
-              Technical Snapshot
-            </p>
-            <h2 className="mt-4 text-3xl font-bold text-white">
-              Built for configuration and expansion
-            </h2>
-            <div className="mt-6 space-y-4">
-              {technicalHighlights.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-zinc-800 bg-zinc-950/80 px-4 py-4 text-sm leading-7 text-zinc-300"
-                >
-                  {item}
-                </div>
-              ))}
+        <section aria-labelledby="run-heading" className="mx-auto max-w-[1600px] px-5 py-20 md:px-8">
+          <div className="grid gap-10 md:grid-cols-2">
+            <div>
+              <h2 id="run-heading" className="stretch-semi-expanded text-3xl font-extrabold">
+                Run it on your machine
+              </h2>
+              <p className="mt-4 max-w-md text-graphite-soft">
+                MotoForge is open source: a FastAPI service for bikes, parts and quotes, and this
+                Next.js app with a React Three Fiber viewer.
+              </p>
+              <a href={REPO_URL} target="_blank" rel="noreferrer" className="mt-6 inline-block font-semibold text-anodized-deep underline underline-offset-4">
+                Read the setup guide on GitHub
+              </a>
             </div>
+            <pre className="overflow-x-auto rounded-panel bg-bench-sunk p-5 text-sm leading-7">
+              <code>{`# API, from apps/api
+pip install -r requirements.txt
+python seed/seed.py
+uvicorn app.main:app --reload
+
+# Web, from apps/web
+npm ci
+npm run dev`}</code>
+            </pre>
           </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-steel/60">
+        <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4 px-5 py-8 text-sm text-graphite-soft md:px-8">
+          <span className="stretch-expanded font-black text-graphite">MotoForge</span>
+          <span>For riders, builders and workshops.</span>
         </div>
-      </section>
-    </main>
+      </footer>
+    </>
   );
 }

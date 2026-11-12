@@ -243,201 +243,164 @@ export default function BikeCatalog({ motorcycles = [] }) {
     }
   };
 
+  const selectClass =
+    "w-full appearance-none rounded-panel border border-steel bg-bench-raised px-3 py-2.5 text-base disabled:cursor-not-allowed disabled:opacity-50";
+
   return (
     <div className="space-y-10">
-      <section className="rounded-[32px] border border-zinc-800 bg-zinc-900/70 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.25)]">
-        <div className="grid gap-4 lg:grid-cols-4">
-          <label className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">
-              Make
-            </span>
-            <select
-              value={selectedMake}
-              onChange={handleMakeChange}
-              className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-orange-400"
-            >
-              <option value="all">All manufacturers</option>
-              {brandOptions.map((brand) => (
-                <option key={brand.id} value={brand.name}>
-                  {brand.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">
-              Model
-            </span>
-            <select
-              value={selectedModel}
-              onChange={(event) => {
-                setSelectedModel(event.target.value);
-                setSelectedYear("all");
-              }}
-              disabled={selectedMake === "all" || modelsLoading}
-              className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition disabled:cursor-not-allowed disabled:opacity-50 focus:border-orange-400"
-            >
-              <option value="all">
-                {selectedMake === "all" ? "Select a make first" : "All models"}
+      <section aria-label="Filter bikes" className="grid gap-4 md:grid-cols-[repeat(3,minmax(0,1fr))_auto] md:items-end">
+        <label className="space-y-1.5">
+          <span className="block text-sm text-graphite-soft">Make</span>
+          <select value={selectedMake} onChange={handleMakeChange} className={selectClass}>
+            <option value="all">All makes</option>
+            {brandOptions.map((brand) => (
+              <option key={brand.id} value={brand.name}>
+                {brand.name}
               </option>
-              {catalogModels.map((model) => (
-                <option key={model.id} value={model.name}>
-                  {model.name}
-                </option>
-              ))}
-            </select>
-          </label>
+            ))}
+          </select>
+        </label>
 
-          <label className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">
-              Year
-            </span>
-            <select
-              value={selectedYear}
-              onChange={(event) => setSelectedYear(event.target.value)}
-              className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-white outline-none transition focus:border-orange-400"
-            >
-              {availableYears.map((year) => (
-                <option key={year} value={year}>
-                  {year === "all" ? "All years" : year}
-                </option>
-              ))}
-            </select>
-          </label>
+        <label className="space-y-1.5">
+          <span className="block text-sm text-graphite-soft">Model</span>
+          <select
+            value={selectedModel}
+            onChange={(event) => {
+              setSelectedModel(event.target.value);
+              setSelectedYear("all");
+            }}
+            disabled={selectedMake === "all" || modelsLoading}
+            className={selectClass}
+          >
+            <option value="all">{selectedMake === "all" ? "Choose a make first" : "All models"}</option>
+            {catalogModels.map((model) => (
+              <option key={model.id} value={model.name}>
+                {model.name}
+              </option>
+            ))}
+          </select>
+        </label>
 
-          <label className="flex items-end">
-            <div className="flex w-full items-center gap-3 rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3">
-              <input
-                id="owns-bike"
-                type="checkbox"
-                checked={ownsBike}
-                onChange={(event) => setOwnsBike(event.target.checked)}
-                className="h-4 w-4 rounded border-zinc-600 bg-zinc-900 text-orange-500 focus:ring-orange-400"
-              />
-              <div>
-                <p className="text-sm font-semibold text-white">I already own this bike</p>
-                <p className="text-xs text-zinc-500">Hide base bike pricing in the quote flow</p>
-              </div>
-            </div>
-          </label>
-        </div>
+        <label className="space-y-1.5">
+          <span className="block text-sm text-graphite-soft">Year</span>
+          <select value={selectedYear} onChange={(event) => setSelectedYear(event.target.value)} className={selectClass}>
+            {availableYears.map((year) => (
+              <option key={year} value={year}>
+                {year === "all" ? "Any year" : year}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-zinc-500">
-          <span className="rounded-full border border-zinc-700 px-3 py-1 uppercase tracking-[0.24em]">
-            {catalogLoading ? "Loading catalog" : `Catalog source: ${catalogSource}`}
-          </span>
-          {catalogAttribution ? (
-            <span>Live catalog data by {catalogAttribution}. Only imported bikes can be configured.</span>
-          ) : (
-            <span>Using the local MotoForge catalog currently imported into the app.</span>
-          )}
-        </div>
+        <label className="flex cursor-pointer items-center gap-3 rounded-panel border border-steel bg-bench-raised px-3 py-2.5">
+          <input
+            type="checkbox"
+            checked={ownsBike}
+            onChange={(event) => setOwnsBike(event.target.checked)}
+            className="h-4 w-4 accent-anodized"
+          />
+          <span className="text-base">I already own the bike</span>
+        </label>
       </section>
 
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-white">Choose Your Bike</h2>
-          <p className="mt-2 text-sm text-zinc-400">
-            Search the live motorcycle catalog by make, model, and year from 2015
-            to the present, then continue with bikes already imported into MotoForge.
-          </p>
-        </div>
-        <div className="rounded-full border border-zinc-700 px-4 py-2 text-sm text-zinc-300">
-          {filteredMotorcycles.length} configurable build
-          {filteredMotorcycles.length === 1 ? "" : "s"}
-        </div>
-      </div>
+      <p className="text-sm text-graphite-soft">
+        {catalogLoading
+          ? "Loading makes"
+          : catalogAttribution
+            ? `Makes and models from ${catalogAttribution}. Only bikes with fitment data can be configured.`
+            : "Showing bikes in the MotoForge catalog."}
+      </p>
 
-      {filteredMotorcycles.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredMotorcycles.map((bike) => (
-            <article
-              key={bike.id}
-              className="group rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6 transition hover:border-orange-400/40 hover:bg-zinc-900 hover:shadow-[0_24px_60px_rgba(249,115,22,0.12)]"
+      <section aria-labelledby="bike-list-heading">
+        <div className="flex items-baseline justify-between gap-4 border-b border-graphite pb-3">
+          <h2 id="bike-list-heading" className="stretch-semi-expanded text-2xl font-extrabold">
+            Bikes you can configure
+          </h2>
+          <span className="text-sm text-graphite-soft">{filteredMotorcycles.length} found</span>
+        </div>
+
+        {filteredMotorcycles.length > 0 ? (
+          <>
+            <div
+              aria-hidden
+              className="hidden grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))_minmax(0,1.2fr)_7rem] gap-6 py-3 text-sm text-graphite-soft md:grid"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500">
-                    {bike.brand}
-                  </p>
-                  <h3 className="mt-2 text-2xl font-bold text-white group-hover:text-orange-300">
-                    {bike.name}
-                  </h3>
-                </div>
-                <span className="rounded-full border border-zinc-700 px-3 py-1 text-xs font-semibold text-zinc-300">
-                  {bike.year}
-                </span>
-              </div>
-
-              <div className="mt-8 space-y-2 text-sm text-zinc-400">
-                {!ownsBike ? (
-                  <div className="flex items-center justify-between">
-                    <span>Base Price</span>
-                    <span className="font-semibold text-orange-300">
-                      {formatPrice(bike.base_price)}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <span>Ownership Mode</span>
-                    <span className="font-semibold text-emerald-300">Bike already owned</span>
-                  </div>
-                )}
-                <div className="flex items-center justify-between">
-                  <span>Power</span>
-                  <span>{formatHP(bike.base_hp)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Weight</span>
-                  <span>{formatWeight(bike.base_weight_kg)}</span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => handleBuild(bike.id)}
-                className="mt-8 w-full rounded-2xl bg-orange-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-orange-400"
-              >
-                Configure This Bike
-              </button>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <div className="rounded-[32px] border border-zinc-800 bg-zinc-900/60 p-10 text-center">
-          <h3 className="text-xl font-semibold text-white">
-            {hasSpecificSelection && liveCatalogEnabled
-              ? "Catalog match found, but it is not imported yet"
-              : "No bikes match this filter yet"}
-          </h3>
-          <p className="mt-3 text-sm text-zinc-400">
-            {hasSpecificSelection && liveCatalogEnabled
-              ? "The live catalog can list this motorcycle, but the MotoForge configurator only unlocks bikes that have already been imported with compatibility data."
-              : "Try another make, model, or year. The current configurator only shows motorcycles that have been imported into MotoForge."}
-          </p>
-          {hasSpecificSelection && liveCatalogEnabled ? (
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={handleImportBike}
-                disabled={!canImportSelection || importLoading}
-                className="rounded-2xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {importLoading ? "Importing..." : "Request / Import This Bike"}
-              </button>
-              {!canImportSelection ? (
-                <p className="mt-3 text-xs text-zinc-500">
-                  Select a specific make, model, and year to import it.
-                </p>
-              ) : null}
-              {importError ? (
-                <p className="mt-3 text-xs text-red-300">{importError}</p>
-              ) : null}
+              <span>Bike</span>
+              <span className="text-right">Power</span>
+              <span className="text-right">Weight</span>
+              <span className="text-right">Year</span>
+              <span className="text-right">Price</span>
+              <span />
             </div>
-          ) : null}
-        </div>
-      )}
+            <ul>
+              {filteredMotorcycles.map((bike) => (
+                <li
+                  key={bike.id}
+                  className="grid grid-cols-2 items-center gap-x-6 gap-y-2 border-t border-steel/60 py-5 md:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))_minmax(0,1.2fr)_7rem] md:py-4"
+                >
+                  <p className="col-span-2 min-w-0 md:col-span-1">
+                    <span className="block text-sm text-graphite-soft">{bike.brand}</span>
+                    <span className="stretch-condensed block truncate text-2xl font-extrabold">{bike.name}</span>
+                  </p>
+                  <p className="text-sm md:text-right md:text-base">
+                    <span className="text-graphite-soft md:hidden">Power </span>
+                    {formatHP(bike.base_hp)}
+                  </p>
+                  <p className="text-sm md:text-right md:text-base">
+                    <span className="text-graphite-soft md:hidden">Weight </span>
+                    {formatWeight(bike.base_weight_kg)}
+                  </p>
+                  <p className="text-sm md:text-right md:text-base">
+                    <span className="text-graphite-soft md:hidden">Year </span>
+                    {bike.year}
+                  </p>
+                  <p className="text-sm tabular-nums md:text-right md:text-base">
+                    <span className="text-graphite-soft md:hidden">Price </span>
+                    {ownsBike ? <span className="text-graphite-soft">Not in quote</span> : formatPrice(bike.base_price)}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleBuild(bike.id)}
+                    aria-label={`Configure ${bike.brand} ${bike.name} ${bike.year}`}
+                    className="col-span-2 w-full rounded-panel bg-anodized px-4 py-2.5 font-semibold text-white transition-colors hover:bg-anodized-deep md:col-span-1"
+                  >
+                    Configure
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <div className="max-w-xl py-12">
+            <h3 className="stretch-semi-expanded text-xl font-bold">
+              {hasSpecificSelection && liveCatalogEnabled
+                ? "This bike is in the catalog but has no fitment data yet"
+                : "No bikes match these filters"}
+            </h3>
+            <p className="mt-2 text-graphite-soft">
+              {hasSpecificSelection && liveCatalogEnabled
+                ? "Import it to add it to MotoForge. Parts are matched to it by riding segment."
+                : "Try a different make, model, or year."}
+            </p>
+            {hasSpecificSelection && liveCatalogEnabled ? (
+              <div className="mt-6">
+                <button
+                  type="button"
+                  onClick={handleImportBike}
+                  disabled={!canImportSelection || importLoading}
+                  className="rounded-panel bg-anodized px-4 py-2.5 font-semibold text-white transition-colors hover:bg-anodized-deep disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {importLoading ? "Importing bike" : "Import this bike"}
+                </button>
+                {!canImportSelection ? (
+                  <p className="mt-3 text-sm text-graphite-soft">Choose a make, model, and year to import.</p>
+                ) : null}
+                {importError ? <p className="mt-3 text-sm text-graphite">{importError}</p> : null}
+              </div>
+            ) : null}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

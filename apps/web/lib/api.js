@@ -35,6 +35,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response.data,
   (error) => {
+    // A superseded request was aborted on purpose; never retry it.
+    if (axios.isCancel(error)) {
+      return Promise.reject({ status: 0, code: "canceled", canceled: true, message: "Request canceled." });
+    }
+
     const config = error?.config || {};
     const statusCode = error?.response?.status || 0;
     const retries = config.__retryCount || 0;
@@ -93,12 +98,16 @@ export function fetchParts(bikeId) {
   return api.get(`/api/motorcycles/${bikeId}/parts`);
 }
 
-export function postQuote(motorcycleId, selectedPartIds, ownsBike = false) {
-  return api.post("/api/quote", {
-    motorcycle_id: motorcycleId,
-    selected_part_ids: selectedPartIds,
-    owns_bike: ownsBike,
-  });
+export function postQuote(motorcycleId, selectedPartIds, ownsBike = false, { signal } = {}) {
+  return api.post(
+    "/api/quote",
+    {
+      motorcycle_id: motorcycleId,
+      selected_part_ids: selectedPartIds,
+      owns_bike: ownsBike,
+    },
+    { signal },
+  );
 }
 
 export default api;

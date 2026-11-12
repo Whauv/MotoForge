@@ -4,9 +4,8 @@ import { Suspense, useEffect, useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
 import { a, useSpring } from "@react-spring/three";
 
-function isPlaceholderModelUrl(url) {
-  return !url || url.includes("cdn.motoforge.local");
-}
+import { isPlaceholderModelUrl, PLACEHOLDER_OFFSET } from "./placeholder/PlaceholderBike";
+
 
 function resolveCategory(modelUrl, category) {
   if (category) {
@@ -55,7 +54,7 @@ function PlaceholderMod({ category }) {
         >
           <cylinderGeometry args={[0.07, 0.11, 0.88, 22]} />
           <meshStandardMaterial
-            color="#d4d4d8"
+            color="#2f5bea"
             metalness={0.94}
             roughness={0.2}
             transparent
@@ -70,7 +69,7 @@ function PlaceholderMod({ category }) {
         >
           <cylinderGeometry args={[0.025, 0.025, 0.54, 16]} />
           <meshStandardMaterial
-            color="#71717a"
+            color="#7b96f0"
             metalness={0.84}
             roughness={0.26}
             transparent
@@ -92,7 +91,7 @@ function PlaceholderMod({ category }) {
         >
           <cylinderGeometry args={[0.045, 0.045, 0.56, 18]} />
           <meshStandardMaterial
-            color="#38bdf8"
+            color="#2f5bea"
             metalness={0.34}
             roughness={0.34}
             transparent
@@ -107,7 +106,7 @@ function PlaceholderMod({ category }) {
         >
           <torusGeometry args={[0.08, 0.018, 12, 24]} />
           <meshStandardMaterial
-            color="#60a5fa"
+            color="#2f5bea"
             metalness={0.24}
             roughness={0.38}
             transparent
@@ -122,7 +121,7 @@ function PlaceholderMod({ category }) {
         >
           <cylinderGeometry args={[0.025, 0.025, 0.86, 16]} />
           <meshStandardMaterial
-            color="#bfdbfe"
+            color="#7b96f0"
             metalness={0.9}
             roughness={0.2}
             transparent
@@ -137,7 +136,7 @@ function PlaceholderMod({ category }) {
         >
           <cylinderGeometry args={[0.025, 0.025, 0.86, 16]} />
           <meshStandardMaterial
-            color="#bfdbfe"
+            color="#7b96f0"
             metalness={0.9}
             roughness={0.2}
             transparent
@@ -154,19 +153,19 @@ function PlaceholderMod({ category }) {
         {[-1.1, 1.02].map((x) => (
           <group key={x} position={[x, 0, 0]}>
             <mesh rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
-              <torusGeometry args={[0.48, 0.06, 18, 42]} />
+              <torusGeometry args={[0.37, 0.05, 18, 42]} />
               <meshStandardMaterial
-                color="#4ade80"
+                color="#2f5bea"
                 metalness={0.42}
                 roughness={0.34}
                 transparent
-                opacity={0.78}
+                opacity={1}
               />
             </mesh>
             <mesh rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
-              <torusGeometry args={[0.36, 0.025, 16, 32]} />
+              <torusGeometry args={[0.2, 0.03, 16, 32]} />
               <meshStandardMaterial
-                color="#86efac"
+                color="#7b96f0"
                 metalness={0.72}
                 roughness={0.2}
                 transparent
@@ -190,7 +189,7 @@ function PlaceholderMod({ category }) {
         >
           <boxGeometry args={[0.82, 0.2, 0.5]} />
           <meshStandardMaterial
-            color="#a855f7"
+            color="#2f5bea"
             metalness={0.32}
             roughness={0.38}
             transparent
@@ -205,7 +204,7 @@ function PlaceholderMod({ category }) {
         >
           <boxGeometry args={[0.32, 0.13, 0.26]} />
           <meshStandardMaterial
-            color="#e9d5ff"
+            color="#7b96f0"
             metalness={0.08}
             roughness={0.16}
             transparent
@@ -227,7 +226,7 @@ function PlaceholderMod({ category }) {
         >
           <boxGeometry args={[0.94, 0.05, 0.05]} />
           <meshStandardMaterial
-            color="#fde047"
+            color="#2f5bea"
             metalness={0.72}
             roughness={0.24}
             transparent
@@ -242,7 +241,7 @@ function PlaceholderMod({ category }) {
         >
           <cylinderGeometry args={[0.05, 0.05, 0.18, 16]} />
           <meshStandardMaterial
-            color="#fef08a"
+            color="#7b96f0"
             metalness={0.5}
             roughness={0.26}
             transparent
@@ -257,7 +256,7 @@ function PlaceholderMod({ category }) {
         >
           <cylinderGeometry args={[0.05, 0.05, 0.18, 16]} />
           <meshStandardMaterial
-            color="#fef08a"
+            color="#7b96f0"
             metalness={0.5}
             roughness={0.26}
             transparent
@@ -326,7 +325,11 @@ function ModOverlayContent({ modelUrl }) {
 
 export default function ModOverlay({ modelUrl, category }) {
   if (isPlaceholderModelUrl(modelUrl)) {
-    return <PlaceholderMod category={resolveCategory(modelUrl, category)} />;
+    return (
+      <group position={PLACEHOLDER_OFFSET}>
+        <PlaceholderMod category={resolveCategory(modelUrl, category)} />
+      </group>
+    );
   }
 
   return (
