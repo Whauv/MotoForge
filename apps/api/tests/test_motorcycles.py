@@ -17,7 +17,6 @@ from app.database import Base, get_db  # noqa: E402
 from app.main import app  # noqa: E402
 from app.models.motorcycle import Motorcycle  # noqa: E402
 
-
 TEST_DATABASE_URL = "sqlite://"
 engine = create_engine(
     TEST_DATABASE_URL,

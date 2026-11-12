@@ -38,6 +38,12 @@ class Settings(BaseSettings):
         default=180,
         alias="API_RATE_LIMIT_PER_MINUTE",
     )
+    # Only enable behind a proxy you control (Cloud Run, ingress); otherwise
+    # clients can spoof X-Forwarded-For to dodge the rate limit.
+    trust_proxy_headers: bool = Field(default=False, alias="TRUST_PROXY_HEADERS")
+    # Apply Alembic migrations on startup. Turn off when migrations run as a
+    # separate deploy step.
+    auto_migrate: bool = Field(default=True, alias="AUTO_MIGRATE")
 
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -19,7 +19,6 @@ from app.models.compatibility import Compatibility  # noqa: E402
 from app.models.mod_part import ModPart, ModPartCategory  # noqa: E402
 from app.models.motorcycle import Motorcycle  # noqa: E402
 
-
 TEST_DATABASE_URL = "sqlite://"
 engine = create_engine(
     TEST_DATABASE_URL,
@@ -198,3 +197,24 @@ async def test_quote_when_owner_has_only_parts_total(client: AsyncClient):
     assert payload["base_price_included"] == 0
     assert payload["parts_subtotal"] == 18000.0
     assert payload["total_price"] == 18000.0
+
+
+@pytest.mark.anyio
+async def test_duplicate_part_ids_are_charged_once(client: AsyncClient):
+    ids = seed_test_data()
+    exhaust_id = ids["compatible_exhaust_id"]
+
+    response = await client.post(
+        "/api/quote",
+        json={
+            "motorcycle_id": ids["motorcycle_id"],
+            "selected_part_ids": [exhaust_id, exhaust_id, exhaust_id],
+            "owns_bike": True,
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["parts_subtotal"] == 18000.0
+    assert payload["hp_gain"] == 6.5
+    assert len(payload["line_items"]) == 1

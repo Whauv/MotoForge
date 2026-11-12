@@ -22,20 +22,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: apps/api/requirements*.txt
 
       - name: Install API dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt black flake8
-
-      - name: Normalize API formatting
-        run: black app seed tests
+          pip install -r requirements-dev.txt
 
       - name: Run black check
-        run: black --check app seed tests
+        run: black --check app seed tests migrations
 
       - name: Run flake8
-        run: flake8 app seed tests
+        run: flake8 app seed tests migrations
 
   test-api:
     runs-on: ubuntu-latest
@@ -53,11 +52,18 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: apps/api/requirements*.txt
 
       - name: Install API dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Check migrations match the models
+        run: |
+          python -m alembic upgrade head
+          python -m alembic check
 
       - name: Run pytest
         run: python -m pytest tests/
@@ -76,10 +82,10 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: apps/web/package.json
+          cache-dependency-path: apps/web/package-lock.json
 
       - name: Install web dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run eslint
         run: npm run lint -- --no-cache
@@ -101,10 +107,10 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: apps/web/package.json
+          cache-dependency-path: apps/web/package-lock.json
 
       - name: Install web dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build web app
         run: npm run build

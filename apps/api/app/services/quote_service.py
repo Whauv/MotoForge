@@ -16,18 +16,19 @@ def calculate_quote(
     owns_bike: bool = False,
 ) -> QuoteResponse:
     motorcycle = get_motorcycle_by_id(db, motorcycle_id)
-    validate_parts_compatibility(db, motorcycle_id, selected_part_ids)
+    # A part is either on the build or not; repeated IDs must not be charged twice.
+    unique_part_ids = list(dict.fromkeys(selected_part_ids))
+    validate_parts_compatibility(db, motorcycle_id, unique_part_ids)
 
     ordered_parts: list[ModPart] = []
-    if selected_part_ids:
-        unique_part_ids = list(dict.fromkeys(selected_part_ids))
+    if unique_part_ids:
         parts_by_id = {
             part.id: part
             for part in db.scalars(
                 select(ModPart).where(ModPart.id.in_(unique_part_ids))
             ).all()
         }
-        ordered_parts = [parts_by_id[part_id] for part_id in selected_part_ids]
+        ordered_parts = [parts_by_id[part_id] for part_id in unique_part_ids]
 
     parts_total = sum(part.price for part in ordered_parts)
     base_price_included = 0 if owns_bike else motorcycle.base_price

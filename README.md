@@ -30,9 +30,11 @@ The repository is structured as a monorepo with separate frontend and backend ap
 
 - Next.js 14 with App Router
 - React 18
-- Tailwind CSS
+- Tailwind CSS with the "build bench" design tokens in `tailwind.config.js`
+- Motion (Framer Motion) for interaction animation, respecting reduced-motion settings
+- Archivo variable font via `next/font`
 - Axios
-- jsPDF and `jspdf-autotable`
+- jsPDF and `jspdf-autotable`, loaded only when a quote is downloaded
 
 ### 3D Layer
 
@@ -45,6 +47,7 @@ The repository is structured as a monorepo with separate frontend and backend ap
 
 - FastAPI
 - SQLAlchemy
+- Alembic migrations
 - Pydantic Settings
 - SQLite for MVP
 - Uvicorn
@@ -57,7 +60,6 @@ The repository is structured as a monorepo with separate frontend and backend ap
 - Google Cloud Run
 - Google Kubernetes Engine
 - Vercel
-- Turborepo
 
 ## Architecture
 
@@ -79,37 +81,45 @@ flowchart LR
     E --> F["useBike fetches base motorcycle"]
     E --> G["useParts fetches compatible parts"]
     E --> H["BikeViewer loads GLTF base model"]
-    G --> I["Sidebar renders grouped modification categories"]
-    I --> J["User toggles a part"]
-    J --> K["useQuote updates selected parts"]
-    K --> L["POST /api/quote"]
+    G --> I["PartPicker renders parts by area"]
+    I --> J["User fits a part (sidebar or 3D hotspot)"]
+    J --> K["useBuild writes ?parts= to the URL"]
+    K --> L["POST /api/quote (debounced, stale requests aborted)"]
     L --> M["FastAPI validates compatibility"]
     M --> N["Quote service calculates price, HP, and weight"]
     N --> O["QuoteResponse returned to frontend"]
-    O --> P["StatsPanel and QuotationPanel update"]
-    P --> Q["User exports PDF quote"]
+    O --> P["PerformanceFigures and BuildSheet update"]
+    P --> Q["User downloads PDF quote or copies the build link"]
 ```
 
 ## Request and Data Flow
 
-### Landing Page
+### Landing and Catalog Pages
 
-1. The Next.js home page calls `GET /api/motorcycles`.
-2. The backend returns a list of supported motorcycles.
-3. The user selects a bike and navigates to `/configurator/[bikeId]`.
+1. `/` is a static landing page with an interactive sample build. It runs
+   entirely in the browser, using a copy of the seed data, so it works
+   without the API.
+2. `/product` calls `GET /api/motorcycles` and lists the bikes that can be
+   configured.
+3. The user picks a bike and goes to `/configurator/[bikeId]`.
 
 ### Configurator Page
 
 1. `useBike(bikeId)` fetches the base motorcycle.
 2. `useParts(bikeId)` fetches compatible modifications grouped by category.
 3. `BikeViewer` renders the base GLTF model.
-4. The sidebar shows available parts, performance metrics, and quotation details.
+4. The sidebar lists compatible parts by area. Hotspots on the 3D bike open
+   the matching area.
+5. The build is stored in the URL (`?parts=3,7&ownsBike=true`), so copying
+   the link shares the exact build.
 
 ### Quote Calculation
 
-1. The user selects or removes a part.
-2. `useQuote` updates `selectedParts`.
-3. `POST /api/quote` sends the selected part IDs.
+1. The user fits or removes a part. Each area holds one part, so fitting a
+   second exhaust replaces the first.
+2. `useBuild` updates the URL and requests a new quote. Older in-flight
+   requests are aborted, so a slow response can't overwrite a newer one.
+3. `POST /api/quote` sends the selected part IDs. Repeated IDs are counted once.
 4. The backend validates compatibility against the selected motorcycle.
 5. The backend computes:
    - base bike price + parts subtotal
@@ -117,11 +127,12 @@ flowchart LR
    - new weight
    - HP gain
    - weight delta
-6. The frontend updates the stats and quotation panels immediately.
+6. The frontend shows the API's numbers. Power, weight and price figures count
+   to their new values, and the power curve redraws.
 
 ### PDF Export
 
-1. The user clicks `Generate PDF Quote`.
+1. The user clicks `Download quote (PDF)`.
 2. The frontend uses `generateQuotePDF(...)`.
 3. The selected parts and totals are exported into a downloadable quote.
 
@@ -144,21 +155,24 @@ motoforge/
 │   │   │   ├── config.py
 │   │   │   ├── database.py
 │   │   │   └── main.py
+│   │   ├── migrations/          # Alembic migrations
 │   │   ├── seed/
 │   │   ├── tests/
+│   │   ├── alembic.ini
 │   │   ├── Dockerfile
-│   │   └── requirements.txt
+│   │   ├── requirements.txt     # runtime, pinned
+│   │   └── requirements-dev.txt # tests and linters
 │   └── web/
-│       ├── app/
+│       ├── app/                 # /, /product, /configurator/[bikeId]
 │       ├── components/
-│       │   ├── performance/
-│       │   ├── quotation/
-│       │   ├── sidebar/
+│       │   ├── build/           # part picker, build sheet, figures, power curve
+│       │   ├── home/            # bike catalog
+│       │   ├── landing/         # landing-page demo build
+│       │   ├── quotation/       # PDF export
 │       │   ├── ui/
-│       │   └── viewer/
+│       │   └── viewer/          # 3D viewer; placeholder/ holds the procedural bike
 │       ├── hooks/
 │       ├── lib/
-│       ├── styles/
 │       ├── Dockerfile
 │       ├── next.config.js
 │       ├── package.json
@@ -169,7 +183,6 @@ motoforge/
 │       ├── api-deployment.yaml
 │       ├── ingress.yaml
 │       └── web-deployment.yaml
-├── turbo.json
 └── README.md
 ```
 
@@ -190,7 +203,8 @@ motoforge/
 cd apps/api
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
+python seed/seed.py
 uvicorn app.main:app --reload
 ```
 
@@ -200,7 +214,8 @@ On Windows PowerShell:
 cd apps/api
 python -m venv .venv
 .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
+python seed/seed.py
 uvicorn app.main:app --reload
 ```
 
@@ -208,7 +223,7 @@ uvicorn app.main:app --reload
 
 ```bash
 cd apps/web
-npm install
+npm ci
 npm run dev
 ```
 
@@ -249,6 +264,30 @@ Optional `apps/api/.env`
 DATABASE_URL=sqlite:///./motoforge.db
 CORS_ORIGINS=["http://localhost:3000"]
 APP_ENV=development
+API_RATE_LIMIT_PER_MINUTE=180   # 0 turns rate limiting off
+TRUST_PROXY_HEADERS=false       # true only behind a proxy you control
+AUTO_MIGRATE=true               # false if migrations run as a deploy step
+```
+
+The rate limiter keeps its counts in each API process. With several replicas,
+limit at the ingress or load balancer instead.
+
+## Database Migrations
+
+The schema is managed with Alembic in `apps/api/migrations/`. By default the
+API applies pending migrations on startup, and `seed/seed.py` does the same.
+
+Databases created before Alembic was added are detected automatically: missing
+columns are added, the database is marked as the baseline revision, and then
+it is upgraded as normal.
+
+After changing a model:
+
+```bash
+cd apps/api
+alembic revision --autogenerate -m "describe the change"
+alembic upgrade head
+alembic check   # CI fails if the models and migrations disagree
 ```
 
 ## Seeding the Database
@@ -260,14 +299,10 @@ cd apps/api
 python seed/seed.py
 ```
 
-Seeded data currently includes:
-
-- Benelli 502C
-- GPR Deeptone Exhaust
-- Ohlins Rear Shock
-- Excel Takasago Wheels
-- Carbon Fibre Fairing Kit
-- Rizoma Bar End Mirrors + Handlebars
+The seed adds 11 motorcycles (naked, sport, retro and cruiser) and 34 parts
+across exhausts, suspension, wheels, fairings and handlebars. Each part is
+linked to every bike in the riding segments it supports. Re-running the seed
+updates existing rows rather than duplicating them.
 
 ## Running Tests
 
@@ -275,7 +310,7 @@ Seeded data currently includes:
 
 ```bash
 cd apps/api
-python -m pytest tests/test_quotes.py
+python -m pytest tests/
 ```
 
 ### Frontend build verification
@@ -289,7 +324,8 @@ npm run build
 
 GitHub Actions runs:
 
-- API formatting and lint checks with `black` and `flake8`
+- API formatting and lint checks with `black --check` and `flake8`
+- A check that the Alembic migrations match the models
 - API tests with `pytest`
 - Web linting
 - Web production build
@@ -355,18 +391,6 @@ Ingress rules route:
 
 The web deployment job builds the app and deploys it to Vercel. In production, `NEXT_PUBLIC_API_URL` should point to the deployed API endpoint.
 
-## Build and Monorepo Commands
-
-Turborepo configuration is defined in `turbo.json`.
-
-Example commands:
-
-```bash
-npx turbo run build
-npx turbo run lint
-npx turbo run test
-```
-
 ## Development Notes
 
 - SQLite is used for MVP simplicity. For production, move to Cloud SQL or another managed relational database.
@@ -389,7 +413,7 @@ npx turbo run test
 
 ## Roadmap Ideas
 
-- Authentication and saved builds in a real user account system
+- Authentication, and builds saved to an account (builds can already be shared by link)
 - Build comparison mode
 - More motorcycles and part categories
 - Dealer-ready branded quote templates

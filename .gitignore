@@ -1,0 +1,34 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.pytest-tmp/
+pytest-cache-files-*/
+apps/api/.lint-tools/
+
+# Local databases
+*.db
+*.sqlite3
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Test artifacts
+playwright-report/
+test-results/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

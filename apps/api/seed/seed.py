@@ -4,17 +4,17 @@ import os
 import sys
 from pathlib import Path
 
-from sqlalchemy import inspect, select, text
+from sqlalchemy import select
 
 API_ROOT = Path(__file__).resolve().parents[1]
 if str(API_ROOT) not in sys.path:
     sys.path.insert(0, str(API_ROOT))
 
-from app.database import Base, SessionLocal, engine  # noqa: E402
+from app.database import SessionLocal  # noqa: E402
+from app.migrations_runner import run_migrations  # noqa: E402
 from app.models.compatibility import Compatibility  # noqa: E402
 from app.models.mod_part import ModPart, ModPartCategory  # noqa: E402
 from app.models.motorcycle import Motorcycle  # noqa: E402
-
 
 USE_LOCAL_MODEL_ASSETS = os.getenv("USE_LOCAL_MODEL_ASSETS", "false").lower() == "true"
 REMOTE_BIKE_MODEL_BASE_URL = "https://cdn.motoforge.local/models"
@@ -33,63 +33,6 @@ def part_model_url(filename: str) -> str:
     if USE_LOCAL_MODEL_ASSETS:
         return f"{LOCAL_PART_MODEL_BASE_URL}/{filename}"
     return f"{REMOTE_PART_MODEL_BASE_URL}/{filename}"
-
-
-def ensure_sqlite_mvp_columns() -> None:
-    if engine.dialect.name != "sqlite":
-        return
-
-    inspector = inspect(engine)
-    existing_tables = set(inspector.get_table_names())
-    if "motorcycles" not in existing_tables or "mod_parts" not in existing_tables:
-        return
-
-    motorcycle_columns = {
-        column["name"] for column in inspector.get_columns("motorcycles")
-    }
-    mod_part_columns = {
-        column["name"] for column in inspector.get_columns("mod_parts")
-    }
-
-    statements = []
-    if "segment" not in motorcycle_columns:
-        statements.append(
-            "ALTER TABLE motorcycles ADD COLUMN segment VARCHAR(80) "
-            "NOT NULL DEFAULT 'naked'"
-        )
-    if "source_provider" not in motorcycle_columns:
-        statements.append(
-            "ALTER TABLE motorcycles ADD COLUMN source_provider VARCHAR(120) "
-            "NOT NULL DEFAULT 'seed'"
-        )
-    if "source_id" not in motorcycle_columns:
-        statements.append("ALTER TABLE motorcycles ADD COLUMN source_id VARCHAR(160)")
-    if "asset_status" not in motorcycle_columns:
-        statements.append(
-            "ALTER TABLE motorcycles ADD COLUMN asset_status VARCHAR(80) "
-            "NOT NULL DEFAULT 'placeholder'"
-        )
-    if "supported_segments" not in mod_part_columns:
-        statements.append(
-            "ALTER TABLE mod_parts ADD COLUMN supported_segments VARCHAR(240) "
-            "NOT NULL DEFAULT ''"
-        )
-    if "brand" not in mod_part_columns:
-        statements.append("ALTER TABLE mod_parts ADD COLUMN brand VARCHAR(120)")
-    if "sku" not in mod_part_columns:
-        statements.append("ALTER TABLE mod_parts ADD COLUMN sku VARCHAR(120)")
-    if "asset_status" not in mod_part_columns:
-        statements.append(
-            "ALTER TABLE mod_parts ADD COLUMN asset_status VARCHAR(80) "
-            "NOT NULL DEFAULT 'placeholder'"
-        )
-
-    if not statements:
-        return
-
-    with engine.begin() as connection:
-        for statement in statements:
-            connection.execute(text(statement))
 
 
 MOTORCYCLES = [
@@ -291,8 +234,7 @@ MOD_PARTS = [
         "weight_delta": -0.9,
         "hp_delta": 0.0,
         "description": (
-            "Premium monotube rear shock for sharper damping control "
-            "on fast roads."
+            "Premium monotube rear shock for sharper damping control " "on fast roads."
         ),
         "model_url": part_model_url("ohlins-stx46.glb"),
         "segments": ["sport", "naked", "retro"],
@@ -356,8 +298,7 @@ MOD_PARTS = [
         "weight_delta": -0.6,
         "hp_delta": 0.0,
         "description": (
-            "Track-leaning rear shock for riders who push their street "
-            "bikes hard."
+            "Track-leaning rear shock for riders who push their street " "bikes hard."
         ),
         "model_url": part_model_url("ktech-razor-r-lite.glb"),
         "segments": ["sport", "naked"],
@@ -434,8 +375,7 @@ MOD_PARTS = [
         "weight_delta": -5.2,
         "hp_delta": 0.0,
         "description": (
-            "Premium carbon wheel package for high-end naked "
-            "and sport builds."
+            "Premium carbon wheel package for high-end naked " "and sport builds."
         ),
         "model_url": part_model_url("rotobox-boost.glb"),
         "segments": ["sport", "naked"],
@@ -525,8 +465,7 @@ MOD_PARTS = [
         "weight_delta": -0.4,
         "hp_delta": 0.0,
         "description": (
-            "Low drag-bar setup with premium finish and sharper "
-            "steering feel."
+            "Low drag-bar setup with premium finish and sharper " "steering feel."
         ),
         "model_url": part_model_url("rizoma-drag-bar.glb"),
         "segments": ["naked", "sport"],
@@ -538,8 +477,7 @@ MOD_PARTS = [
         "weight_delta": -0.2,
         "hp_delta": 0.0,
         "description": (
-            "Street-friendly low bar upgrade for improved control "
-            "and reduced reach."
+            "Street-friendly low bar upgrade for improved control " "and reduced reach."
         ),
         "model_url": part_model_url("renthal-street-low.glb"),
         "segments": ["naked", "retro"],
@@ -564,8 +502,7 @@ MOD_PARTS = [
         "weight_delta": -0.1,
         "hp_delta": 0.0,
         "description": (
-            "Wide tracker-style bar ideal for custom retros "
-            "and urban builds."
+            "Wide tracker-style bar ideal for custom retros " "and urban builds."
         ),
         "model_url": part_model_url("tracker-bar-conversion.glb"),
         "segments": ["retro"],
@@ -577,8 +514,7 @@ MOD_PARTS = [
         "weight_delta": 0.4,
         "hp_delta": 0.0,
         "description": (
-            "Mini ape setup for cruisers wanting a taller custom "
-            "cockpit silhouette."
+            "Mini ape setup for cruisers wanting a taller custom " "cockpit silhouette."
         ),
         "model_url": part_model_url("apehanger-mini.glb"),
         "segments": ["cruiser"],
@@ -670,8 +606,7 @@ def ensure_compatibility(db, motorcycle_id, mod_part_id):
 
 
 def seed() -> None:
-    Base.metadata.create_all(bind=engine)
-    ensure_sqlite_mvp_columns()
+    run_migrations()
 
     with SessionLocal() as db:
         motorcycles_by_slug = {}

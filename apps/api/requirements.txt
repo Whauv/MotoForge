@@ -1,8 +1,10 @@
-fastapi
-uvicorn[standard]
-sqlalchemy
-alembic
-pydantic-settings
-python-dotenv
-pytest
-httpx
+# Runtime dependencies. Versions are pinned so builds are reproducible;
+# bump them deliberately and run the test suite.
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+sqlalchemy==2.0.51
+alembic==1.20.1
+pydantic==2.11.7
+pydantic-settings==2.14.2
+python-dotenv==1.1.1
+httpx==0.28.1

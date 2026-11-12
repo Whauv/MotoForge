@@ -32,7 +32,9 @@ class ModPart(Base):
     hp_delta: Mapped[float] = mapped_column(Float, nullable=False)
     description: Mapped[str] = mapped_column(String(1000), nullable=False)
     model_url: Mapped[str] = mapped_column(String(512), nullable=False)
-    supported_segments: Mapped[str] = mapped_column(String(240), nullable=False, default="")
+    supported_segments: Mapped[str] = mapped_column(
+        String(240), nullable=False, default=""
+    )
     brand: Mapped[str | None] = mapped_column(String(120), nullable=True)
     sku: Mapped[str | None] = mapped_column(String(120), nullable=True)
     asset_status: Mapped[str] = mapped_column(

@@ -69,10 +69,7 @@ def _segment_from_category(category: str | None, model_name: str) -> str:
 
 def _local_brands(db: Session) -> CatalogBrandsResponse:
     statement = select(Motorcycle.brand).distinct().order_by(Motorcycle.brand)
-    brands = [
-        CatalogBrandRead(id=brand, name=brand)
-        for brand in db.scalars(statement)
-    ]
+    brands = [CatalogBrandRead(id=brand, name=brand) for brand in db.scalars(statement)]
     return CatalogBrandsResponse(source="local", items=brands)
 
 
@@ -119,9 +116,8 @@ async def _fetch_provider_json(path: str) -> Any:
 
 
 def _provider_enabled() -> bool:
-    return (
-        settings.motorcycle_catalog_provider.lower() == "motormanage"
-        and bool(settings.motormanage_api_key)
+    return settings.motorcycle_catalog_provider.lower() == "motormanage" and bool(
+        settings.motormanage_api_key
     )
 
 
@@ -200,19 +196,14 @@ async def get_catalog_models(
 
     for item in raw_items:
         raw_name = str(
-            item.get("name")
-            or item.get("model")
-            or item.get("title")
-            or ""
+            item.get("name") or item.get("model") or item.get("title") or ""
         ).strip()
         if not raw_name:
             continue
 
         name = raw_name.removeprefix(f"{brand_name} ").strip() or raw_name
         years = _extract_years(
-            item.get("years")
-            or item.get("year")
-            or item.get("production_years")
+            item.get("years") or item.get("year") or item.get("production_years")
         )
         if not years:
             continue

@@ -22,6 +22,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 COPY --from=builder /install/deps /usr/local
+COPY alembic.ini ./
+COPY migrations ./migrations
 COPY app ./app
 COPY seed ./seed
 
